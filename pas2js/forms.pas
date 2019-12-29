@@ -222,6 +222,7 @@ function Application: TApplication;
 
 implementation
 
+{$push}
 {$hints off}
 
 procedure DefaultModalProc(Sender: TObject; ModalResult: TModalResult);
@@ -233,7 +234,7 @@ begin
   end;
 end;
 
-{$hints on}
+{$pop}
 
 var
   VAppInstance: TApplication;

@@ -1528,6 +1528,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 function TControl.CreateHandleElement: TJSHTMLElement;
@@ -1535,7 +1536,7 @@ begin
   raise TJSError.New(Format('%s.CreateHandleElement=nil', [ClassName]));
 end;
 
-{$hints on}
+{$pop}
 
 procedure TControl.RegisterHandleEvents;
 begin
@@ -1571,6 +1572,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 function TControl.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -1578,7 +1580,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 procedure TControl.CheckNewParent(AParent: TWinControl);
 begin
@@ -1785,6 +1787,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 procedure TControl.BorderSpacingChanged(Sender: TObject);
@@ -1795,9 +1798,9 @@ begin
   end;
 end;
 
-{$hints on}
+{$pop}
 
-
+{$push}
 {$hints off}
 
 procedure TControl.ColorChanged(Sender: TObject);
@@ -1805,8 +1808,9 @@ begin
   Changed;
 end;
 
-{$hints on}
+{$pop}
 
+{$push}
 {$hints off}
 
 procedure TControl.FontChanged(Sender: TObject);
@@ -1814,7 +1818,7 @@ begin
   Changed;
 end;
 
-{$hints on}
+{$pop}
 
 function TControl.TabOrderArray: TJSArray;
 begin

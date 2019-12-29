@@ -440,6 +440,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 function TCustomComboBox.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -447,7 +448,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 function TCustomComboBox.RealGetText: string;
 begin
@@ -1163,6 +1164,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 function TCustomMemo.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -1170,7 +1172,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 function TCustomMemo.RealGetText: string;
 begin
@@ -1283,6 +1285,7 @@ begin
   Result := TJSHTMLElement(Document.CreateElement('button'));
 end;
 
+{$push}
 {$hints off}
 
 function TCustomButton.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -1290,7 +1293,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 class function TCustomButton.GetControlClassDefaultSize: TSize;
 begin
@@ -1445,6 +1448,7 @@ begin
   Result := TJSHTMLElement(HandleElement.AppendChild(Document.CreateElement('span')));
 end;
 
+{$push}
 {$hints off}
 
 function TCustomCheckbox.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -1452,7 +1456,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 class function TCustomCheckbox.GetControlClassDefaultSize: TSize;
 begin
@@ -1614,6 +1618,7 @@ begin
   Result := TJSHTMLTableElement(HandleElement.AppendChild(Document.CreateElement('table')));
 end;
 
+{$push}
 {$hints off}
 
 function TCustomLabel.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -1621,7 +1626,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 class function TCustomLabel.GetControlClassDefaultSize: TSize;
 begin

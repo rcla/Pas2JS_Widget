@@ -385,6 +385,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 procedure TDataColumn.FontChanged(Sender: TObject);
@@ -392,7 +393,7 @@ begin
   ColumnChanged;
 end;
 
-{$hints on}
+{$pop}
 
 function TDataColumn.GetDefaultValueChecked: string;
 begin
@@ -1285,6 +1286,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 procedure TCustomDataGrid.ColumnsChanged(AColumn: TDataColumn);
@@ -1292,7 +1294,7 @@ begin
   Changed;
 end;
 
-{$hints on}
+{$pop}
 
 function TCustomDataGrid.CalcDefaultRowHeight: NativeInt;
 begin
@@ -1534,6 +1536,7 @@ begin
   end;
 end;
 
+{$push}
 {$hints off}
 
 function TCustomPagination.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -1541,7 +1544,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 class function TCustomPagination.GetControlClassDefaultSize: TSize;
 begin

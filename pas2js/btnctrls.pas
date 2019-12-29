@@ -166,6 +166,7 @@ begin
   Result := TJSHTMLInputElement(HandleElement.AppendChild(Document.CreateElement('input')));
 end;
 
+{$push}
 {$hints off}
 
 function TCustomFileButton.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -173,7 +174,7 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
 class function TCustomFileButton.GetControlClassDefaultSize: TSize;
 begin

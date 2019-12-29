@@ -241,6 +241,7 @@ begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
 end;
 
+{$push}
 {$hints off}
 
 function TCustomImage.CheckChildClassAllowed(AChildClass: TClass): boolean;
@@ -248,8 +249,9 @@ begin
   Result := False;
 end;
 
-{$hints on}
+{$pop}
 
+{$push}
 {$hints off}
 
 procedure TCustomImage.PictureChanged(Sender: TObject);
@@ -261,7 +263,7 @@ begin
   end;
 end;
 
-{$hints on}
+{$pop}
 
 class function TCustomImage.GetControlClassDefaultSize: TSize;
 begin
