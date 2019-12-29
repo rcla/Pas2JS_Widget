@@ -230,7 +230,7 @@ const
   clDefault = $20000000;
 
   //// System colors
-  clBase = $80000000;
+  clBase = LongInt($80000000);
   clScrollBar = clBase + 0;
   clBackground = clBase + 1;
   clActiveCaption = clBase + 2;
