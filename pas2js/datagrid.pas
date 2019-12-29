@@ -1389,7 +1389,7 @@ function TCustomPagination.HandlePageClick(AEvent: TJSMouseEvent): boolean;
 var
   VValue: string;
 begin
-  VValue := AEvent.Target.InnerHTML; /// Element value
+  VValue := AEvent.targetElement.InnerHTML; /// Element value
   if (VValue <> '') then
   begin
     if (VValue = '«') then

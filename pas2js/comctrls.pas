@@ -641,7 +641,7 @@ end;
 
 function TCustomPageControl.TabClick(AEvent: TJSMouseEvent): boolean;
 begin
-  SetPageIndex(IndexOfTab(AEvent.Target.InnerHTML));
+  SetPageIndex(IndexOfTab(AEvent.targetElement.InnerHTML));
 end;
 
 {$hints on}
