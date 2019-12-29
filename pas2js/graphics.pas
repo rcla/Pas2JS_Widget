@@ -34,7 +34,7 @@ uses
   Web;
 
 type
-  TColor = NativeUInt;
+  TColor = LongInt;
 
   TFontCharSet = 0..255;
   TFontName = string;
