@@ -130,9 +130,9 @@ type
     function RenderTabLeft(const ALeft, ATop, AWidth, AHeight: NativeInt; const AEvent: JSValue): TJSHTMLElement; virtual;
     function RenderTabRight(const ALeft, ATop, AWidth, AHeight: NativeInt; const AEvent: JSValue): TJSHTMLElement; virtual;
     procedure RenderTabs; virtual;
-    function TabClick(AEvent: TJSMouseEvent): boolean; virtual;
-    function TabLeftClick(AEvent: TJSMouseEvent): boolean; virtual;
-    function TabRightClick(AEvent: TJSMouseEvent): boolean; virtual;
+    procedure TabClick(AEvent: TJSMouseEvent); virtual;
+    procedure TabLeftClick(AEvent: TJSMouseEvent); virtual;
+    procedure TabRightClick(AEvent: TJSMouseEvent); virtual;
     procedure UpdatePages; virtual;
   protected
     class function GetControlClassDefaultSize: TSize; override;
@@ -637,32 +637,20 @@ begin
   end;
 end;
 
-{$hints off}
-
-function TCustomPageControl.TabClick(AEvent: TJSMouseEvent): boolean;
+procedure TCustomPageControl.TabClick(AEvent: TJSMouseEvent);
 begin
   SetPageIndex(IndexOfTab(AEvent.targetElement.InnerHTML));
 end;
 
-{$hints on}
-
-{$hints off}
-
-function TCustomPageControl.TabLeftClick(AEvent: TJSMouseEvent): boolean;
+procedure TCustomPageControl.TabLeftClick(AEvent: TJSMouseEvent);
 begin
   SetPageIndex(FPageIndex - 1);
 end;
 
-{$hints on}
-
-{$hints off}
-
-function TCustomPageControl.TabRightClick(AEvent: TJSMouseEvent): boolean;
+procedure TCustomPageControl.TabRightClick(AEvent: TJSMouseEvent);
 begin
   SetPageIndex(FPageIndex + 1);
 end;
-
-{$hints on}
 
 procedure TCustomPageControl.UpdatePages;
 var
