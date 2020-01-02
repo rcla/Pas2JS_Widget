@@ -216,6 +216,49 @@ type
     property OnUnload: TNotifyEvent read FOnUnload write FOnUnload;
   end;
 
+  { TWForm }
+
+  TWForm = class(TCustomForm)
+  published
+    property ActiveControl;
+    property Align;
+    property AlphaBlend;
+    property AlphaBlendValue;
+    property Caption;
+    property ClientHeight;
+    property ClientWidth;
+    property Color;
+    property Enabled;
+    property Font;
+    property HandleClass;
+    property HandleID;
+    property KeyPreview;
+    property ShowHint;
+    property Visible;
+    property OnActivate;
+    property OnClick;
+    property OnClose;
+    property OnCloseQuery;
+    property OnCreate;
+    property OnDblClick;
+    property OnDeactivate;
+    property OnDestroy;
+    property OnHide;
+    property OnKeyDown;
+    property OnKeyPress;
+    property OnKeyUp;
+    property OnMouseDown;
+    property OnMouseEnter;
+    property OnMouseLeave;
+    property OnMouseMove;
+    property OnMouseUp;
+    property OnMouseWheel;
+    property OnResize;
+    property OnScroll;
+    property OnShow;
+  end;
+  TWFormClass = class of TWForm;
+
 { TODO: TScreen }
 
 function Application: TApplication;
