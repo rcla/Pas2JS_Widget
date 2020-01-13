@@ -355,7 +355,6 @@ type
     property HandleClass;
     property HandleId;
     property ParentShowHint;
-    property Picture;
     property Proportional;
     property ShowHint;
     property Stretch;

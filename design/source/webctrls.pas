@@ -405,7 +405,6 @@ type
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
     property ParentShowHint;
-    property Picture;
     property Proportional;
     property ShowHint;
     property Stretch;
