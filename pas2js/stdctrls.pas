@@ -162,7 +162,7 @@ type
   private
     FAlignment: TAlignment;
     FCharCase: TEditCharCase;
-    FLines: TStringList;
+    FLines: TStrings;
     FMaxLength: NativeInt;
     FModified: boolean;
     FReadOnly: boolean;
@@ -178,7 +178,7 @@ type
     function GetSelText: string;
     procedure SetAlignment(AValue: TAlignment);
     procedure SetCharCase(AValue: TEditCharCase);
-    procedure SetLines(AValue: TStringList);
+    procedure SetLines(AValue: TStrings);
     procedure SetMaxLength(AValue: NativeInt);
     procedure SetModified(AValue: boolean);
     procedure SetReadOnly(AValue: boolean);
@@ -213,7 +213,7 @@ type
   public
     property Alignment: TAlignment read FAlignment write SetAlignment;
     property CharCase: TEditCharCase read FCharCase write SetCharCase;
-    property Lines: TStringList read FLines write SetLines;
+    property Lines: TStrings read FLines write SetLines;
     property MaxLength: NativeInt read FMaxLength write SetMaxLength;
     property Modified: boolean read FModified write SetModified;
     property ReadOnly: boolean read FReadOnly write SetReadOnly;
@@ -882,6 +882,57 @@ begin
   end;
 end;
 
+type
+  TCustomMemoStrings = class(TStringList)
+  protected
+    procedure DoReadData(Reader: TReader); virtual;
+    procedure DoWriteData(Writer: TWriter); virtual;
+    procedure DefineProperties(Filer: TFiler); override;
+  end;
+
+{ TCustomMemoStrings }
+
+procedure TCustomMemoStrings.DoReadData(Reader: TReader);
+begin
+  Reader.ReadListBegin;
+  BeginUpdate;
+  try
+    Clear;
+    while not Reader.EndOfList do
+      Add(Reader.ReadString);
+  finally
+    EndUpdate;
+  end;
+  Reader.ReadListEnd;
+end;
+
+procedure TCustomMemoStrings.DoWriteData(Writer: TWriter);
+var
+  i: Integer;
+  lStringsNoWordWrap: TStringList;
+begin
+  lStringsNoWordWrap := TStringList.Create;
+  try
+    lStringsNoWordWrap.Text := Text;
+
+    Writer.WriteListBegin;
+    for i := 0 to lStringsNoWordWrap.Count - 1 do
+      Writer.WriteString(lStringsNoWordWrap.Strings[i]);
+    Writer.WriteListEnd;
+  finally
+    lStringsNoWordWrap.Free;
+  end;
+end;
+
+procedure TCustomMemoStrings.DefineProperties(Filer: TFiler);
+var
+  HasData: Boolean;
+begin
+  HasData := Count > 0;
+  Filer.DefineProperty('Strings', @DoReadData, @DoWriteData, HasData);
+end;
+
+
 { TCustomMemo }
 
 procedure TCustomMemo.SetAlignment(AValue: TAlignment);
@@ -931,7 +982,7 @@ begin
   end;
 end;
 
-procedure TCustomMemo.SetLines(AValue: TStringList);
+procedure TCustomMemo.SetLines(AValue: TStrings);
 begin
   FLines.Assign(AValue);
   Changed;
@@ -1195,7 +1246,7 @@ end;
 constructor TCustomMemo.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FLines := TStringList.Create;
+  FLines := TCustomMemoStrings.Create;
   FMaxLength := 0;
   FModified := False;
   FReadOnly := False;
