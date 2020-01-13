@@ -1412,9 +1412,35 @@ begin
 end;
 
 procedure TControl.Changed;
+var
+  form: TCustomForm;
+
+  function AdjustWithPPI(aValue: Integer): Integer;
+  begin
+    if Assigned(form) then
+      Result := Trunc(96 * aValue / form.DesignTimePPI)
+    else
+      Result := aValue;
+  end;
+
+  function FindParentForm: TCustomForm;
+  var
+    p: TWinControl;
+  begin
+    p := Parent;
+    while Assigned(p) and not (p is TCustomForm) do
+      p := p.Parent;
+    if p is TCustomForm then
+      Result := TCustomForm(p)
+    else
+      Result := Nil;
+  end;
+
 begin
   if (not IsUpdating) then
   begin
+    form := FindParentForm;
+
     with FHandleElement do
     begin
       /// Id
@@ -1459,10 +1485,10 @@ begin
       end;
 
       /// Bounds
-      Style.SetProperty('left', IntToStr(FLeft) + 'px');
-      Style.SetProperty('top', IntToStr(FTop) + 'px');
-      Style.SetProperty('width', IntToStr(FWidth) + 'px');
-      Style.SetProperty('height', IntToStr(FHeight) + 'px');
+      Style.SetProperty('left', IntToStr(AdjustWithPPI(FLeft)) + 'px');
+      Style.SetProperty('top', IntToStr(AdjustWithPPI(FTop)) + 'px');
+      Style.SetProperty('width', IntToStr(AdjustWithPPI(FWidth)) + 'px');
+      Style.SetProperty('height', IntToStr(AdjustWithPPI(FHeight)) + 'px');
 
       /// Cursor
       Style.SetProperty('cursor', JSCursor(FCursor));
