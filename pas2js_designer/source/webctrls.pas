@@ -59,6 +59,7 @@ type
     property ClientHeight;
     property ClientWidth;
     property Color;
+    property DesignTimePPI;
     property Enabled;
     property Font;
     ///property FormType;  

@@ -91,6 +91,7 @@ type
     FAlphaBlend: boolean;
     FAlphaBlendValue: byte;
     FChildForm: TCustomForm;
+    FDesignTimePPI: Integer;
     FFormType: TFormType;
     FKeyPreview: boolean;   
     FModalResult: TModalResult;
@@ -149,6 +150,7 @@ type
     property AlphaBlendValue: byte read FAlphaBlendValue write SetAlphaBlendValue;
     property FormType: TFormType read FFormType;
     property KeyPreview: boolean read FKeyPreview write FKeyPreview;
+    property DesignTimePPI: Integer read FDesignTimePPI write FDesignTimePPI;
     property ModalResult: TModalResult read FModalResult write SetModalResult;
     property OnActivate: TNotifyEvent read FOnActivate write FOnActivate;
     property OnClose: TCloseEvent read FOnClose write FOnClose;
@@ -228,6 +230,7 @@ type
     property ClientHeight;
     property ClientWidth;
     property Color;
+    property DesignTimePPI;
     property Enabled;
     property Font;
     property HandleClass;
@@ -647,6 +650,7 @@ begin
   FActiveControl := nil;
   FAlphaBlend := False;
   FAlphaBlendValue := 255;
+  FDesignTimePPI := 96;
   FChildForm := nil;
   FFormType := ftWindow;
   FKeyPreview := False;
