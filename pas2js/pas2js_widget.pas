@@ -9,7 +9,8 @@ interface
 
 uses
   WebExtra, MaskUtils, Interfaces, Graphics, Controls, Forms, StdCtrls, 
-  ExtCtrls, ComCtrls, NumCtrls, DttCtrls, BtnCtrls, DataGrid, Dialogs, WebCtrls;
+  ExtCtrls, ComCtrls, NumCtrls, DttCtrls, BtnCtrls, DataGrid, Dialogs, 
+  WebCtrls, LCLStrConsts;
 
 implementation
 

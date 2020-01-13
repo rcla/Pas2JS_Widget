@@ -60,7 +60,7 @@
   SOFTWARE.
 }  "/>
     <Version Major="1"/>
-    <Files Count="15">
+    <Files Count="16">
       <Item1>
         <Filename Value="webextra.pas"/>
         <UnitName Value="WebExtra"/>
@@ -121,6 +121,10 @@
         <Filename Value="webctrls.pas"/>
         <UnitName Value="WebCtrls"/>
       </Item15>
+      <Item16>
+        <Filename Value="lclstrconsts.pas"/>
+        <UnitName Value="LCLStrConsts"/>
+      </Item16>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

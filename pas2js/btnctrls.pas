@@ -72,6 +72,9 @@ type
 
 implementation
 
+uses
+  LCLStrConsts;
+
 { TCustomFileButton }
 
 procedure TCustomFileButton.SetFilter(AValue: string);
@@ -111,12 +114,7 @@ begin
     if (VList.Length = 0) then
     begin
       FFileSelect := nil;
-      {$ifdef lang_en}
-      Caption := 'Not file selected.';
-      {$endif}
-      {$ifdef lang_pt}
-      Caption := 'Nenhum arquivo selecionado.';
-      {$endif}
+      Caption := rsFileButtonNoFileSelected;
       Changed;
       Exit(False);
     end;
@@ -191,12 +189,7 @@ begin
   FFileSelect := nil;
   BeginUpdate;
   try
-    {$ifdef lang_en}  
-    Caption := 'Not file selected.';
-    {$endif}
-    {$ifdef lang_pt}
-    Caption := 'Nenhum arquivo selecionado.';
-    {$endif}
+    Caption := rsFileButtonNoFileSelected;
     Hint := Caption;
     with GetControlClassDefaultSize do
     begin
