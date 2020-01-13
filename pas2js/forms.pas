@@ -129,10 +129,12 @@ type
   protected
     procedure Changed; override;
     function CreateHandleElement: TJSHTMLElement; override;
+    procedure ProcessResource; virtual;
   protected
     class function GetControlClassDefaultSize: TSize; override;
   public
     constructor Create(AOwner: TComponent); override;
+    constructor CreateNew(AOwner: TComponent; Num: Integer = 0); virtual;
     destructor Destroy; override;
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
@@ -267,6 +269,9 @@ type
 function Application: TApplication;
 
 implementation
+
+uses
+  LResources, LCLStrConsts;
 
 {$push}
 {$hints off}
@@ -638,6 +643,13 @@ begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
 end;
 
+procedure TCustomForm.ProcessResource;
+begin
+  if not InitResourceComponent(Self, TWForm) then
+    raise EResNotFound.CreateFmt(
+      rsFormResourceSNotFoundForResourcelessFormsCreateNew, [ClassName]);
+end;
+
 class function TCustomForm.GetControlClassDefaultSize: TSize;
 begin
   Result.Cx := 320;
@@ -645,6 +657,14 @@ begin
 end;
 
 constructor TCustomForm.Create(AOwner: TComponent);
+begin
+  CreateNew(AOwner, 1);
+  if (ClassType <> TWForm) and not (csDesigning in ComponentState) then begin
+    ProcessResource;
+  end;
+end;
+
+constructor TCustomForm.CreateNew(AOwner: TComponent; Num: Integer);
 begin
   inherited Create(AOwner);
   FActiveControl := nil;

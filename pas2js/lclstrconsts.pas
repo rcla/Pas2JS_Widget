@@ -28,6 +28,9 @@ unit LCLStrConsts;
 interface
 
 resourcestring
+  rsFormResourceSNotFoundForResourcelessFormsCreateNew = 'Form resource %s '
+    +'not found. For resourceless forms CreateNew constructor must be used.';
+  rsFormStreamingError = 'Form streaming "%s" error: %s';
   rsFileButtonNoFileSelected = 'No file selected';
 
 implementation
