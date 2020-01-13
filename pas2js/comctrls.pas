@@ -154,6 +154,9 @@ type
 
 implementation
 
+uses
+  Forms;
+
 { TCustomTabSheet }
 
 function TCustomTabSheet.GetPageControl: TCustomPageControl;
@@ -524,6 +527,30 @@ end;
 
 procedure TCustomPageControl.RenderTabs;
 var
+  form: TCustomForm;
+
+  function AdjustWithPPI(aValue: Integer): Integer;
+  begin
+    if Assigned(form) then
+      Result := Trunc(96 * aValue / form.DesignTimePPI)
+    else
+      Result := aValue;
+  end;
+
+  function FindParentForm: TCustomForm;
+  var
+    p: TWinControl;
+  begin
+    p := Parent;
+    while Assigned(p) and not (p is TCustomForm) do
+      p := p.Parent;
+    if p is TCustomForm then
+      Result := TCustomForm(p)
+    else
+      Result := Nil;
+  end;
+
+var
   VPage: TCustomTabSheet;
   VIndex: NativeInt;
   VStartIndex: NativeInt;
@@ -536,6 +563,7 @@ var
   VMaxTabWidth: NativeInt;
   VTabsCount: NativeInt;
 begin
+  form := FindParentForm;
   VTabHeight := CalcTabHeight;
   VSumTabsWidth := CalcSumTabsWidth;
   /// Containter
@@ -546,8 +574,8 @@ begin
     /// Bounds
     Style.SetProperty('left', '0px');
     Style.SetProperty('top', '0px');
-    Style.SetProperty('width', IntToStr(IfThen((VSumTabsWidth > Width), VSumTabsWidth, Width)) + 'px');
-    Style.SetProperty('height', IntToStr(VTabHeight) + 'px');
+    Style.SetProperty('width', IntToStr(AdjustWithPPI(IfThen((VSumTabsWidth > Width), VSumTabsWidth, Width))) + 'px');
+    Style.SetProperty('height', IntToStr(AdjustWithPPI(VTabHeight)) + 'px');
     /// Position
     Style.SetProperty('position', 'absolute');
     /// Scroll
@@ -588,12 +616,12 @@ begin
           if (VIndex = FPageIndex) then
           begin
             /// Register tab
-            FTabContainerElement.AppendChild(RenderTabActive(VTabCaption, VTabLeft, 0, VTabWidth, VTabHeight, @TabClick));
+            FTabContainerElement.AppendChild(RenderTabActive(VTabCaption, AdjustWithPPI(VTabLeft), 0, AdjustWithPPI(VTabWidth), AdjustWithPPI(VTabHeight), @TabClick));
           end
           else
           begin
             /// Register tab
-            FTabContainerElement.AppendChild(RenderTab(VTabCaption, VTabLeft, 0, VTabWidth, VTabHeight, @TabClick));
+            FTabContainerElement.AppendChild(RenderTab(VTabCaption, AdjustWithPPI(VTabLeft), 0, AdjustWithPPI(VTabWidth), AdjustWithPPI(VTabHeight), @TabClick));
           end;
           /// Calculate the next position of the tab
           VTabLeft := VTabLeft + VTabWidth;
@@ -602,8 +630,8 @@ begin
       /// Register navigation tabs
       with FTabContainerElement do // First and Last Tabs
       begin
-        AppendChild(RenderTabLeft(0, 0, 40, VTabHeight, @TabLeftClick));
-        AppendChild(RenderTabRight((Width - 40), 0, 40, VTabHeight, @TabRightClick));
+        AppendChild(RenderTabLeft(0, 0, 40, AdjustWithPPI(VTabHeight), @TabLeftClick));
+        AppendChild(RenderTabRight(AdjustWithPPI(Width - 40), 0, 40, AdjustWithPPI(VTabHeight), @TabRightClick));
       end;
     end
     else
@@ -622,12 +650,12 @@ begin
           if (VIndex = FPageIndex) then
           begin
             /// Register tab
-            FTabContainerElement.AppendChild(RenderTabActive(VTabCaption, VTabLeft, 0, VTabWidth, VTabHeight, @TabClick));
+            FTabContainerElement.AppendChild(RenderTabActive(VTabCaption, AdjustWithPPI(VTabLeft), 0, AdjustWithPPI(VTabWidth), AdjustWithPPI(VTabHeight), @TabClick));
           end
           else
           begin
             /// Register tab
-            FTabContainerElement.AppendChild(RenderTab(VTabCaption, VTabLeft, 0, VTabWidth, VTabHeight, @TabClick));
+            FTabContainerElement.AppendChild(RenderTab(VTabCaption, AdjustWithPPI(VTabLeft), 0, AdjustWithPPI(VTabWidth), AdjustWithPPI(VTabHeight), @TabClick));
           end;
           /// Calculate the next position of the tab
           VTabLeft := VTabLeft + VTabWidth;
