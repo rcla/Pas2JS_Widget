@@ -29,12 +29,8 @@
       </Linking>
       <Other>
         <CustomOptions Value="-dPas2js -O- -Jc"/>
-        <CompilerPath Value="pas2js"/>
-        <ExecuteBefore>
-          <Command Value="$MakeExe(IDE,pas2js) -O- -Jc -vbq pas2js_rtl.pas"/>
-        </ExecuteBefore>
+        <CompilerPath Value="$(Pas2JS)"/>
       </Other>
-      <SkipCompiler Value="True"/>
     </CompilerOptions>
     <License Value="{
   MIT License
