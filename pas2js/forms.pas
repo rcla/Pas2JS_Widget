@@ -271,7 +271,7 @@ function Application: TApplication;
 implementation
 
 uses
-  LResources, LCLStrConsts;
+  LResources, LCLStrConsts, p2jsres;
 
 {$push}
 {$hints off}
@@ -1018,6 +1018,7 @@ end;
 constructor TApplication.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  SetResourceSource(rsHTML);
   FModules := TJSArray.New;
   FMainForm := nil;
   FStopOnException := True;
