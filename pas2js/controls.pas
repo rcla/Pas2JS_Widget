@@ -306,6 +306,7 @@ type
     function TabOrderArray: TJSArray; virtual;
     function CompareTabOrder(A, B: JSValue): NativeInt; virtual;
     procedure UpdateTabOrder(const AValue: TControl); virtual;
+    procedure SetParentComponent(AValue: TComponent); override;
   protected
     class function GetControlClassDefaultSize: TSize; virtual;
   public
@@ -1900,6 +1901,12 @@ begin
   finally
     VArray.Length := 0;
   end;
+end;
+
+procedure TControl.SetParentComponent(AValue: TComponent);
+begin
+  if AValue is TWinControl then
+    SetParent(TWinControl(AValue));
 end;
 
 class function TControl.GetControlClassDefaultSize: TSize;
