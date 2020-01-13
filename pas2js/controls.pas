@@ -1950,7 +1950,8 @@ end;
 destructor TControl.Destroy;
 begin
   DestroyComponents;
-  UnRegisterHandleEvents;
+  if Assigned(FHandleElement) then
+    UnRegisterHandleEvents;
   if (Assigned(FParent)) then
   begin
     FParent.UnRegisterChild(Self);
