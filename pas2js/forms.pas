@@ -1034,14 +1034,11 @@ end;
 
 procedure TApplication.CreateForm(AInstanceClass: TControlClass; out AReference);
 begin
-  try        
+  try
     AReference := AInstanceClass.Create(Self);
   except
-    on E: Exception do
-    begin
-      { TODO: Exception? }
-      AReference := nil;
-    end;
+    AReference := Nil;
+    raise;
   end;
 end;
 
