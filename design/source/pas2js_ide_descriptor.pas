@@ -158,12 +158,12 @@ begin
   inherited Create;
   FPas2JSBuilder := '';
   FPas2JSJSON := '';
-  Name := 'Application(Pas2JS)';
+  Name := 'Application (Pas2JS)';
 end;
 
 function TPas2JSProject.GetLocalizedName: string;
 begin
-  Result := 'Application(Pas2JS)';
+  Result := 'Application (Pas2JS)';
 end;
 
 function TPas2JSProject.GetLocalizedDescription: string;
