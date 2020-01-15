@@ -281,7 +281,7 @@ end;
 
 function TPas2JSWForm.GetLocalizedName: string;
 begin
-  Result := 'Web Form(Pas2JS)';
+  Result := 'Web Form (Pas2JS)';
 end;
 
 function TPas2JSWForm.GetLocalizedDescription: string;
@@ -332,7 +332,7 @@ end;
 
 function TPas2JSWFrame.GetLocalizedName: string;
 begin
-  Result := 'Web Frame(Pas2JS)';
+  Result := 'Web Frame (Pas2JS)';
 end;
 
 function TPas2JSWFrame.GetLocalizedDescription: string;
@@ -390,7 +390,7 @@ end;
 
 function TPas2JSWDataModule.GetLocalizedName: string;
 begin
-  Result := 'Web Data Module(Pas2JS)';
+  Result := 'Web Data Module (Pas2JS)';
 end;
 
 function TPas2JSWDataModule.GetLocalizedDescription: string;
