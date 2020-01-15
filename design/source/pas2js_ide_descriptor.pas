@@ -60,7 +60,6 @@ type
   TPas2JSWForm = class(TFileDescPascalUnitWithResource)
   public
     constructor Create; override;
-    function GetUnitDirectives: string; override;
     function GetInterfaceUsesSection: string; override;
     function GetInterfaceSource(const {%H-}Filename, {%H-}SourceName, ResourceName: string): string; override;
     function GetImplementationSource(const Filename, SourceName, ResourceName: string): string; override;
@@ -73,7 +72,6 @@ type
   TPas2JSWFrame = class(TFileDescPascalUnitWithResource)
   public
     constructor Create; override;
-    function GetUnitDirectives: string; override;
     function GetInterfaceUsesSection: string; override;
     function GetInterfaceSource(const {%H-}Filename, {%H-}SourceName, ResourceName: string): string; override;
     function GetImplementationSource(const Filename, SourceName, ResourceName: string): string; override;
@@ -86,7 +84,6 @@ type
   TPas2JSWDataModule = class(TFileDescPascalUnitWithResource)
   public
     constructor Create; override;
-    function GetUnitDirectives: string; override;
     function GetInterfaceUsesSection: string; override;
     function GetInterfaceSource(const {%H-}Filename, {%H-}SourceName, ResourceName: string): string; override;
     function GetImplementationSource(const Filename, SourceName, ResourceName: string): string; override;
@@ -244,11 +241,6 @@ begin
   UseCreateFormStatements := True;
 end;
 
-function TPas2JSWForm.GetUnitDirectives: string;
-begin
-  Result := '{$mode delphi}{$H+}';
-end;
-
 function TPas2JSWForm.GetInterfaceUsesSection: string;
 begin
   Result := 'JS, Classes, SysUtils, Graphics, Controls, Forms, Dialogs, WebCtrls';
@@ -307,11 +299,6 @@ begin
   UseCreateFormStatements := False;
 end;
 
-function TPas2JSWFrame.GetUnitDirectives: string;
-begin                                                                           
-  Result := '{$mode delphi}{$H+}';
-end;
-
 function TPas2JSWFrame.GetInterfaceUsesSection: string;
 begin
   Result := 'JS, Classes, SysUtils, Graphics, Controls, Forms, Dialogs, WebCtrls';
@@ -361,11 +348,6 @@ begin
   Name := 'WDataModule';
   ResourceClass := TWDataModule;
   UseCreateFormStatements := True;
-end;
-
-function TPas2JSWDataModule.GetUnitDirectives: string;
-begin
-  Result := '{$mode delphi}{$H+}';
 end;
 
 function TPas2JSWDataModule.GetInterfaceUsesSection: string;
