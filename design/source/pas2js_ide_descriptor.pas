@@ -62,7 +62,6 @@ type
     constructor Create; override;
     function GetInterfaceUsesSection: string; override;
     function GetInterfaceSource(const {%H-}Filename, {%H-}SourceName, ResourceName: string): string; override;
-    function GetImplementationSource(const Filename, SourceName, ResourceName: string): string; override;
     function GetLocalizedName: string; override;
     function GetLocalizedDescription: string; override;
   end;
@@ -74,7 +73,6 @@ type
     constructor Create; override;
     function GetInterfaceUsesSection: string; override;
     function GetInterfaceSource(const {%H-}Filename, {%H-}SourceName, ResourceName: string): string; override;
-    function GetImplementationSource(const Filename, SourceName, ResourceName: string): string; override;
     function GetLocalizedName: string; override;
     function GetLocalizedDescription: string; override;
   end;
@@ -86,7 +84,6 @@ type
     constructor Create; override;
     function GetInterfaceUsesSection: string; override;
     function GetInterfaceSource(const {%H-}Filename, {%H-}SourceName, ResourceName: string): string; override;
-    function GetImplementationSource(const Filename, SourceName, ResourceName: string): string; override;
     function GetLocalizedName: string; override;
     function GetLocalizedDescription: string; override;
   end;
@@ -254,8 +251,7 @@ begin
     'type' + LE +
     '  T' + ResourceName + ' = class(' + ResourceClass.ClassName + ')' + LE +
     '  private' + LE + LE +
-    '  public' + LE +
-    '    procedure Loaded; override;' + LE +
+    '  public' + LE + LE +
     '  end;' + LE + LE;
 
   if (DeclareClassVariable) then
@@ -264,19 +260,6 @@ begin
       'var' + LE +
       '  ' + ResourceName + ': T' + ResourceName + ';' + LE + LE;
   end;
-end;
-
-function TPas2JSWForm.GetImplementationSource(const Filename, SourceName, ResourceName: string): string;
-const
-  LE = LineEnding;
-begin
-  Result := inherited GetImplementationSource(Filename, SourceName, ResourceName);
-  Result :=
-    'procedure T' + ResourceName + '.Loaded;' + LE +
-    'begin' + LE +
-    '  inherited Loaded;' + LE +
-    '  {$I ' + ExtractFileNameWithoutExt(Filename) + '.wfm}' + LE +
-    'end;' + LE + LE;
 end;
 
 function TPas2JSWForm.GetLocalizedName: string;
@@ -312,22 +295,8 @@ begin
     'type' + LE +
     '  T' + ResourceName + ' = class(' + ResourceClass.ClassName + ')' + LE +
     '  private' + LE + LE +
-    '  public' + LE +
-    '    procedure Loaded; override;' + LE +
+    '  public' + LE + LE +
     '  end;' + LE + LE;
-end;
-
-function TPas2JSWFrame.GetImplementationSource(const Filename, SourceName, ResourceName: string): string;
-const
-  LE = LineEnding;
-begin
-  Result := inherited GetImplementationSource(Filename, SourceName, ResourceName);
-  Result :=
-    'procedure T' + ResourceName + '.Loaded;' + LE +
-    'begin' + LE +
-    '  inherited Loaded;' + LE +
-    '  {$I ' + ExtractFileNameWithoutExt(Filename) + '.wfm}' + LE +
-    'end;' + LE + LE;
 end;
 
 function TPas2JSWFrame.GetLocalizedName: string;
@@ -363,8 +332,7 @@ begin
     'type' + LE +
     '  T' + ResourceName + ' = class(' + ResourceClass.ClassName + ')' + LE +
     '  private' + LE + LE +
-    '  public' + LE +
-    '    procedure Loaded; override;' + LE +
+    '  public' + LE + LE +
     '  end;' + LE + LE;
 
   if (DeclareClassVariable) then
@@ -373,19 +341,6 @@ begin
       'var' + LE +
       '  ' + ResourceName + ': T' + ResourceName + ';' + LE + LE;
   end;
-end;
-
-function TPas2JSWDataModule.GetImplementationSource(const Filename, SourceName, ResourceName: string): string;
-const
-  LE = LineEnding;
-begin
-  Result := inherited GetImplementationSource(Filename, SourceName, ResourceName);
-  Result :=
-    'procedure T' + ResourceName + '.Loaded;' + LE +
-    'begin' + LE +
-    '  inherited Loaded;' + LE +
-    '  {$I ' + ExtractFileNameWithoutExt(Filename) + '.wfm}' + LE +
-    'end;' + LE + LE;
 end;
 
 function TPas2JSWDataModule.GetLocalizedName: string;
