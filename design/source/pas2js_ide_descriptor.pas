@@ -353,72 +353,7 @@ begin
   Result := 'Create a Pas2JS Web Data Module';
 end;
 
-type
-
-  { TIDEExtensionHandler }
-
-  TIDEExtensionHandler = class
-  protected
-    function DoSaveEditorFile(Sender: TObject; {%H-}AFile: TLazProjectFile; SaveStep: TSaveEditorFileStep; {%H-}TargetFilename: string): TModalResult;
-  end;
-
-{ TIDEExtensionHandler }
-
-function TIDEExtensionHandler.DoSaveEditorFile(Sender: TObject; AFile: TLazProjectFile; SaveStep: TSaveEditorFileStep; TargetFilename: string): TModalResult;
-
-  function FindCurrentModule: TComponent;
-  var
-    VIndex: longint;
-    VComponent: TComponent;
-  begin
-    Result := nil;
-    for VIndex := 0 to (FormEditingHook.DesignerCount - 1) do
-    begin
-      VComponent := FormEditingHook.Designer[VIndex].LookupRoot;
-      if (Assigned(VComponent)) and
-         (SameText(VComponent.UnitName, AFile.Unit_Name)) and
-         (VComponent.InheritsFrom(TWForm)) or
-         (VComponent.InheritsFrom(TWFrame)) or
-         (VComponent.InheritsFrom(TWDataModule)) then
-      begin
-        Exit(VComponent);
-      end;
-    end;
-  end;
-
-var
-  VCurrentModule: TComponent;
-  VFile: TFilename;
-  VStream: TMemoryStream;
-  VData: string;
-begin   
-  Result := mrOk;
-  if (SaveStep <> sefsAfterWrite) then
-  begin
-    Exit;
-  end;
-  VCurrentModule := FindCurrentModule;
-  if (not (Assigned(VCurrentModule))) then
-  begin
-    Exit;
-  end;
-  VFile := ExtractFileNameWithoutExt(TargetFilename) + '.wfm';
-  if (not FileExists(VFile)) then
-  begin
-    VData := '{@PAS2JS_BEGIN}{@PAS2JS_END}';
-    VStream := TMemoryStream.Create;
-    try
-      VStream.WriteBuffer(VData[1], Length(VData));
-      VStream.SaveToFile(VFile);
-    finally
-      FreeAndNil(VStream);
-    end;
-  end;
-end;
-
 procedure Register;
-var
-  {%H-}VIDEExtension: TIDEExtensionHandler;
 begin
   VPas2JSWForm := TPas2JSWForm.Create;           
   VPas2JSWFrame := TPas2JSWFrame.Create;
@@ -437,9 +372,6 @@ begin
 
   VPas2JSProject := TPas2JSProject.Create;
   RegisterProjectDescriptor(VPas2JSProject);
-
-  VIDEExtension := TIDEExtensionHandler.Create;
-  LazarusIDE.AddHandlerOnSaveEditorFile(@VIDEExtension.DoSaveEditorFile);
 end;
 
 end.
