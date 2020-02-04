@@ -498,9 +498,9 @@ type
     property OnResize;
   end;
 
-  { TWIntegertEdit }
+  { TWIntegerEdit }
 
-  TWIntegertEdit = class(TCustomNumericEdit)
+  TWIntegerEdit = class(TCustomNumericEdit)
   private
     function GetValue: NativeInt;
     procedure SetValue(AValue: NativeInt);
@@ -771,24 +771,24 @@ begin
   inherited RealSetText(FloatToStrF(StrToFloatDef(AValue, 0), ffFixed, 20, DecimalPlaces));
 end;
 
-{ TWIntegertEdit }
+{ TWIntegerEdit }
 
-function TWIntegertEdit.GetValue: NativeInt;
+function TWIntegerEdit.GetValue: NativeInt;
 begin
   Result := StrToIntDef(RealGetText, 0);
 end;
 
-procedure TWIntegertEdit.SetValue(AValue: NativeInt);
+procedure TWIntegerEdit.SetValue(AValue: NativeInt);
 begin
   RealSetText(FloatToStrF(AValue, ffFixed, 20, DecimalPlaces));
 end;
 
-procedure TWIntegertEdit.RealSetText(const AValue: string);
+procedure TWIntegerEdit.RealSetText(const AValue: string);
 begin
   inherited RealSetText(FloatToStrF(StrToFloatDef(AValue, 0), ffFixed, 20, DecimalPlaces));
 end;
 
-constructor TWIntegertEdit.Create(AOwner: TComponent);
+constructor TWIntegerEdit.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);  
   BeginUpdate;
