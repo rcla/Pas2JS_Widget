@@ -66,13 +66,13 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
-    property Center: boolean read FCenter write SetCenter;
+    property Center: boolean read FCenter write SetCenter default False;
     property Picture: TPicture read FPicture write SetPicture;
-    property Proportional: boolean read FProportional write SetProportional;
-    property Stretch: boolean read FStretch write SetStretch;
-    property StretchOutEnabled: boolean read FStretchOutEnabled write SetStretchOutEnabled;
-    property StretchInEnabled: boolean read FStretchInEnabled write SetStretchInEnabled;
-    property Transparent: boolean read FTransparent write SetTransparent;
+    property Proportional: boolean read FProportional write SetProportional default False;
+    property Stretch: boolean read FStretch write SetStretch default False;
+    property StretchOutEnabled: boolean read FStretchOutEnabled write SetStretchOutEnabled default True;
+    property StretchInEnabled: boolean read FStretchInEnabled write SetStretchInEnabled default True;
+    property Transparent: boolean read FTransparent write SetTransparent default False;
     property OnPictureChanged: TNotifyEvent read FOnPictureChanged write FOnPictureChanged;
   end;
 
