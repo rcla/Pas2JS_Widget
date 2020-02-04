@@ -51,7 +51,7 @@ type
     FTransparent: boolean;
     procedure SetCenter(AValue: boolean);
     procedure SetPicture(AValue: TPicture);
-    procedure SetProportiona(AValue: boolean);
+    procedure SetProportional(AValue: boolean);
     procedure SetStretch(AValue: boolean);
     procedure SetStretchInEnabled(AValue: boolean);
     procedure SetStretchOutEnabled(AValue: boolean);
@@ -68,7 +68,7 @@ type
   public
     property Center: boolean read FCenter write SetCenter;
     property Picture: TPicture read FPicture write SetPicture;
-    property Proportional: boolean read FProportional write SetProportiona;
+    property Proportional: boolean read FProportional write SetProportional;
     property Stretch: boolean read FStretch write SetStretch;
     property StretchOutEnabled: boolean read FStretchOutEnabled write SetStretchOutEnabled;
     property StretchInEnabled: boolean read FStretchInEnabled write SetStretchInEnabled;
@@ -139,7 +139,7 @@ begin
   end;
 end;
 
-procedure TCustomImage.SetProportiona(AValue: boolean);
+procedure TCustomImage.SetProportional(AValue: boolean);
 begin
   if (FProportional <> AValue) then
   begin
