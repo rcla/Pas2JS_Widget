@@ -289,8 +289,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
-    property Alignment: TLeftRight read FAlignment write SetAlignment;
-    property State: TCheckBoxState read GetState write SetState;
+    property Alignment: TLeftRight read FAlignment write SetAlignment default taRightJustify;
+    property State: TCheckBoxState read GetState write SetState default cbUnchecked;
   end;
 
   { TCustomLabel }
