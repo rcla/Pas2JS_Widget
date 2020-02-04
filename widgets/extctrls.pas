@@ -111,11 +111,11 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
-    property Alignment: TAlignment read FAlignment write SetAlignment;
-    property BevelColor: TColor read FBevelColor write SetBevelColor;
-    property BevelInner: TPanelBevel read FBevelInner write SetBevelInner;
-    property BevelOuter: TPanelBevel read FBevelOuter write SetBevelOuter;
-    property BevelWidth: TBevelWidth read FBevelWidth write SetBevelWidth;
+    property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
+    property BevelColor: TColor read FBevelColor write SetBevelColor default clDefault;
+    property BevelInner: TPanelBevel read FBevelInner write SetBevelInner default bvNone;
+    property BevelOuter: TPanelBevel read FBevelOuter write SetBevelOuter default bvRaised;
+    property BevelWidth: TBevelWidth read FBevelWidth write SetBevelWidth default 1;
   end;
 
 implementation
