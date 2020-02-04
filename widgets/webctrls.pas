@@ -272,7 +272,7 @@ type
   { TWCheckbox }
 
   TWCheckbox = class(TCustomCheckbox)
-  public
+  published
     property Align;
     property Alignment;
     /// property AllowGrayed;
