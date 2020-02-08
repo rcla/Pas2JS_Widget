@@ -53,7 +53,7 @@ type
     procedure Changed; override;
   public
     constructor Create(AOwner: TComponent); override;
-    property DecimalPlaces: NativeInt read FDecimals write FDecimals;
+    property DecimalPlaces: NativeInt read FDecimals write FDecimals default 2;
   end;
 
 implementation
