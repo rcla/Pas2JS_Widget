@@ -213,9 +213,7 @@ begin
   AProject.LoadDefaultIcon;
   AProject.MainFileID := 0;
   AProject.LazCompilerOptions.SetAlternativeCompile(FPas2JSBuilder + ' ' + '$(ProjFile)', False);
-  AProject.LazCompilerOptions.SyntaxMode := 'delphi';
   AProject.LazCompilerOptions.TargetFilename := 'project1';
-  AProject.LazCompilerOptions.Win32GraphicApp := True;
 end;
 
 function TPas2JSProject.CreateStartFiles(AProject: TLazProject): TModalResult;
