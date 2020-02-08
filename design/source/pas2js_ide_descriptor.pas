@@ -190,11 +190,7 @@ function TPas2JSProject.InitProject(AProject: TLazProject): TModalResult;
         'begin' + LE +
         '  Application.Initialize;' + LE +
         '  Application.Run;' + LE +
-        'end.' + LE + LE + LE +
-        /// Pas2JS Config
-        '{@PAS2JS_BEGIN}' + LE +
-        FPas2JSJSON + LE +
-        '{@PAS2JS_END}';
+        'end.';
     end;
 
   begin
