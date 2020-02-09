@@ -18,7 +18,7 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1.
 
 ### Usage
 * create a new _Web Browser Application_ (this is provided by the Pas2JS package; the _Application (Pas2JS)_ template is currently not useable)
-* add _-JRhtml_ to the custom compiler options
+* add _-JRjs_ to the custom compiler options
 * change the code of the main project to the following:
 
       program YourProject;
@@ -38,8 +38,6 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1.
 ### Notes
 * you need to manually add the `Application.CreateForm(TWFormX, WForm1);` statement for now
 * you can only use components from the _Pas2JS_ tab
-* when you add a component you need to remove the _pas2js_designer_package_ and _LCL_ packages from the project again before compiling
-* after each compile copy the resource `link`-entries from the generated _*-res.html_ file in front of the `script` entry in the project's HTML file
 
 ### Further plans
 * fix project template
