@@ -1018,7 +1018,7 @@ end;
 constructor TApplication.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  SetResourceSource(rsHTML);
+  SetResourceSource(rsJS);
   FModules := TJSArray.New;
   FMainForm := nil;
   FStopOnException := True;
