@@ -242,7 +242,7 @@ end;
 
 procedure TMessageDialog.PrepareImage;
 begin
-  FInfoImage.Picture.Data := DialogIcon[FDialogType];
+  FInfoImage.URL := DialogIcon[FDialogType];
 end;
 
 procedure TMessageDialog.PrepareText;

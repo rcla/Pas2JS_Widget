@@ -49,6 +49,7 @@ type
     FStretchInEnabled: boolean;
     FStretchOutEnabled: boolean;
     FTransparent: boolean;
+    FURL: String;
     procedure SetCenter(AValue: boolean);
     procedure SetPicture(AValue: TPicture);
     procedure SetProportional(AValue: boolean);
@@ -56,6 +57,7 @@ type
     procedure SetStretchInEnabled(AValue: boolean);
     procedure SetStretchOutEnabled(AValue: boolean);
     procedure SetTransparent(AValue: boolean);
+    procedure SetURL(AValue: String);
   protected
     procedure Changed; override;
     function CreateHandleElement: TJSHTMLElement; override;
@@ -73,6 +75,7 @@ type
     property StretchOutEnabled: boolean read FStretchOutEnabled write SetStretchOutEnabled default True;
     property StretchInEnabled: boolean read FStretchInEnabled write SetStretchInEnabled default True;
     property Transparent: boolean read FTransparent write SetTransparent default False;
+    property URL: String read FURL write SetURL;
     property OnPictureChanged: TNotifyEvent read FOnPictureChanged write FOnPictureChanged;
   end;
 
@@ -183,6 +186,14 @@ begin
   end;
 end;
 
+procedure TCustomImage.SetURL(AValue: String);
+begin
+  if FURL = AValue then
+    Exit;
+  FURL := AValue;
+  PictureChanged(Self);
+end;
+
 procedure TCustomImage.Changed;
 begin
   inherited Changed;
@@ -193,7 +204,7 @@ begin
       /// Focus highlight
       Style.SetProperty('outline', 'none');
       /// Load image
-      Style.SetProperty('background-image', FPicture.Data);
+      Style.SetProperty('background-image', Format('url(''%s'')', [FURL]));
       Style.SetProperty('background-repeat', 'no-repeat');
       /// Center
       if (FCenter) then

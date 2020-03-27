@@ -361,6 +361,7 @@ type
     property StretchOutEnabled;
     property StretchInEnabled;
     property Transparent;
+    property URL;
     property Visible;
     property OnClick;
     property OnDblClick;

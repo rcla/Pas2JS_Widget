@@ -396,6 +396,7 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FURL: String;
   published
     property Align;
     property AutoSize;
@@ -411,6 +412,7 @@ type
     property StretchOutEnabled;
     property StretchInEnabled;
     property Transparent;
+    property URL: String read FURL write FURL;
     property Visible;
     property OnClick;
     property OnDblClick;
