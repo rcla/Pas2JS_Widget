@@ -103,6 +103,7 @@ uses
   FileUtil,
   WebCtrls,
   FPJSON,
+  ComponentEditors,
   Pas2JS_IDE_Options;
 
 { TPas2JSProject }
@@ -347,6 +348,29 @@ begin
   Result := 'Create a Pas2JS Web Data Module';
 end;
 
+{$IF declared(TComponentRequirements)}
+
+type
+  TPas2JSWidgetsRequirements = class(TComponentRequirements)
+  public
+    procedure RequiredUnits(aUnits: TStrings); override;
+    procedure RequiredPkgs(aPkgs: TStrings); override;
+  end;
+
+{ TPas2JSWidgetsRequirements }
+
+procedure TPas2JSWidgetsRequirements.RequiredUnits(aUnits: TStrings);
+begin
+end;
+
+procedure TPas2JSWidgetsRequirements.RequiredPkgs(aPkgs: TStrings);
+begin
+  aPkgs.Clear;
+  aPkgs.Add('Pas2JS_Widget');
+end;
+
+{$ENDIF}
+
 procedure Register;
 begin
   VPas2JSWForm := TPas2JSWForm.Create;           
@@ -357,7 +381,13 @@ begin
   RegisterProjectFileDescriptor(VPas2JSWFrame);
   RegisterProjectFileDescriptor(VPas2JSWDataModule);
 
-  FormEditingHook.RegisterDesignerBaseClass(TWForm);     
+{$if declared(TPas2JSWidgetsRequirements)}
+  RegisterComponentRequirements([TWButton, TWCheckbox, TWComboBox, TWDataGrid, TWDateEditBox,
+    TWEdit, TWFileButton, TWFloatEdit, TWImage, TWIntegerEdit, TWLabel, TWMemo, TWPageControl,
+    TWPagination, TWPanel, TWTimeEditBox], TPas2JSWidgetsRequirements);
+{$endif}
+
+  FormEditingHook.RegisterDesignerBaseClass(TWForm);
   FormEditingHook.RegisterDesignerBaseClass(TWFrame);
   FormEditingHook.RegisterDesignerBaseClass(TWDataModule);
   //FormEditingHook.StandardDesignerBaseClasses[3{DesignerBaseClassId_TForm}] := TWForm;
