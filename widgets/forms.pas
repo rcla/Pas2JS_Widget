@@ -264,6 +264,47 @@ type
   end;
   TWFormClass = class of TWForm;
 
+  { TWFrame }
+
+  TWFrame = class(TCustomFrame)
+  private
+    /// Fake
+    FDesignLeft: LongInt;
+    FDesignTop: LongInt;
+  published
+    property Align;
+    property AutoSize;
+    property BorderSpacing;
+    property ClientHeight;
+    property ClientWidth;
+    property Color;
+    property Enabled;
+    property Font;
+    property ParentColor;
+    property ParentFont;
+    property ParentShowHint;
+    property ShowHint;
+    property TabOrder;
+    property TabStop;
+    property Visible;
+    property OnClick;
+    property OnDblClick;
+    property OnEnter;
+    property OnExit;
+    property OnMouseDown;
+    property OnMouseEnter;
+    property OnMouseLeave;
+    property OnMouseMove;
+    property OnMouseUp;
+    property OnMouseWheel;
+    property OnResize;
+  published
+    /// Fake
+    property DesignLeft: LongInt read FDesignLeft write FDesignLeft;
+    property DesignTop: LongInt read FDesignTop write FDesignTop;
+  end;
+  TWFrameClass = class of TWFrame;
+
 { TODO: TScreen }
 
 function Application: TApplication;
