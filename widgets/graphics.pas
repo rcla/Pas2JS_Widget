@@ -380,7 +380,7 @@ end;
 function TFont.GetHeight: NativeInt;
 begin                            
   /// https://stackoverflow.com/questions/139655/convert-pixels-to-points
-  Result := Round((FSize * 96) / 72);
+  Result := Round((FSize * 72) / 96);
 end;
 
 procedure TFont.SetCharSet(AValue: TFontCharSet);
@@ -404,7 +404,7 @@ end;
 procedure TFont.SetHeight(AValue: NativeInt);
 begin
   /// https://stackoverflow.com/questions/139655/convert-pixels-to-points
-  SetSize(Round((AValue * 72) / 96));
+  SetSize(Round((AValue * 96) / 72));
 end;
 
 procedure TFont.SetName(AValue: string);
