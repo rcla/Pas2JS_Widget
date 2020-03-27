@@ -32,6 +32,7 @@ resourcestring
     +'not found. For resourceless forms CreateNew constructor must be used.';
   rsFormStreamingError = 'Form streaming "%s" error: %s';
   rsFileButtonNoFileSelected = 'No file selected';
+  rsResourceNotFound = 'Resource not found: %s';
 
 implementation
 

@@ -497,16 +497,21 @@ end;
 constructor TCustomFrame.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  BeginUpdate;
-  try
-    ParentFont := False;
-    ParentShowHint := False;
-    with GetControlClassDefaultSize do
-    begin
-      SetBounds(0, 0, Cx, Cy);
+  if (ClassType<>TWFrame) and ([csDesignInstance, csDesigning]*ComponentState=[]) then begin
+    if not InitResourceComponent(Self, TWFrame) then
+      raise EResNotFound.CreateFmt(rsResourceNotFound, [ClassName]);
+  end else begin
+    BeginUpdate;
+    try
+      ParentFont := False;
+      ParentShowHint := False;
+      with GetControlClassDefaultSize do
+      begin
+        SetBounds(0, 0, Cx, Cy);
+      end;
+    finally
+      EndUpdate;
     end;
-  finally
-    EndUpdate;
   end;
 end;
 
