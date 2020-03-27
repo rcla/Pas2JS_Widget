@@ -446,7 +446,7 @@ constructor TFont.Create;
 begin
   inherited Create;
   FColor := clBlack;
-  FName := ffMonospace;
+  FName := ffSans;
   FSize := 16;
   FStyle := [];
   FUpdateCount := 0;
