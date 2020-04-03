@@ -1241,9 +1241,9 @@ end;
 
 procedure TControl.DoResize;
 begin
-  if (Assigned(FOnScroll)) then
+  if (Assigned(FOnResize)) then
   begin
-    FOnScroll(Self);
+    FOnResize(Self);
   end;
 end;
 
