@@ -107,7 +107,7 @@ type
   TControl = class;
   TControlClass = class of TControl;
 
-  TAlign = (alNone, alTop, alBottom, alLeft, alRight, alClient, alCustomd);
+  TAlign = (alNone, alTop, alBottom, alLeft, alRight, alClient, alCustom);
   TAlignSet = set of TAlign;
 
   TBevelCut = (bvNone, bvLowered, bvRaised, bvSpace);
