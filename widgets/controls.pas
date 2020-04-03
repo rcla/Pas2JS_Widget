@@ -1708,7 +1708,7 @@ begin
     begin
       VTop := 0;
     end;
-    /// Botton
+    /// Bottom
     for VIndex := 0 to (FControls.Length - 1) do
     begin
       VControl := TControl(FControls[VIndex]);
