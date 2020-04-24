@@ -978,7 +978,12 @@ begin
   if (FAlign <> AValue) then
   begin
     FAlign := AValue;
-    ReAlign;
+    { if we have a parent we need to get our new size which the parent needs to
+      calculate first }
+    if Assigned(FParent) then
+      FParent.ReAlign
+    else
+      ReAlign;
   end;
 end;
 
