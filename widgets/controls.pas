@@ -960,7 +960,7 @@ end;
 
 function TControl.GetClientRect: TRect;
 begin
-  Result := Rect(0, 0, FWidth, FHeight);
+  Result := Rect(0, 0, FWidth - 1, FHeight - 1);
 end;
 
 function TControl.GetClientWidth: NativeInt;
