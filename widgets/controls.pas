@@ -148,6 +148,11 @@ type
 
   TFocusSearchDirection = (fsdFirst, fsdLast, fsdNext, fsdPrev);
 
+  TControlFlag = (
+    cfInAlignControls
+  );
+  TControlFlags = set of TControlFlag;
+
   { TControlBorderSpacing }
 
   TControlBorderSpacing = class(TPersistent)
@@ -190,6 +195,7 @@ type
     FBorderStyle: TBorderStyle;
     FCaption: TCaption;
     FColor: TColor;
+    FControlFlags: TControlFlags;
     FControls: TJSArray; /// The child controls
     FCursor: TCursor;
     FEnabled: boolean;
@@ -1683,6 +1689,9 @@ var
   VBotton: NativeInt;
   VWidth: NativeInt;
 begin
+  if cfInAlignControls in FControlFlags then
+    Exit;
+  Include(FControlFlags, cfInAlignControls);
   BeginUpdate;
   try
     VLeft := 0;
@@ -1801,6 +1810,7 @@ begin
       end;
     end;
   finally
+    Exclude(FControlFlags, cfInAlignControls);
     EndUpdate;
   end;
 end;
