@@ -37,6 +37,7 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _p
       end.
 
 * add forms and frames by using the _Web Form (Pas2JS)_ and _Web Frame (Pas2JS)_ templates respectively (data module is not yet tested)
+* once you saved your project you also need to adjust the name of the script in the HTML file's `script` tag
 
 ### Notes
 * you need to manually add the `Application.CreateForm(TWFormX, WForm1);` statement for now
