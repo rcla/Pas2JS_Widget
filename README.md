@@ -10,7 +10,7 @@ This version is an basic implementation and many bugs need to be corrected.
 Please help us to take this project forward.
 
 ### Install
-This was tested with Lazarus 2.0.6 and Lazarus 2.1.
+This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _pas2js_.
 * make sure that the _pas2jsdsgn_ package is installed
 * the _pas2js_rtl_ package should have been opened (so that the IDE knows about it)
 * install the _pas2js_designer_package_ package from _design/package_
