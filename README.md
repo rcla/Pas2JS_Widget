@@ -36,7 +36,7 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _p
         Application.Run;
       end.
 
-* add forms by using the _Web Form (Pas2JS)_ template (frame and data module are not yet tested)
+* add forms and frames by using the _Web Form (Pas2JS)_ and _Web Frame (Pas2JS)_ templates respectively (data module is not yet tested)
 
 ### Notes
 * you need to manually add the `Application.CreateForm(TWFormX, WForm1);` statement for now
@@ -44,7 +44,7 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _p
 
 ### Further plans
 * fix project template
-* test frame and data module templates
+* test data module template
 * implement support for DB controls
 * implement a Lazarus compatible grid
 * better maintenance of the project's HTML file
