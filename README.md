@@ -18,6 +18,9 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _p
 
 ### Usage
 * create a new _Web Browser Application_ (this is provided by the Pas2JS package; the _Application (Pas2JS)_ template is currently not useable)
+* add the following packages as dependencies:
+  - _pas2js_rtl_
+  - _Pas2JS_Widget_
 * add _-JRjs_ to the custom compiler options
 * change the code of the main project to the following:
 
