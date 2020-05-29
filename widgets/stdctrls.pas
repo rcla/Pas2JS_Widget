@@ -397,7 +397,7 @@ var
   VValue: string;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     /// Remove old items
     for VIndex := (TJSHTMLSelectElement(HandleElement).Length - 1) downto 0 do
@@ -722,7 +722,7 @@ end;
 procedure TCustomEdit.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with TJSHTMLInputElement(HandleElement) do
     begin
@@ -1135,7 +1135,7 @@ end;
 procedure TCustomMemo.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with TJSHTMLTextAreaElement(HandleElement) do
     begin
@@ -1319,7 +1319,7 @@ end;
 procedure TCustomButton.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with HandleElement do
     begin
@@ -1456,7 +1456,7 @@ end;
 procedure TCustomCheckbox.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with HandleElement do
     begin
@@ -1595,7 +1595,7 @@ end;
 procedure TCustomLabel.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with HandleElement do
     begin

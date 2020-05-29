@@ -415,7 +415,7 @@ end;
 procedure TCustomDataModule.Changed;
 begin
   inherited Changed;  
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with HandleElement do
     begin
@@ -472,7 +472,7 @@ end;
 procedure TCustomFrame.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with HandleElement do
     begin
@@ -664,7 +664,7 @@ end;
 procedure TCustomForm.Changed;
 begin
   inherited Changed;
-  if (not IsUpdating) then
+  if (not IsUpdating) and not (csLoading in ComponentState) then
   begin
     with HandleElement do
     begin
