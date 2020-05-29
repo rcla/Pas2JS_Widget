@@ -97,6 +97,7 @@ type
   TWFrame = class(TCustomFrame)
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property ClientHeight;
@@ -139,6 +140,7 @@ type
     FHandleId: string;
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -183,6 +185,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -230,6 +233,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property BorderSpacing;
     property BorderStyle;
     property CharCase;
@@ -277,6 +281,7 @@ type
     FHandleId: string;
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -318,6 +323,7 @@ type
     property Align;
     property Alignment;
     /// property AllowGrayed;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -362,6 +368,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -399,6 +406,7 @@ type
     FURL: String;
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Center;
@@ -436,6 +444,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BevelColor;
     property BevelInner;
@@ -496,6 +505,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -549,6 +559,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -599,6 +610,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -649,6 +661,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -694,6 +707,7 @@ type
     FHandleId: string;
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -734,6 +748,7 @@ type
     FHandleId: string;
   published
     property Align;
+    property Anchors;
     property BorderSpacing;
     property Columns;
     property ColumnClickSorts;
@@ -774,6 +789,7 @@ type
     FHandleId: string;
   published
     property Align;
+    property Anchors;
     property BorderSpacing;
     property CurrentPage;
     property Enabled;

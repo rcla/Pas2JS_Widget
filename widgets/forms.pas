@@ -273,6 +273,7 @@ type
     FDesignTop: LongInt;
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property ClientHeight;

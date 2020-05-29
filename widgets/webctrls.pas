@@ -68,6 +68,7 @@ type
   TWComboBox = class(TCustomComboBox)
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -108,6 +109,7 @@ type
   TWEdit = class(TCustomEdit)
   published
     property Align;
+    property Anchors;
     property Alignment;
     property AutoSize;
     property BorderSpacing;
@@ -152,6 +154,7 @@ type
   TWMemo = class(TCustomMemo)
   published
     property Align;
+    property Anchors;
     property Alignment;
     property BorderSpacing;
     property BorderStyle;
@@ -197,6 +200,7 @@ type
   TWButton = class(TCustomButton)
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -235,6 +239,7 @@ type
     property Align;
     property Alignment;
     /// property AllowGrayed;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -274,6 +279,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -307,6 +313,7 @@ type
   TWImage = class(TCustomImage)
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Center;
@@ -341,6 +348,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BevelColor;
     property BevelInner;
@@ -383,6 +391,7 @@ type
   published
     property ActivePage;
     property Align;
+    property Anchors;
     property BorderSpacing;
     property Enabled;
     property Font;
@@ -420,6 +429,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -471,6 +481,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -520,6 +531,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -569,6 +581,7 @@ type
   published
     property Align;
     property Alignment;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property BorderStyle;
@@ -611,6 +624,7 @@ type
   TWFileButton = class(TCustomFileButton)
   published
     property Align;
+    property Anchors;
     property AutoSize;
     property BorderSpacing;
     property Caption;
@@ -648,6 +662,7 @@ type
   TWDataGrid = class(TCustomDataGrid)
   published
     property Align;
+    property Anchors;
     property BorderSpacing;
     property Columns;
     property ColumnClickSorts;
@@ -685,6 +700,7 @@ type
   TWPagination = class(TCustomPagination)
   published
     property Align;
+    property Anchors;
     property BorderSpacing;
     property CurrentPage;
     property Enabled;
