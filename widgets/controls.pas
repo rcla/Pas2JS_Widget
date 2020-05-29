@@ -1455,6 +1455,7 @@ procedure TControl.Loaded;
 begin
   inherited Loaded;
   FDesignRect := Rect(Left, Top, Left + Width - 1, Top + Height - 1);
+  Changed;
 end;
 
 procedure TControl.Changed;
