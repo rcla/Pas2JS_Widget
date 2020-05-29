@@ -1593,9 +1593,6 @@ begin
 end;
 
 procedure TCustomLabel.Changed;
-var
-  VTr: TJSHTMLTableRowElement;
-  VTd: TJSHTMLTableCellElement;
 begin
   inherited Changed;
   if (not IsUpdating) then
@@ -1620,41 +1617,33 @@ begin
     begin
       /// Clear
       InnerHTML := '';
-      Style.SetProperty('height', '100%');
-      Style.SetProperty('width', '100%');
-      Style.SetProperty('table-layout', 'fixed');
-      VTr := TJSHTMLTableRowElement(FContentElement.AppendChild(Document.CreateElement('tr')));
-      VTd := TJSHTMLTableCellElement(VTr.AppendChild(Document.CreateElement('td')));
-      with VTd do
-      begin
-        /// Aligment
-        case FAlignment of
-          taCenter: Style.SetProperty('text-align', 'center');
-          taLeftJustify: Style.SetProperty('text-align', 'left');
-          taRightJustify: Style.SetProperty('text-align', 'right');
-        end;
-        /// Layout
-        case FLayout of
-          tlBottom: Style.SetProperty('vertical-align', 'bottom');
-          tlCenter: Style.SetProperty('vertical-align', 'middle');
-          tlTop: Style.SetProperty('vertical-align', 'top');
-        end;
-        /// WordWrap
-        if (FWordWrap) then
-        begin
-          Style.SetProperty('word-wrap', 'break-word');
-        end
-        else
-        begin
-          Style.removeProperty('word-wrap');
-        end;
-        /// Scroll
-        Style.SetProperty('overflow', 'hidden');
-        /// Specifies how overflowed content
-        Style.SetProperty('text-overflow', 'ellipsis');
-        /// Caption
-        InnerHTML := Self.Caption;
+      /// Aligment
+      case FAlignment of
+        taCenter: Style.SetProperty('text-align', 'center');
+        taLeftJustify: Style.SetProperty('text-align', 'left');
+        taRightJustify: Style.SetProperty('text-align', 'right');
       end;
+      /// Layout
+      case FLayout of
+        tlBottom: Style.SetProperty('vertical-align', 'bottom');
+        tlCenter: Style.SetProperty('vertical-align', 'middle');
+        tlTop: Style.SetProperty('vertical-align', 'top');
+      end;
+      /// WordWrap
+      if (FWordWrap) then
+      begin
+        Style.SetProperty('word-wrap', 'break-word');
+      end
+      else
+      begin
+        Style.removeProperty('word-wrap');
+      end;
+      /// Scroll
+      Style.SetProperty('overflow', 'hidden');
+      /// Specifies how overflowed content
+      Style.SetProperty('text-overflow', 'ellipsis');
+      /// Caption
+      InnerHTML := Self.Caption;
     end;
   end;
 end;
@@ -1666,7 +1655,7 @@ end;
 
 function TCustomLabel.CreateContentElement: TJSHTMLTableElement;
 begin
-  Result := TJSHTMLTableElement(HandleElement.AppendChild(Document.CreateElement('table')));
+  Result := TJSHTMLTableElement(HandleElement.AppendChild(Document.CreateElement('label')));
 end;
 
 {$push}
