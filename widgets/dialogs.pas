@@ -277,7 +277,7 @@ end;
 
 constructor TMessageDialog.Create(AOwner: TComponent);
 begin
-  inherited Create(AOwner);
+  inherited CreateNew(AOwner, 1);
   BeginUpdate;
   try
     KeyPreview := True;
