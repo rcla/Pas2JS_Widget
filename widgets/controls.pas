@@ -109,6 +109,8 @@ type
 
   TAlign = (alNone, alTop, alBottom, alLeft, alRight, alClient, alCustom);
   TAlignSet = set of TAlign;
+  TAnchorKind = (akTop, akLeft, akRight, akBottom);
+  TAnchors = set of TAnchorKind;
 
   TBevelCut = (bvNone, bvLowered, bvRaised, bvSpace);
 
@@ -190,6 +192,7 @@ type
   TControl = class(TComponent)
   private
     FAlign: TAlign;
+    FAnchors: TAnchors;
     FAutoSize: boolean;
     FBorderSpacing: TControlBorderSpacing;
     FBorderStyle: TBorderStyle;
@@ -198,6 +201,7 @@ type
     FControlFlags: TControlFlags;
     FControls: TJSArray; /// The child controls
     FCursor: TCursor;
+    FDesignRect: TRect;
     FEnabled: boolean;
     FFont: TFont;
     FHandleClass: string;
@@ -233,6 +237,7 @@ type
     function GetClientWidth: NativeInt;
     function GetText: TCaption;
     procedure SetAlign(AValue: TAlign);
+    procedure SetAnchors(AValue: TAnchors);
     procedure SetAutoSize(AValue: boolean);
     procedure SetBorderSpacing(AValue: TControlBorderSpacing);
     procedure SetBorderStyle(AValue: TBorderStyle);
@@ -295,6 +300,7 @@ type
     function HandleResize(AEvent: TJSEvent): boolean; virtual;
     function HandleScroll(AEvent: TJSEvent): boolean; virtual;
   protected
+    procedure Loaded; override;
     procedure Changed; virtual;
     function CreateHandleElement: TJSHTMLElement; virtual;
     procedure RegisterHandleEvents; virtual;
@@ -332,6 +338,7 @@ type
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: NativeInt); virtual;
   public
     property Align: TAlign read FAlign write SetAlign;
+    property Anchors: TAnchors read FAnchors write SetAnchors;
     property AutoSize: boolean read FAutoSize write SetAutoSize;
     property BorderSpacing: TControlBorderSpacing read FBorderSpacing write SetBorderSpacing;
     property Caption: TCaption read GetText write SetText;
@@ -425,6 +432,17 @@ type
     property Canvas: TControlCanvas read GetCanvas;
     property OnPaint: TNotifyEvent read FOnPaint write FOnPaint;
   end;
+
+const
+  AnchorAlign: array[TAlign] of TAnchors = (
+    [],                                // alNone
+    [akLeft, akTop, akRight],          // alTop
+    [akLeft, akRight, akBottom],       // alBottom
+    [akLeft, akTop, akBottom],         // alLeft
+    [akRight, akTop, akBottom],        // alRight
+    [akLeft, akTop, akRight, akBottom],// alClient
+    []                                 // alCustom
+    );
 
 function FromCharCode(ACode: NativeInt): char; external Name 'String.fromCharCode';
 
@@ -993,6 +1011,16 @@ begin
   end;
 end;
 
+procedure TControl.SetAnchors(AValue: TAnchors);
+begin
+  if FAnchors = AValue then
+    Exit;
+  FAnchors := AValue;
+  { changing the anchors per se does not change the position of any control
+    inside of it }
+  //ReAlign;
+end;
+
 procedure TControl.SetAutoSize(AValue: boolean);
 begin
   if (FAutoSize <> AValue) then
@@ -1423,6 +1451,12 @@ begin
   Result := True;
 end;
 
+procedure TControl.Loaded;
+begin
+  inherited Loaded;
+  FDesignRect := Rect(Left, Top, Left + Width - 1, Top + Height - 1);
+end;
+
 procedure TControl.Changed;
 var
   form: TCustomForm;
@@ -1679,6 +1713,24 @@ begin
 end;
 
 procedure TControl.AlignControls;
+
+  function AnchorsToStr(const aAnchors: TAnchors): String;
+  const
+    AnchorStr: array[TAnchorKind] of String = (
+      'Top', 'Left', 'Right', 'Bottom'
+    );
+  var
+    anchor: TAnchorKind;
+  begin
+    Result := '';
+    for anchor := Low(TAnchorKind) to High(TAnchorKind) do
+      if anchor in aAnchors then begin
+        if Result <> '' then
+          Result := Result + ', ';
+        Result := Result + AnchorStr[anchor];
+      end;
+  end;
+
 var
   VControl: TControl;
   VSpacing: TControlBorderSpacing;
@@ -1688,6 +1740,7 @@ var
   VRight: NativeInt;
   VBotton: NativeInt;
   VWidth: NativeInt;
+  newleft, newtop, newright, newbottom: NativeInt;
 begin
   if cfInAlignControls in FControlFlags then
     Exit;
@@ -1732,7 +1785,8 @@ begin
         try
           VSpacing := VControl.BorderSpacing;
           VControl.Left := VLeft + VSpacing.Left + VSpacing.Around;
-          VControl.Top := VBotton - VControl.Height - VSpacing.Bottom - VSpacing.Around;
+          if not (akBottom in VControl.Anchors) then
+            VControl.Top := VBotton - VControl.Height - VSpacing.Bottom - VSpacing.Around;
           VControl.Width := VWidth - VSpacing.Left - VSpacing.Right - (VSpacing.Around * 2);
           VControl.Height := VControl.Height;
         finally
@@ -1777,7 +1831,8 @@ begin
         VControl.BeginUpdate;
         try
           VSpacing := VControl.BorderSpacing;
-          VControl.Left := VRight - VControl.Width - VSpacing.Right - VSpacing.Around;
+          if not (akLeft in VControl.Anchors) then
+            VControl.Left := VRight - VControl.Width - VSpacing.Right - VSpacing.Around;
           VControl.Top := VTop + VSpacing.Top + VSpacing.Around;
           VControl.Width := VControl.Width;
           VControl.Height := VBotton - VTop - VSpacing.Top - VSpacing.Bottom - (VSpacing.Around * 2);
@@ -1804,6 +1859,41 @@ begin
           VControl.Top := VTop + VSpacing.Top + VSpacing.Around;
           VControl.Width := VRight - VLeft - VSpacing.Left - VSpacing.Right - (VSpacing.Around * 2);
           VControl.Height := VBotton - VTop - VSpacing.Top - VSpacing.Bottom - (VSpacing.Around * 2);
+        finally
+          VControl.EndUpdate;
+        end;
+      end;
+    end;
+    { alNone, but anchored }
+    for VIndex := 0 to (FControls.Length - 1) do begin
+      VControl := TControl(FControls[VIndex]);
+      if Assigned(VControl) and (VControl.Align = alNone) and VControl.Visible and (VControl.Anchors <> []) then begin
+        VControl.BeginUpdate;
+        try
+          if akLeft in VControl.Anchors then
+            newleft := VControl.Left;
+          if akTop in VControl.Anchors then
+            newtop := VControl.Top;
+          if akBottom in VControl.Anchors then
+            newbottom := Height - (FDesignRect.Bottom - VControl.FDesignRect.Bottom);
+          if akRight in VControl.Anchors then
+            newright := Width - (FDesignRect.Right - VControl.FDesignRect.Right);
+
+          if [akLeft, akRight] <= VControl.Anchors then begin
+            VControl.Left := newleft;
+            VControl.Width := newright - newleft + 1;
+          end else if akLeft in VControl.Anchors then
+            VControl.Left := newleft
+          else if akRight in VControl.Anchors then
+            VControl.Left := newright - VControl.Width;
+
+          if [akTop, akBottom] <= VControl.Anchors then begin
+            VControl.Top := newtop;
+            VControl.Height := newbottom - newtop + 1;
+          end else if akTop in VControl.Anchors then
+            VControl.Top := newtop
+          else if akBottom in VControl.Anchors then
+            VControl.Top := newbottom - VControl.Height;
         finally
           VControl.EndUpdate;
         end;
@@ -1931,6 +2021,8 @@ begin
 end;
 
 constructor TControl.Create(AOwner: TComponent);
+var
+  sz: TSize;
 begin
   inherited Create(AOwner);
   FHandleElement := CreateHandleElement;
@@ -1944,10 +2036,13 @@ begin
   FFont := TFont.Create;
   FFont.OnChange := @FontChanged;
   FAlign := alNone;
+  FAnchors := [akLeft, akTop];
   FAutoSize := False;
   FCaption := '';
   FColor := clDefault;
   FCursor := crDefault;
+  sz := GetControlClassDefaultSize;
+  FDesignRect := Rect(0, 0, sz.cx - 1, sz.cy - 1);
   FEnabled := True;
   FLeft := 0;
   FParent := nil;
