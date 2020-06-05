@@ -597,6 +597,8 @@ begin
 end;
 
 procedure UpdateHtmlElementFont(AElement: TJSHTMLElement; AFont: TFont; AClear: Boolean);
+var
+  s: String;
 begin
   with AElement.style do begin
     if AClear then begin
@@ -608,9 +610,28 @@ begin
     end else begin
       setProperty('font-family', AFont.Name);
       setProperty('font-size', IntToStr(AFont.Size) + 'px');
+      if fsBold in AFont.Style then
+        setProperty('font-weight', 'bold')
+      else
+        setProperty('font-weight', '');
       setProperty('font-style', 'normal');
-      setProperty('font-weight', IfThen(fsBold in AFont.Style, 'bold', 'normal'));
-      setProperty('text-decoration', IfThen(fsUnderline in AFont.Style, 'underline', 'normal'));
+      s := '';
+      if fsItalic in AFont.Style then
+        s := 'italic';
+      if fsUnderline in AFont.Style then begin
+        if s <> '' then
+          s := s + ' ';
+        s := s + 'underline';
+      end;
+      if fsStrikeOut in AFont.Style then begin
+        if s <> '' then
+          s := s + ' ';
+        s := s + 'line-through';
+      end;
+      if s <> '' then
+        setProperty('text-decoration', s)
+      else
+        removeProperty('text-decoration');
     end;
   end;
 end;
