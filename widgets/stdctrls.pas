@@ -412,6 +412,15 @@ begin
     begin
       TJSHTMLSelectElement(HandleElement).Remove(VIndex);
     end;
+    if FItemIndex < 0 then begin
+      VOptionElement := TJSHTMLOptionElement(Document.CreateElement('option'));
+      VOptionElement.Value := '';
+      VOptionElement.Text := '';
+      VOptionElement.Selected := True;
+      VOptionElement.Disabled := True;
+      VOptionElement.style.setProperty('display', 'none');
+      TJSHTMLSelectElement(HandleElement).Add(VOptionElement);
+    end;
     /// Add new items
     for VIndex := 0 to (FItems.Count - 1) do
     begin
