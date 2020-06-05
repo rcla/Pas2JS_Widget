@@ -447,7 +447,7 @@ begin
   inherited Create;
   FColor := clBlack;
   FName := ffSans;
-  FSize := 16;
+  FSize := 10;
   FStyle := [];
   FUpdateCount := 0;
 end;
