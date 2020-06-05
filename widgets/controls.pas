@@ -609,7 +609,7 @@ begin
       removeProperty('text-decoration');
     end else begin
       setProperty('font-family', AFont.Name);
-      setProperty('font-size', IntToStr(AFont.Size) + 'px');
+      setProperty('font-size', IntToStr(AFont.Size) + 'pt');
       if fsBold in AFont.Style then
         setProperty('font-weight', 'bold')
       else
