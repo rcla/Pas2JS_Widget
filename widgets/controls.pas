@@ -458,6 +458,7 @@ function IfThen(const AExpression: boolean; const AConsequence, AAlternative: st
 function ScrollbarWidth: NativeInt;
 
 function OffSets(const AElement: TJSHTMLElement): TRect;
+procedure UpdateHtmlElementFont(AElement: TJSHTMLElement; AFont: TFont; AClear: Boolean = False);
 
 function ExtractKeyCode(const AEvent: TJSKeyBoardEvent): NativeInt;
 function ExtractKeyChar(const AEvent: TJSKeyBoardEvent): char;
@@ -591,6 +592,25 @@ begin
     begin
       Result.Left := Trunc(Left + Window.ScrollX);
       Result.Top := Trunc(Top + Window.ScreenY);
+    end;
+  end;
+end;
+
+procedure UpdateHtmlElementFont(AElement: TJSHTMLElement; AFont: TFont; AClear: Boolean);
+begin
+  with AElement.style do begin
+    if AClear then begin
+      removeProperty('font-family');
+      removeProperty('font-size');
+      removeProperty('font-weight');
+      removeProperty('font-style');
+      removeProperty('text-decoration');
+    end else begin
+      setProperty('font-family', AFont.Name);
+      setProperty('font-size', IntToStr(AFont.Size) + 'px');
+      setProperty('font-style', 'normal');
+      setProperty('font-weight', IfThen(fsBold in AFont.Style, 'bold', 'normal'));
+      setProperty('text-decoration', IfThen(fsUnderline in AFont.Style, 'underline', 'normal'));
     end;
   end;
 end;
@@ -1515,11 +1535,7 @@ begin
       begin      
         /// Font
         Style.SetProperty('color', JSColor(FFont.Color));
-        Style.SetProperty('font-family', FFont.Name);
-        Style.SetProperty('font-size', IntToStr(FFont.Size) + 'px');
-        Style.SetProperty('font-style', 'normal');
-        Style.SetProperty('font-weight', IfThen(fsBold in FFont.Style, 'bold', 'normal'));
-        Style.SetProperty('text-decoration', IfThen(fsUnderline in FFont.Style, 'underline', 'normal'));
+        UpdateHtmlElementFont(FHandleElement, FFont, False);
         /// Color
         if (FColor in [clDefault, clNone]) then
         begin
