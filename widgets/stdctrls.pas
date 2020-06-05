@@ -56,6 +56,8 @@ type
     procedure SetItemIndex(AValue: NativeInt);
     procedure SetItems(AValue: TStringList);
     procedure SetSorted(AValue: boolean);
+  private
+    procedure ItemsChange(ASender: TObject);
   protected
     procedure Change; virtual;
   protected
@@ -375,6 +377,11 @@ begin
   end;
 end;
 
+procedure TCustomComboBox.ItemsChange(ASender: TObject);
+begin
+  Changed;
+end;
+
 procedure TCustomComboBox.Change;
 begin
   if (Assigned(FOnChange)) then
@@ -490,6 +497,7 @@ begin
   FItemHeight := 0;
   FItemIndex := -1;
   FItems := TStringList.Create;
+  FItems.OnChange := ItemsChange;
   FSorted := False;
   BeginUpdate;
   try
