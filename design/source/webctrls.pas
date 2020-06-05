@@ -138,6 +138,8 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+  public
+    constructor Create(AOwner: TComponent); override;
   published
     property Align;
     property Anchors;
@@ -840,6 +842,14 @@ begin
     TWDataGrid,
     TWPagination
     ]);
+end;
+
+{ TWComboBox }
+
+constructor TWComboBox.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Style := csDropDownList;
 end;
 
 { TWFloatEdit }
