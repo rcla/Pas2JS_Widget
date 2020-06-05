@@ -91,7 +91,6 @@ type
     FBevelInner: TPanelBevel;
     FBevelOuter: TPanelBevel;
     FBevelWidth: TBevelWidth;
-    FContentElement: TJSHTMLTableElement;
     FLayout: TTextLayout;
     FWordWrap: boolean;
     procedure SetAlignment(AValue: TAlignment);
@@ -102,13 +101,11 @@ type
     procedure SetLayout(AValue: TTextLayout);
     procedure SetWordWrap(AValue: boolean);
   protected
-    property ContentElement: TJSHTMLTableElement read FContentElement;
     property Layout: TTextLayout read FLayout write SetLayout;
     property WordWrap: boolean read FWordWrap write SetWordWrap;
   protected
     procedure Changed; override;
     function CreateHandleElement: TJSHTMLElement; override;
-    function CreateContentElement: TJSHTMLTableElement; virtual;
   protected
     class function GetControlClassDefaultSize: TSize; override;
   public
@@ -373,8 +370,6 @@ procedure TCustomPanel.Changed;
 var
   VTopColor: TColor;
   VBottomColor: TColor;
-  VTr: TJSHTMLTableRowElement;
-  VTd: TJSHTMLTableCellElement;
 begin
   inherited Changed;
   if (not IsUpdating) and not (csLoading in ComponentState) then
@@ -437,58 +432,12 @@ begin
       Style.SetProperty('-khtml-user-select', 'none');
       Style.SetProperty('-webkit-user-select', 'none');
     end;
-    /// ContentElement
-    with FContentElement do
-    begin
-      /// Clear
-      InnerHTML := '';
-      Style.SetProperty('height', '100%');
-      Style.SetProperty('width', '100%');
-      Style.SetProperty('table-layout', 'fixed');
-      VTr := TJSHTMLTableRowElement(FContentElement.AppendChild(Document.CreateElement('tr')));  
-      VTd := TJSHTMLTableCellElement(VTr.AppendChild(Document.CreateElement('td')));
-      with VTd do
-      begin
-        /// Aligment
-        case FAlignment of
-          taCenter: Style.SetProperty('text-align', 'center');
-          taLeftJustify: Style.SetProperty('text-align', 'left');
-          taRightJustify: Style.SetProperty('text-align', 'right');
-        end;
-        /// Layout
-        case FLayout of
-          tlBottom: Style.SetProperty('vertical-align', 'bottom');
-          tlCenter: Style.SetProperty('vertical-align', 'middle');
-          tlTop: Style.SetProperty('vertical-align', 'top');
-        end;
-        /// WordWrap
-        if (FWordWrap) then
-        begin
-          Style.SetProperty('word-wrap', 'break-word');
-        end
-        else
-        begin
-          Style.removeProperty('word-wrap');
-        end;
-        /// Scroll
-        Style.SetProperty('overflow', 'hidden');
-        /// Specifies how overflowed content
-        Style.SetProperty('text-overflow', 'ellipsis');
-        /// Caption
-        InnerHTML := Self.Caption;
-      end;
-    end;
   end;
 end;
 
 function TCustomPanel.CreateHandleElement: TJSHTMLElement;
 begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
-end;
-
-function TCustomPanel.CreateContentElement: TJSHTMLTableElement;
-begin
-  Result := TJSHTMLTableElement(HandleElement.AppendChild(Document.CreateElement('table')));
 end;
 
 class function TCustomPanel.GetControlClassDefaultSize: TSize;
@@ -500,7 +449,6 @@ end;
 constructor TCustomPanel.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FContentElement := CreateContentElement;
   FAlignment := taCenter;
   FBevelColor := clDefault;
   FBevelOuter := bvRaised;
