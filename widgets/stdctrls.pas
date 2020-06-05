@@ -326,6 +326,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure AdjustSize; override;
+    property AutoSize default True;
   end;
 
 implementation
@@ -1690,6 +1691,7 @@ begin
   BeginUpdate;
   try
     TabStop := False;
+    AutoSize := True;
     with GetControlClassDefaultSize do
     begin
       SetBounds(0, 0, Cx, Cy);

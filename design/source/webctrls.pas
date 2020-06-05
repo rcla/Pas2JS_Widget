@@ -363,8 +363,6 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
-  public
-    constructor Create(TheOwner: TComponent); override;
   published
     property Align;
     property Alignment;
@@ -842,14 +840,6 @@ begin
     TWDataGrid,
     TWPagination
     ]);
-end;
-
-{ TWLabel }
-
-constructor TWLabel.Create(TheOwner: TComponent);
-begin
-  inherited Create(TheOwner);
-  AutoSize := False;
 end;
 
 { TWFloatEdit }
