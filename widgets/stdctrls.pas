@@ -1612,6 +1612,10 @@ begin
       Style.SetProperty('-ms-user-select', 'none');
       Style.SetProperty('-khtml-user-select', 'none');
       Style.SetProperty('-webkit-user-select', 'none');
+      if AutoSize then begin
+        Style.removeProperty('height');
+        Style.removeProperty('width');
+      end;
     end;
     with FContentElement do
     begin
@@ -1696,12 +1700,9 @@ begin
 end;
 
 procedure TCustomLabel.AdjustSize;
-var
-  VSize: TSize;
 begin
   inherited AdjustSize;
-  VSize := Font.TextExtent(Caption);
-  SetBounds(Left, Top, VSize.Cx + 4, VSize.Cy + 4);
+  Changed;
 end;
 
 end.
