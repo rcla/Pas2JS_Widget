@@ -339,7 +339,7 @@ type
   public
     property Align: TAlign read FAlign write SetAlign;
     property Anchors: TAnchors read FAnchors write SetAnchors;
-    property AutoSize: boolean read FAutoSize write SetAutoSize;
+    property AutoSize: boolean read FAutoSize write SetAutoSize default False;
     property BorderSpacing: TControlBorderSpacing read FBorderSpacing write SetBorderSpacing;
     property Caption: TCaption read GetText write SetText;
     property ClientHeight: NativeInt read GetClientHeight write SetClientHeight;
