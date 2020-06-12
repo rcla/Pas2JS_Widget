@@ -88,6 +88,52 @@ type
     property Sorted: boolean read FSorted write SetSorted;
   end;
 
+  { TCustomListBox }
+
+  TSelectionChangeEvent = procedure(Sender: TObject; User: boolean) of object;
+
+  TCustomListBox = class(TWinControl)
+  private
+    FItemHeight: NativeInt;
+    FItemIndex: NativeInt;
+    FItems: TStrings;
+    FMultiSelect: Boolean;
+    FSorted: Boolean;
+    FOnSelectionChange: TSelectionChangeEvent;
+    procedure SetItemHeight(AValue: NativeInt);
+    procedure SetItemIndex(AValue: NativeInt);
+    procedure SetItems(AValue: TStrings);
+    procedure SetSorted(AValue: Boolean);
+  private
+    procedure ItemsChanged(ASender: TObject);
+    procedure SetMultiSelect(AValue: Boolean);
+  protected
+    procedure SelectionChange(AUser: Boolean); virtual;
+  protected
+    function HandleChange(AEvent: TJSEvent): boolean; virtual;
+  protected
+    procedure Changed; override;
+    function CreateHandleElement: TJSHTMLElement; override;
+    procedure RegisterHandleEvents; override;
+    procedure UnRegisterHandleEvents; override;
+    function CheckChildClassAllowed(AChildClass: TClass): boolean; override;
+    procedure UpdateSorted; virtual;
+  protected
+    class function GetControlClassDefaultSize: TSize; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure AddItem(const AItem: String; AObject: TObject); virtual;
+    procedure Append(const AItem: String);
+    procedure Clear;
+    property ItemHeight: NativeInt read FItemHeight write SetItemHeight;
+    property ItemIndex: NativeInt read FItemIndex write SetItemIndex;
+    property Items: TStrings read FItems write SetItems;
+    property MultiSelect: Boolean read FMultiSelect write SetMultiSelect default False;
+    property Sorted: Boolean read FSorted write SetSorted default False;
+    property OnSelectionChange: TSelectionChangeEvent read FOnSelectionChange write FOnSelectionChange;
+  end;
+
   { TCustomEdit }
 
   TCustomEdit = class(TWinControl)
@@ -540,6 +586,175 @@ begin
 end;
 
 procedure TCustomComboBox.Clear;
+begin
+  FItems.Clear;
+  Changed;
+end;
+
+{ TCustomListBox }
+
+procedure TCustomListBox.SetItemHeight(AValue: NativeInt);
+begin
+  if FItemHeight <> AValue then begin
+    FItemHeight := AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomListBox.SetItemIndex(AValue: NativeInt);
+begin
+  if (AValue > -1) and (AValue < FItems.Count) then begin
+    FItemIndex := AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomListBox.SetItems(AValue: TStrings);
+begin
+  FItems.Assign(AValue);
+  Changed;
+end;
+
+procedure TCustomListBox.SetSorted(AValue: Boolean);
+begin
+  if FSorted <> AValue then begin
+    FSorted := AValue;
+    UpdateSorted;
+  end;
+end;
+
+procedure TCustomListBox.ItemsChanged(ASender: TObject);
+begin
+  Changed;
+end;
+
+procedure TCustomListBox.SetMultiSelect(AValue: Boolean);
+begin
+  if FMultiSelect <> AValue then begin
+    FMultiSelect:=AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomListBox.SelectionChange(AUser: Boolean);
+begin
+  if Assigned(FOnSelectionChange) then
+    FOnSelectionChange(Self, AUser);
+end;
+
+function TCustomListBox.HandleChange(AEvent: TJSEvent): boolean;
+begin
+  AEvent.StopPropagation;
+  FItemIndex := TJSHTMLSelectElement(HandleElement).SelectedIndex;
+  SelectionChange(True);
+  Result := True;
+end;
+
+procedure TCustomListBox.Changed;
+var
+  idx: NativeInt;
+  v: String;
+  opt: TJSHTMLOptionElement;
+begin
+  inherited Changed;
+  if not IsUpdating and not (csLoading in ComponentState) then begin
+    with TJSHTMLSelectElement(HandleElement) do begin
+      multiple := FMultiSelect;
+      { use 2, so that it isn't shown as a dropdown }
+      size := 2;
+      { remove old items }
+      for idx := TJSHTMLSelectElement(HandleElement).Length - 1 downto 0 do
+        Remove(idx);
+      { add new items }
+      for idx := 0 to FItems.Count - 1 do begin
+        v := FItems[idx];
+        opt := TJSHTMLOptionElement(Document.CreateElement('option'));
+        opt.Value := v;
+        opt.Text := v;
+        opt.Selected := idx = FItemIndex;
+        Add(opt);
+      end;
+    end;
+  end;
+end;
+
+function TCustomListBox.CreateHandleElement: TJSHTMLElement;
+begin
+  Result := TJSHTMLElement(Document.CreateElement('select'));
+end;
+
+procedure TCustomListBox.RegisterHandleEvents;
+begin
+  inherited RegisterHandleEvents;
+  with HandleElement do
+  begin
+    AddEventListener('change', @HandleChange);
+  end;
+end;
+
+procedure TCustomListBox.UnRegisterHandleEvents;
+begin
+  inherited UnRegisterHandleEvents;
+  with HandleElement do
+  begin
+    RemoveEventListener('change', @HandleChange);
+  end;
+end;
+
+function TCustomListBox.CheckChildClassAllowed(AChildClass: TClass): boolean;
+begin
+  Result := False;
+end;
+
+procedure TCustomListBox.UpdateSorted;
+begin
+  TStringList(FItems).Sorted := FSorted;
+end;
+
+class function TCustomListBox.GetControlClassDefaultSize: TSize;
+begin
+  Result.Cx := 100;
+  Result.Cy := 70;
+end;
+
+constructor TCustomListBox.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FItemHeight := 0;
+  FItemIndex := -1;
+  FItems := TStringList.Create;
+  TStringList(FItems).OnChange := @ItemsChanged;
+  FMultiSelect := False;
+  FSorted := False;
+  BeginUpdate;
+  try
+    with GetControlClassDefaultSize do begin
+      SetBounds(0, 0, Cx, Cy);
+    end;
+  finally
+    EndUpdate;
+  end;
+end;
+
+destructor TCustomListBox.Destroy;
+begin
+  FItems.Free;
+  inherited Destroy;
+end;
+
+procedure TCustomListBox.AddItem(const AItem: String; AObject: TObject);
+begin
+  FItems.AddObject(AItem, AObject);
+  Changed;
+end;
+
+procedure TCustomListBox.Append(const AItem: String);
+begin
+  FItems.Append(AItem);
+  Changed;
+end;
+
+procedure TCustomListBox.Clear;
 begin
   FItems.Clear;
   Changed;
