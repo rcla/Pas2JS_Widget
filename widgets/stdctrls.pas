@@ -337,18 +337,18 @@ implementation
 
 procedure TCustomComboBox.SetDropDownCount(AValue: integer);
 begin
-  if (FItemHeight <> AValue) then
+  if (FDropDownCount <> AValue) then
   begin
-    FItemHeight := AValue;
+    FDropDownCount := AValue;
     Changed;
   end;
 end;
 
 procedure TCustomComboBox.SetItemHeight(AValue: NativeInt);
 begin
-  if (FDropDownCount = AValue) then
+  if (FItemHeight <> AValue) then
   begin
-    FDropDownCount := AValue;
+    FItemHeight := AValue;
     Change;
   end;
 end;
