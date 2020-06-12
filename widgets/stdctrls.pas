@@ -48,13 +48,13 @@ type
     FDropDownCount: integer;
     FItemHeight: NativeInt;
     FItemIndex: NativeInt;
-    FItems: TStringList;
+    FItems: TStrings;
     FOnChange: TNotifyEvent;
     FSorted: boolean;
     procedure SetDropDownCount(AValue: integer);
     procedure SetItemHeight(AValue: NativeInt);
     procedure SetItemIndex(AValue: NativeInt);
-    procedure SetItems(AValue: TStringList);
+    procedure SetItems(AValue: TStrings);
     procedure SetSorted(AValue: boolean);
   private
     procedure ItemsChange(ASender: TObject);
@@ -84,7 +84,7 @@ type
     property DropDownCount: integer read FDropDownCount write SetDropDownCount;
     property ItemHeight: NativeInt read FItemHeight write SetItemHeight;
     property ItemIndex: NativeInt read FItemIndex write SetItemIndex;
-    property Items: TStringList read FItems write SetItems;
+    property Items: TStrings read FItems write SetItems;
     property Sorted: boolean read FSorted write SetSorted;
   end;
 
@@ -362,7 +362,7 @@ begin
   end;
 end;
 
-procedure TCustomComboBox.SetItems(AValue: TStringList);
+procedure TCustomComboBox.SetItems(AValue: TStrings);
 begin
   FItems.Assign(AValue);
   Changed;
@@ -489,7 +489,7 @@ var
   VText: string;
 begin
   VText := RealGetText;
-  FItems.Sorted := FSorted;
+  TStringList(FItems).Sorted := FSorted;
   Text := VText;
 end;
 
@@ -506,7 +506,7 @@ begin
   FItemHeight := 0;
   FItemIndex := -1;
   FItems := TStringList.Create;
-  FItems.OnChange := ItemsChange;
+  TStringList(FItems).OnChange := ItemsChange;
   FSorted := False;
   BeginUpdate;
   try
