@@ -98,15 +98,20 @@ type
     FItemIndex: NativeInt;
     FItems: TStrings;
     FMultiSelect: Boolean;
+    FSelectionChanged: Boolean;
+    FSelected: array of Boolean;
     FSorted: Boolean;
     FOnSelectionChange: TSelectionChangeEvent;
+    function GetSelCount: integer;
+    function GetSelected(Index: Integer): Boolean;
     procedure SetItemHeight(AValue: NativeInt);
     procedure SetItemIndex(AValue: NativeInt);
     procedure SetItems(AValue: TStrings);
+    procedure SetMultiSelect(AValue: Boolean);
+    procedure SetSelected(Index: Integer; AValue: Boolean);
     procedure SetSorted(AValue: Boolean);
   private
     procedure ItemsChanged(ASender: TObject);
-    procedure SetMultiSelect(AValue: Boolean);
   protected
     procedure SelectionChange(AUser: Boolean); virtual;
   protected
@@ -126,10 +131,15 @@ type
     procedure AddItem(const AItem: String; AObject: TObject); virtual;
     procedure Append(const AItem: String);
     procedure Clear;
+    procedure ClearSelection;
+    procedure SelectAll; virtual;
+    procedure SelectRange(ALow, AHigh: Integer; ASelected: boolean); virtual;
     property ItemHeight: NativeInt read FItemHeight write SetItemHeight;
     property ItemIndex: NativeInt read FItemIndex write SetItemIndex;
     property Items: TStrings read FItems write SetItems;
     property MultiSelect: Boolean read FMultiSelect write SetMultiSelect default False;
+    property SelCount: integer read GetSelCount;
+    property Selected[Index: Integer]: Boolean read GetSelected write SetSelected;
     property Sorted: Boolean read FSorted write SetSorted default False;
     property OnSelectionChange: TSelectionChangeEvent read FOnSelectionChange write FOnSelectionChange;
   end;
@@ -379,6 +389,9 @@ type
 
 implementation
 
+uses
+  RTLConsts;
+
 { TCustomComboBox }
 
 procedure TCustomComboBox.SetDropDownCount(AValue: integer);
@@ -588,6 +601,7 @@ end;
 procedure TCustomComboBox.Clear;
 begin
   FItems.Clear;
+  FItemIndex := -1;
   Changed;
 end;
 
@@ -604,8 +618,15 @@ end;
 procedure TCustomListBox.SetItemIndex(AValue: NativeInt);
 begin
   if (AValue > -1) and (AValue < FItems.Count) then begin
-    FItemIndex := AValue;
-    Changed;
+    BeginUpdate;
+    try
+      if FMultiSelect then
+        ClearSelection;
+      FItemIndex := AValue;
+      Changed;
+    finally
+      EndUpdate;
+    end;
   end;
 end;
 
@@ -623,17 +644,71 @@ begin
   end;
 end;
 
+function TCustomListBox.GetSelCount: integer;
+var
+  b: Boolean;
+begin
+  Result := 0;
+  if FMultiSelect then begin
+    for b in FSelected do
+      if b then
+        Inc(Result);
+  end else if ItemIndex <> -1 then
+    Inc(Result);
+end;
+
+function TCustomListBox.GetSelected(Index: Integer): Boolean;
+begin
+  if (Index < 0) or (Index >= FItems.Count) then
+    raise EListError.CreateFmt(SListIndexError, [Index]);
+  Result := FSelected[Index];
+end;
+
 procedure TCustomListBox.ItemsChanged(ASender: TObject);
 begin
+  if Length(FSelected) <> FItems.Count then
+    SetLength(FSelected, FItems.Count);
   Changed;
 end;
 
 procedure TCustomListBox.SetMultiSelect(AValue: Boolean);
 begin
   if FMultiSelect <> AValue then begin
-    FMultiSelect:=AValue;
+    ClearSelection;
+    FMultiSelect := AValue;
+    if not (csLoading in ComponentState) then
+      FSelectionChanged := True;
     Changed;
   end;
+end;
+
+procedure TCustomListBox.SetSelected(Index: Integer; AValue: Boolean);
+var
+  i: NativeInt;
+begin
+  if Index > High(FSelected) then
+    raise EListError.CreateFmt(SListIndexError, [Index]);
+  if AValue and not FMultiSelect then begin
+    for i := 0 to High(FSelected) do
+      if FSelected[i] then
+        FSelected[i] := False;
+  end;
+  FSelected[Index] := AValue;
+  if AValue then
+    FItemIndex := Index
+  else begin
+    FItemIndex := -1;
+    if FMultiSelect then begin
+      for i := 0 to High(FSelected) do
+        if FSelected[i] then begin
+          FItemIndex := i;
+          Break;
+        end;
+    end;
+  end;
+  if not (csLoading in ComponentState) then
+    FSelectionChanged := True;
+  Changed;
 end;
 
 procedure TCustomListBox.SelectionChange(AUser: Boolean);
@@ -643,9 +718,15 @@ begin
 end;
 
 function TCustomListBox.HandleChange(AEvent: TJSEvent): boolean;
+var
+  i: NativeInt;
 begin
   AEvent.StopPropagation;
-  FItemIndex := TJSHTMLSelectElement(HandleElement).SelectedIndex;
+  with TJSHTMLSelectElement(HandleElement) do begin
+    FItemIndex := selectedIndex;
+    for i := 0 to length - 1 do
+      FSelected[i] := item(i).selected;
+  end;
   SelectionChange(True);
   Result := True;
 end;
@@ -658,6 +739,10 @@ var
 begin
   inherited Changed;
   if not IsUpdating and not (csLoading in ComponentState) then begin
+    if FSelectionChanged then begin
+      SelectionChange(False);
+      FSelectionChanged := False;
+    end;
     with TJSHTMLSelectElement(HandleElement) do begin
       multiple := FMultiSelect;
       { use 2, so that it isn't shown as a dropdown }
@@ -671,7 +756,10 @@ begin
         opt := TJSHTMLOptionElement(Document.CreateElement('option'));
         opt.Value := v;
         opt.Text := v;
-        opt.Selected := idx = FItemIndex;
+        if FMultiselect then
+          opt.Selected := FSelected[idx]
+        else
+          opt.Selected := idx = FItemIndex;
         Add(opt);
       end;
     end;
@@ -758,6 +846,50 @@ procedure TCustomListBox.Clear;
 begin
   FItems.Clear;
   Changed;
+end;
+
+procedure TCustomListBox.ClearSelection;
+var
+  i: Integer;
+begin
+  if FMultiSelect then begin
+    BeginUpdate;
+    try
+      for i := 0 to FItems.Count - 1 do
+        Selected[i] := False;
+    finally
+      EndUpdate;
+    end;
+  end else
+    ItemIndex := -1;
+end;
+
+procedure TCustomListBox.SelectAll;
+begin
+  if not FMultiSelect then
+    Exit;
+  SelectRange(0, FItems.Count - 1, True);
+end;
+
+procedure TCustomListBox.SelectRange(ALow, AHigh: Integer; ASelected: boolean);
+var
+  i: Integer;
+begin
+  if not FMultiSelect then
+    Exit;
+  if ALow < 0 then
+    ALow := 0;
+  if AHigh >= FItems.Count then
+    AHigh := FItems.Count - 1;
+  if AHigh < ALow then
+    Exit;
+  BeginUpdate;
+  try
+    for i := ALow to AHigh do
+      Selected[i] := ASelected;
+  finally
+    EndUpdate;
+  end;
 end;
 
 { TCustomEdit }
