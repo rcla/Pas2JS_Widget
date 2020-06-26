@@ -33,6 +33,8 @@ resourcestring
   rsFormStreamingError = 'Form streaming "%s" error: %s';
   rsFileButtonNoFileSelected = 'No file selected';
   rsResourceNotFound = 'Resource not found: %s';
+  rsErrUncaughtException = 'Uncaught exception of type %s: ' + LineEnding + LineEnding + '%s';
+  rsErrUncaughtObject = 'Uncaught exception of type %s.';
 
 implementation
 

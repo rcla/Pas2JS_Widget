@@ -196,6 +196,7 @@ type
     function HandleError(AEvent: TJSErrorEvent): boolean;
     function HandleResize(AEvent: TJSEvent): boolean;
     function HandleUnload(AEvent: TJSUIEvent): boolean;
+    procedure HandleException(AException: TObject);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -1032,6 +1033,17 @@ begin
   Result := False;
 end;
 
+procedure TApplication.HandleException(AException: TObject);
+begin
+  if AException is Exception then begin
+    Window.Alert(Format(rsErrUncaughtException, [AException.ClassName, Exception(AException).Message]));
+  end else begin
+    Window.Alert(Format(rsErrUncaughtObject, [AException.ClassName]));
+  end;
+  if FStopOnException then
+    Terminate;
+end;
+
 function TApplication.HandleResize(AEvent: TJSEvent): boolean;
 var
   VControl: TControl;
@@ -1062,10 +1074,21 @@ begin
   end;
 end;
 
+procedure DoUncaughtPascalException(E: TObject);
+begin
+  Application.HandleException(E);
+end;
+
 constructor TApplication.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   SetResourceSource(rsJS);
+{$if PAS2JS_FULLVERSION >= 10501}
+  SetOnUnCaughtExceptionHandler(@DoUncaughtPascalException);
+  asm
+    rtl.showUncaughtExceptions=true;
+  end;
+{$endif}
   FModules := TJSArray.New;
   FMainForm := nil;
   FStopOnException := True;
