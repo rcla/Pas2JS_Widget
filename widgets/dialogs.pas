@@ -392,6 +392,8 @@ procedure MessageDlg(AOwner: TCustomForm; const ACaption, AMessage: string; ADlg
 var
   VMessageDialog: TMessageDialog;
 begin
+  if not Assigned(AOwner) then
+    AOwner := Application.ActiveForm;
   VMessageDialog := TMessageDialog.Create(AOwner);
   with VMessageDialog do
   begin
