@@ -150,7 +150,7 @@ type
   protected
     FButtonPanel: TWPanel;
     FInfoImage: TWImage;
-    FMessageMemo: TWMemo;
+    FMessageText: TWLabel;
   protected
     procedure PrepareButtons; virtual;
     procedure PrepareImage; virtual;
@@ -250,7 +250,7 @@ end;
 
 procedure TMessageDialog.PrepareText;
 begin
-  FMessageMemo.Lines.Add(FMessage);
+  FMessageText.Caption := FMessage;
 end;
 
 procedure TMessageDialog.PrepareTitle;
@@ -307,16 +307,15 @@ begin
     finally
       FInfoImage.EndUpdate;
     end;
-    FMessageMemo := TWMemo.Create(Self);
-    FMessageMemo.BeginUpdate;
+    FMessageText := TWLabel.Create(Self);
+    FMessageText.BeginUpdate;
     try
-      FMessageMemo.Parent := Self;
-      FMessageMemo.BorderSpacing.Around := CControlsSpacing;
-      FMessageMemo.ReadOnly := True;
-      FMessageMemo.WordWrap := True;
-      FMessageMemo.Align := alClient;
+      FMessageText.Parent := Self;
+      FMessageText.BorderSpacing.Around := CControlsSpacing;
+      FMessageText.WordWrap := True;
+      FMessageText.Align := alClient;
     finally
-      FMessageMemo.EndUpdate;
+      FMessageText.EndUpdate;
     end;
   finally
     EndUpdate;
