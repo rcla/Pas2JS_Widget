@@ -845,6 +845,8 @@ end;
 procedure TCustomListBox.Clear;
 begin
   FItems.Clear;
+  FItemIndex := -1;
+  FSelected := Nil;
   Changed;
 end;
 
