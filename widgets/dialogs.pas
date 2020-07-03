@@ -49,12 +49,12 @@ const
   mbOKCancel = [mbOK, mbCancel];
   mbAbortRetryIgnore = [mbAbort, mbRetry, mbIgnore];
 
-procedure MessageDlg(const AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc); overload;
-procedure MessageDlg(const AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc); overload;
-procedure MessageDlg(const AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc); overload;
-procedure MessageDlg(const AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc); overload;
+procedure MessageDlg(AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc); overload;
+procedure MessageDlg(AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc); overload;
+procedure MessageDlg(AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc); overload;
+procedure MessageDlg(AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc); overload;
 
-procedure ShowMessage(const AOwner: TCustomForm; const AMessage: string); overload;
+procedure ShowMessage(AOwner: TCustomForm; const AMessage: string); overload;
 procedure ShowMessage(const AMessage: string); overload;   
 procedure ShowMessageFmt(const AMessage: string; const AArguments: array of JSValue); overload;
 
@@ -388,7 +388,7 @@ begin
   end;
 end;
 
-procedure MessageDlg(const AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc);
+procedure MessageDlg(AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc);
 var
   VMessageDialog: TMessageDialog;
 begin
@@ -405,22 +405,22 @@ begin
   end;
 end;
 
-procedure MessageDlg(const AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc);
+procedure MessageDlg(AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; ADefaultButton: TMsgDlgBtn; AModalResultProc: TModalResultProc);
 begin
   MessageDlg(AOwner, '', AMessage, ADlgType, AButtons, ADefaultButton, AModalResultProc);
 end;
 
-procedure MessageDlg(const AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc);
+procedure MessageDlg(AOwner: TCustomForm; const ACaption, AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc);
 begin
   MessageDlg(AOwner, ACaption, AMessage, ADlgType, AButtons, ModalDefaultButton(AButtons), AModalResultProc);
 end;
 
-procedure MessageDlg(const AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc);
+procedure MessageDlg(AOwner: TCustomForm; const AMessage: string; ADlgType: TMsgDlgType; AButtons: TMsgDlgButtons; AModalResultProc: TModalResultProc);
 begin
   MessageDlg(AOwner, '', AMessage, ADlgType, AButtons, ModalDefaultButton(AButtons), AModalResultProc);
 end;
 
-procedure ShowMessage(const AOwner: TCustomForm; const AMessage: string);
+procedure ShowMessage(AOwner: TCustomForm; const AMessage: string);
 begin
   MessageDlg(AOwner, '', AMessage, mtInformation, [mbOK], nil);
 end;
