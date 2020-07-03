@@ -179,8 +179,10 @@ var
   VButtonWidth: NativeInt;
   VFormWidth: NativeInt;
   VSize: TSize;
+  buttonofs: NativeInt;
 begin
   VButtonCount := 0;
+  buttonofs := 0;
   VButtonHeight := CMinButtonHeight;
   VButtonWidth := CMinButtonWidth;
   BeginUpdate;
@@ -212,7 +214,7 @@ begin
         try
           VButton.Parent := FButtonPanel;
           VButton.BorderSpacing.Around := CControlsSpacing;
-          VButton.SetBounds(0, 0, VButtonWidth, VButtonHeight);
+          VButton.SetBounds(buttonofs, 0, VButtonWidth, VButtonHeight);
           VButton.ModalResult := ButtonModalResult[VMsgDlgBtn];
           VButton.Caption := ButtonCaption[VMsgDlgBtn];
           VButton.Align := alRight;
@@ -225,6 +227,7 @@ begin
           ActiveControl := VButton;
         end;
       end;
+      buttonofs := buttonofs + VButtonWidth;
     end;
     /// Calculate panel button width
     FButtonPanel.Height := VButtonHeight + (CControlsSpacing * 2);
