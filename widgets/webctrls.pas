@@ -426,6 +426,17 @@ type
     property OnResize;
   end;
 
+  { TWTimer }
+
+  TWTimer = class(TCustomTimer)
+  published
+    property Enabled;
+    property Interval;
+    property OnTimer;
+    property OnStartTimer;
+    property OnStopTimer;
+  end;
+
   { TWPageControl }
 
   TWPageControl = class(TCustomPageControl)

@@ -35,6 +35,7 @@ resourcestring
   rsResourceNotFound = 'Resource not found: %s';
   rsErrUncaughtException = 'Uncaught exception of type %s: ' + LineEnding + LineEnding + '%s';
   rsErrUncaughtObject = 'Uncaught exception of type %s.';
+  rsNoTimers = 'No more timers available.';
 
 implementation
 

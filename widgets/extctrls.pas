@@ -118,7 +118,112 @@ type
     property BevelWidth: TBevelWidth read FBevelWidth write SetBevelWidth default 1;
   end;
 
+  { TCustomTimer }
+
+  TCustomTimer = class(TComponent)
+  private
+    FEnabled: Boolean;
+    FInterval: Cardinal;
+    FTimerHandle: NativeUInt;
+    FOnStartTimer: TNotifyEvent;
+    FOnStopTimer: TNotifyEvent;
+    FOnTimer: TNotifyEvent;
+  protected
+    procedure SetEnabled(AValue: Boolean); virtual;
+    procedure SetInterval(AValue: Cardinal); virtual;
+    procedure SetOnTimer(AValue: TNotifyEvent); virtual;
+    procedure DoOnTimer; virtual;
+    procedure UpdateTimer; virtual;
+    procedure KillTimer; virtual;
+    procedure Loaded; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    property Enabled: Boolean read FEnabled write SetEnabled default True;
+    property Interval: Cardinal read FInterval write SetInterval default 1000;
+    property OnTimer: TNotifyEvent read FOnTimer write SetOnTimer;
+    property OnStartTimer: TNotifyEvent read FOnStartTimer write FOnStartTimer;
+    property OnStopTimer: TNotifyEvent read FOnStopTimer write FOnStopTimer;
+  end;
+
 implementation
+
+uses
+  LCLStrConsts;
+
+{ TCustomTimer }
+
+procedure TCustomTimer.SetEnabled(AValue: Boolean);
+begin
+  if FEnabled = AValue then
+    Exit;
+  FEnabled := AValue;
+  UpdateTimer;
+end;
+
+procedure TCustomTimer.SetInterval(AValue: Cardinal);
+begin
+  if FInterval = AValue then
+    Exit;
+  FInterval := AValue;
+  UpdateTimer;
+end;
+
+procedure TCustomTimer.SetOnTimer(AValue: TNotifyEvent);
+begin
+  if FOnTimer = AValue then
+    Exit;
+  FOnTimer := AValue;
+  UpdateTimer;
+end;
+
+procedure TCustomTimer.DoOnTimer;
+begin
+  if Assigned(FOnTimer) then
+    FOnTimer(Self);
+end;
+
+procedure TCustomTimer.UpdateTimer;
+begin
+  KillTimer;
+  if FEnabled and (FInterval > 0) and
+      ([csLoading, csDestroying] * ComponentState = []) and Assigned(FOnTimer) then begin
+    FTimerHandle := window.setInterval(procedure begin FOnTimer(Self); end, FInterval);
+    if FTimerHandle = 0 then
+      raise EOutOfResources.Create(rsNoTimers);
+    if Assigned(FOnStartTimer) then
+      FOnStartTimer(Self);
+  end;
+end;
+
+procedure TCustomTimer.KillTimer;
+begin
+  if FTimerHandle <> 0 then begin
+    window.clearInterval(FTimerHandle);
+    if Assigned(FOnStopTimer) then
+      FOnStopTimer(Self);
+  end;
+end;
+
+procedure TCustomTimer.Loaded;
+begin
+  inherited Loaded;
+  UpdateTimer;
+end;
+
+constructor TCustomTimer.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FEnabled := True;
+  FInterval := 1000;
+  FTimerHandle := 0;
+end;
+
+destructor TCustomTimer.Destroy;
+begin
+  KillTimer;
+  inherited Destroy;
+end;
 
 { TCustomImage }
 
