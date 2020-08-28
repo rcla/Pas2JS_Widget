@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="Pas2JS_Widget"/>
     <Type Value="RunTimeOnly"/>
     <Author Value="Hélio S. Ribeiro and Anderson J. Gado da Silva"/>
@@ -126,6 +126,7 @@
         <UnitName Value="LResources"/>
       </Item17>
     </Files>
+    <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">
       <Item1>
         <PackageName Value="pas2js_rtl"/>
