@@ -279,6 +279,10 @@ function JSColor(const AColor: TColor): string;
 function JSFont(const AFont: TFont): string;
 function JSMeasureText(const AText: string; const AFontName: string; const AFontSize: NativeInt; const AFixedWidth: NativeInt = 0): TSize; overload;
 
+function PenStyleToCSSBorderStyle(aStyle: TPenStyle): String;
+function AlignmentToCSSAlignment(aAlignment: TAlignment): String;
+function TextLayoutToCSSVerticalAlign(aLayout: TTextLayout): String;
+
 function IdentEntry(Entry: Longint; out MapEntry: TIdentMapEntry): boolean;
 function ColorToIdent(Color: Longint; out Ident: String): Boolean;
 function IdentToColor(const Ident: string; out Color: Longint): Boolean;
@@ -1018,6 +1022,50 @@ const
     // one our special color
     //(Value: clForm; Name: 'clForm')
     );
+
+function PenStyleToCSSBorderStyle(aStyle: TPenStyle): String;
+begin
+  case aStyle of
+    psSolid:
+      Result := 'solid';
+    psDash:
+      Result := 'dashed';
+    psDot:
+      Result := 'dotted';
+    psClear:
+      Result := 'hidden';
+    else
+      Result := 'none';
+    {psDashDot: ;
+    psDashDotDot: ;
+    psInsideFrame: ;
+    psPattern: ;}
+  end;
+end;
+
+function AlignmentToCSSAlignment(aAlignment: TAlignment): String;
+begin
+  case aAlignment of
+    taLeftJustify:
+      Result := 'left';
+    taRightJustify:
+      Result := 'right';
+    taCenter:
+      Result := 'center';
+  end;
+end;
+
+function TextLayoutToCSSVerticalAlign(aLayout: TTextLayout): String;
+begin
+  case aLayout of
+    tlTop:
+      Result := 'text-top';
+    tlCenter:
+      Result := 'baseline';
+    tlBottom:
+      Result := 'text-bottom';
+  end;
+end;
 
 function IdentEntry(Entry: Longint; out MapEntry: TIdentMapEntry): boolean;
 begin
