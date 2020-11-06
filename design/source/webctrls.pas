@@ -41,7 +41,8 @@ uses
   DttCtrls,
   BtnCtrls,
   DataGrid,
-  CustomTimer;
+  CustomTimer,
+  Grids;
 
 type
 
@@ -873,6 +874,15 @@ type
     property OnPageClick;
   end;
 
+  TWStringGrid = class(TCustomStringGrid)
+  published
+    property ColCount;
+    property Columns;
+    property DefaultColWidth;
+    property DefaultRowHeight;
+    property RowCount;
+  end;
+
 procedure Register;
 
 implementation
@@ -898,7 +908,8 @@ begin
     TWTimeEditBox,
     TWFileButton,
     TWDataGrid,
-    TWPagination
+    TWPagination,
+    TWStringGrid
     ]);
 end;
 

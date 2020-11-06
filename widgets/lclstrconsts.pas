@@ -37,6 +37,9 @@ resourcestring
   rsErrUncaughtObject = 'Uncaught exception of type %s.';
   rsNoTimers = 'No more timers available.';
 
+  rsFixedColsTooBig = 'Too many fixed columns.';
+  rsFixedRowsTooBig = 'Too many fixed rows.';
+
 implementation
 
 end.

@@ -56,7 +56,7 @@
   SOFTWARE.
 }  "/>
     <Version Major="1"/>
-    <Files Count="17">
+    <Files Count="18">
       <Item1>
         <Filename Value="webextra.pas"/>
         <UnitName Value="WebExtra"/>
@@ -125,6 +125,10 @@
         <Filename Value="lresources.pas"/>
         <UnitName Value="LResources"/>
       </Item17>
+      <Item18>
+        <Filename Value="grids.pas"/>
+        <UnitName Value="grids"/>
+      </Item18>
     </Files>
     <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="1">
