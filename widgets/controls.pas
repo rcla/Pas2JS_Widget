@@ -34,7 +34,8 @@ uses
   JS,
   Web,
   Math,
-  Graphics;
+  Graphics,
+  Generics.Collections;
 
 const
   /// Used for ModalResult
@@ -101,6 +102,8 @@ const
   crHandPoint = -21;
 
 type
+  TIntegerList = TList<Integer>;
+
   /// Forward declaration
   TWinControl = class;
   TWinControlClass = class of TWinControl;
