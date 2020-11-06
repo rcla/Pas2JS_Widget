@@ -890,7 +890,7 @@ implementation
 procedure Register;
 begin
   {$I webctrls.lrs}
-  RegisterComponents('Pas2Js', [
+  RegisterComponents('WCL', [
     TWComboBox,
     TWListBox,
     TWEdit,
