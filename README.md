@@ -1,5 +1,5 @@
-# Pas2JS Widgetset
-Pas2JS Widgetset is a RAD Framework to develop Web Applications like to develop Windows Applications originally started by Hélio S. Ribeiro and Anderson J. Gado da Silva.
+# Web Component Library
+Web Component Library (formerly Pas2JS Widgetset) is a RAD Framework to develop Web Applications like to develop Windows Applications originally started by Hélio S. Ribeiro and Anderson J. Gado da Silva and further improved by Sven Barth.
 
 ### Thanks
 This project is only possible thanks to [Free Pascal](https://www.freepascal.org/ "Free Pascal"), [Lazarus](https://www.lazarus-ide.org/ "Lazarus") and the fabulous compiler [Pas2JS](http://wiki.freepascal.org/pas2js "Pas2JS")
@@ -13,8 +13,8 @@ Please help us to take this project forward.
 This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _pas2js_.
 * make sure that the _pas2jsdsgn_ package is installed
 * the _pas2js_rtl_ package should have been opened (so that the IDE knows about it)
-* install the _pas2js_designer_package_ package from _design/package_
-* open the _pas2js_widget_ package in _widgets_ (again so that the IDE knows about it)
+* install the _wcldsgn_ package from _design/package_
+* open the _wcl_ package in _widgets_ (again so that the IDE knows about it)
 
 ### Usage
 * create a new _Web Browser Application_ (this is provided by the Pas2JS package; the _Application (Pas2JS)_ template is currently not useable)
@@ -41,7 +41,7 @@ This was tested with Lazarus 2.0.6 and Lazarus 2.1 using the trunk version of _p
 
 ### Notes
 * you need to manually add the `Application.CreateForm(TWFormX, WForm1);` statement for now
-* you can only use components from the _Pas2JS_ tab
+* you can only use components from the _WCL_ tab
 
 ### Further plans
 * fix project template
