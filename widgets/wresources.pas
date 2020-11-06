@@ -14,7 +14,6 @@
   for details about the license.
  *****************************************************************************
 }
-}
 unit WResources;
 
 {$mode objfpc}{$H+}
