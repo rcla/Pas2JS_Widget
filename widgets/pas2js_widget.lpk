@@ -127,7 +127,7 @@
       </Item17>
       <Item18>
         <Filename Value="grids.pas"/>
-        <UnitName Value="grids"/>
+        <UnitName Value="Grids"/>
       </Item18>
     </Files>
     <CompatibilityMode Value="True"/>
