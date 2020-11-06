@@ -122,8 +122,8 @@
         <UnitName Value="WCLStrConsts"/>
       </Item16>
       <Item17>
-        <Filename Value="lresources.pas"/>
-        <UnitName Value="LResources"/>
+        <Filename Value="wresources.pas"/>
+        <UnitName Value="WResources"/>
       </Item17>
       <Item18>
         <Filename Value="grids.pas"/>
