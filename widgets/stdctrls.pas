@@ -40,6 +40,9 @@ uses
 type
   TEditCharCase = (ecNormal, ecUppercase, ecLowerCase);
 
+  TScrollStyle = (ssNone, ssHorizontal, ssVertical, ssBoth,
+    ssAutoHorizontal, ssAutoVertical, ssAutoBoth);
+
   { TCustomComboBox }
 
   TCustomComboBox = class(TWinControl)
@@ -387,10 +390,54 @@ type
     property AutoSize default True;
   end;
 
+procedure ApplyScrollStyleToStyle(aStyle: TJSCSSStyleDeclaration; aScrollStyle: TScrollStyle);
+
 implementation
 
 uses
   RTLConsts;
+
+procedure ApplyScrollStyleToStyle(aStyle: TJSCSSStyleDeclaration;
+  aScrollStyle: TScrollStyle);
+begin
+  case aScrollStyle of
+    ssNone: begin
+      aStyle.removeProperty('overflow-x');
+      aStyle.removeProperty('overflow-y');
+      aStyle.setProperty('overflow', 'hidden');
+    end;
+    ssHorizontal: begin
+      aStyle.removeProperty('overflow');
+      aStyle.setProperty('overflow-y', 'hidden');
+      aStyle.setProperty('overflow-x', 'scroll');
+    end;
+    ssVertical: begin
+      aStyle.removeProperty('overflow');
+      aStyle.setProperty('overflow-x', 'hidden');
+      aStyle.setProperty('overflow-y', 'scroll');
+    end;
+    ssBoth: begin
+      aStyle.removeProperty('overflow-x');
+      aStyle.removeProperty('overflow-y');
+      aStyle.setProperty('overflow', 'scroll');
+    end;
+    ssAutoHorizontal: begin
+      aStyle.removeProperty('overflow');
+      aStyle.setProperty('overflow-y', 'hidden');
+      aStyle.setProperty('overflow-x', 'auto');
+    end;
+    ssAutoVertical: begin
+      aStyle.removeProperty('overflow');
+      aStyle.setProperty('overflow-x', 'hidden');
+      aStyle.setProperty('overflow-x', 'scroll');
+    end;
+    ssAutoBoth: begin
+      aStyle.removeProperty('overflow-x');
+      aStyle.removeProperty('overflow-y');
+      aStyle.setProperty('overflow', 'auto');
+    end;
+  end;
+end;
 
 { TCustomComboBox }
 
