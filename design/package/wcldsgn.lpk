@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="5">
-    <Name Value="Pas2JS_Designer_Package"/>
+    <Name Value="WCLDsgn"/>
     <Type Value="RunAndDesignTime"/>
     <Author Value="Hélio S. Ribeiro, Anderson J. Gado da Silva and Sven Barth"/>
     <CompilerOptions>

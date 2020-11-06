@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="5">
-    <Name Value="Pas2JS_Widget"/>
+    <Name Value="WCL"/>
     <Type Value="RunTimeOnly"/>
     <Author Value="Hélio S. Ribeiro, Anderson J. Gado da Silva and Sven Barth"/>
     <AutoUpdate Value="Manually"/>

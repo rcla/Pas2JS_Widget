@@ -2,7 +2,7 @@
   This source is only used to compile and install the package.
  }
 
-unit Pas2JS_Widget;
+unit WCL;
 
 {$warn 5023 off : no warning about unused units}
 interface
