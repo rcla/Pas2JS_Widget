@@ -110,11 +110,13 @@ type
     procedure SetActiveControl(AValue: TWinControl);
     procedure SetAlphaBlend(AValue: boolean);
     procedure SetAlphaBlendValue(AValue: byte);
+    procedure SetFormBorderStyle(AValue: TFormBorderStyle);
     procedure SetModalResult(AValue: TModalResult);
   protected
     property Overlay: TObject read FOverlay write FOverlay;
     property ChildForm: TCustomForm read FChildForm write FChildForm;
   protected
+    fFormBorderStyle: TFormBorderStyle;
     procedure Activate; virtual;
     procedure Deactivate; virtual;
     procedure DoClose(var CloseAction: TCloseAction); virtual;
@@ -150,6 +152,7 @@ type
     property ActiveControl: TWinControl read FActiveControl write SetActiveControl;
     property AlphaBlend: boolean read FAlphaBlend write SetAlphaBlend;
     property AlphaBlendValue: byte read FAlphaBlendValue write SetAlphaBlendValue;
+    property BorderStyle: TFormBorderStyle read fFormBorderStyle write SetFormBorderStyle default bsSizeable;
     property FormType: TFormType read FFormType;
     property KeyPreview: boolean read FKeyPreview write FKeyPreview;
     property DesignTimePPI: Integer read FDesignTimePPI write FDesignTimePPI;
@@ -551,6 +554,23 @@ begin
   end;
 end;
 
+procedure TCustomForm.SetFormBorderStyle(AValue: TFormBorderStyle);
+var
+  bs: TBorderStyle;
+begin
+  if fFormBorderStyle = AValue then
+    Exit;
+
+  fFormBorderStyle := AValue;
+
+  if AValue in [Low(TBorderStyle)..High(TBorderStyle)] then
+    bs := AValue
+  else
+    bs := bsNone;
+
+  inherited SetBorderStyle(bs);
+end;
+
 procedure TCustomForm.SetModalResult(AValue: TModalResult);
 begin
   if (FModalResult <> AValue) then
@@ -725,6 +745,7 @@ begin
   FModalResult := mrNone;
   FModalResultProc := nil;
   FOverlay := nil;
+  BorderStyle := bsSizeable;
   BeginUpdate;
   try
     Color := clWhite;
