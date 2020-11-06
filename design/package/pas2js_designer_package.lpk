@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="Pas2JS_Designer_Package"/>
     <Type Value="RunAndDesignTime"/>
     <Author Value="Hélio S. Ribeiro, Anderson J. Gado da Silva and Sven Barth"/>
@@ -76,6 +76,7 @@ MIT:
         <UnitName Value="Pas2JS_IDE_Options"/>
       </Item7>
     </Files>
+    <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="3">
       <Item1>
         <PackageName Value="IDEIntf"/>
