@@ -3,7 +3,7 @@
   <Package Version="4">
     <Name Value="Pas2JS_Designer_Package"/>
     <Type Value="RunAndDesignTime"/>
-    <Author Value="Hélio S. Ribeiro and Anderson J. Gado da Silva"/>
+    <Author Value="Hélio S. Ribeiro, Anderson J. Gado da Silva and Sven Barth"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
