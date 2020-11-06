@@ -240,7 +240,6 @@ type
     procedure SetAnchors(AValue: TAnchors);
     procedure SetAutoSize(AValue: boolean);
     procedure SetBorderSpacing(AValue: TControlBorderSpacing);
-    procedure SetBorderStyle(AValue: TBorderStyle);
     procedure SetClientSize(AValue: TPoint);
     procedure SetClientHeight(AValue: NativeInt);
     procedure SetClientWidth(AValue: NativeInt);
@@ -264,6 +263,8 @@ type
     procedure SetTop(AValue: NativeInt);
     procedure SetVisible(AValue: boolean);
     procedure SetWidth(AValue: NativeInt);
+  protected
+    procedure SetBorderStyle(AValue: TBorderStyle);
   protected
     procedure Click; virtual;
     procedure DblClick; virtual;
