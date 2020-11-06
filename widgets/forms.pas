@@ -317,7 +317,7 @@ function Application: TApplication;
 implementation
 
 uses
-  LResources, LCLStrConsts, p2jsres;
+  LResources, WCLStrConsts, p2jsres;
 
 {$push}
 {$hints off}

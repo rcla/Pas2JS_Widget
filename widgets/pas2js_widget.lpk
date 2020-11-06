@@ -118,8 +118,8 @@
         <UnitName Value="WebCtrls"/>
       </Item15>
       <Item16>
-        <Filename Value="lclstrconsts.pas"/>
-        <UnitName Value="LCLStrConsts"/>
+        <Filename Value="wclstrconsts.pas"/>
+        <UnitName Value="WCLStrConsts"/>
       </Item16>
       <Item17>
         <Filename Value="lresources.pas"/>

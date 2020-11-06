@@ -37,7 +37,7 @@ implementation
 
 uses
   Web, SysUtils, p2jsres,
-  LCLStrConsts;
+  WCLStrConsts;
 
 function InitResourceComponent(Instance: TComponent; RootAncestor: TClass
   ): Boolean;

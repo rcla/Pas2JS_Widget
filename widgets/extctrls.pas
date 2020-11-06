@@ -149,7 +149,7 @@ type
 implementation
 
 uses
-  LCLStrConsts;
+  WCLStrConsts;
 
 { TCustomTimer }
 

@@ -73,7 +73,7 @@ type
 implementation
 
 uses
-  LCLStrConsts;
+  WCLStrConsts;
 
 { TCustomFileButton }
 

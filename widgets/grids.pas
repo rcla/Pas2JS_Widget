@@ -334,7 +334,7 @@ type
 implementation
 
 uses
-  TypInfo, LCLStrConsts;
+  TypInfo, WCLStrConsts;
 
 { TCustomStringGrid }
 
