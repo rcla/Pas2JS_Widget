@@ -20,7 +20,7 @@ This was tested with Lazarus 2.0.10 and Lazarus 2.1 using the _trunk_ version of
 * create a new _Web Browser Application_ (this is provided by the Pas2JS package; the _Application (Pas2JS)_ template is currently not useable)
 * add the following packages as dependencies:
   - _pas2js_rtl_
-  - _Pas2JS_Widget_
+  - _WCL_
 * add _-JRjs_ to the custom compiler options
 * change the code of the main project to the following:
 
