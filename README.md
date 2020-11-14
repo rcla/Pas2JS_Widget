@@ -40,7 +40,7 @@ This was tested with Lazarus 2.0.10 and Lazarus 2.1 using the _trunk_ version of
 * once you saved your project you also need to adjust the name of the script in the HTML file's `script` tag
 
 ### Notes
-* you need to manually add the `Application.CreateForm(TWFormX, WForm1);` statement for now
+* you need to manually add the `Application.CreateForm(TFormClass, FormVariable);` statement for now (`TFormClass` is the class of _your_ form and `FormVariable` is the variable declared in your form's unit)
 * you can only use components from the _WCL_ tab
 
 ### Further plans
