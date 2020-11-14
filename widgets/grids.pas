@@ -1212,6 +1212,17 @@ procedure TCustomGrid.Changed;
       aCell.style.setProperty('border-top-color', JSColor(fGridLineColor));
   end;
 
+  procedure AppendOrRemoveNode(aContainer, aNode: TJSHTMLElement; aAdd: Boolean);
+  begin
+    if aAdd then begin
+      if not aContainer.contains(aNode) then
+        aContainer.appendChild(aNode);
+    end else begin
+      if aContainer.contains(aNode) then
+        aContainer.removeChild(aNode);
+    end;
+  end;
+
 var
   row, rowtop, rowleft, rowtopleft: TJSHTMLTableRowElement;
   i, j: LongInt;
@@ -1269,18 +1280,9 @@ begin
     fFixedTopLeftTable.cellSpacing := '0px';
   end;
 
-  if FixedRows > 0 then
-    container.appendChild(fFixedRowsTable)
-  else
-    container.removeChild(fFixedRowsTable);
-  if FixedCols > 0 then
-    container.appendChild(fFixedColsTable)
-  else
-    container.removeChild(fFixedColsTable);
-  if (FixedRows > 0) and (FixedCols > 0) then
-    container.appendChild(fFixedTopLeftTable)
-  else
-    container.removeChild(fFixedTopLeftTable);
+  AppendOrRemoveNode(container, fFixedRowsTable, FixedRows > 0);
+  AppendOrRemoveNode(container, fFixedColsTable, FixedCols > 0);
+  AppendOrRemoveNode(container, fFixedTopLeftTable, (FixedRows > 0) and (FixedCols > 0));
 
   AdjustRows(fContentTable, fRows.Count);
   AdjustRows(fFixedColsTable, fRows.Count);
