@@ -2108,10 +2108,11 @@ begin
   begin
     FParent.UnRegisterChild(Self);
   end;
-  FControls.Length := 0;
-  FBorderSpacing.Destroy;
+  if Assigned(FControls) then
+    FControls.Length := 0;
+  FBorderSpacing.Free;
   FBorderSpacing := nil;
-  FFont.Destroy;
+  FFont.Free;
   FFont := nil;
   inherited Destroy;
 end;
