@@ -987,8 +987,15 @@ begin
   fFixedCols := aValue;
   fTopLeft.x := aValue;
 
-  if not (csLoading in ComponentState) then
-    DoTopLeftChanged;
+  if Columns.Enabled then begin
+    if not (csLoading in ComponentState) then
+      DoTopLeftChanged;
+
+    ColumnsChanged(Nil);
+  end else begin
+    if not (csLoading in ComponentState) then
+      DoTopLeftChanged;
+  end;
 end;
 
 procedure TCustomGrid.SetFixedGridLineColor(AValue: TColor);
