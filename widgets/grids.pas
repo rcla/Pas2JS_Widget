@@ -1106,14 +1106,14 @@ procedure TCustomGrid.Changed;
 
   procedure AdjustCells(aRow: TJSHTMLTableRowElement; aCount: LongInt);
   var
-    cell: TJSHTMLTableDataCellElement;
+    cell: TJSHTMLTableCellElement;
   begin
     if aRow.cells.length <> aCount then begin
       while aRow.cells.length > aCount do
         aRow.deleteCell(aRow.cells.length - 1);
 
       while aRow.cells.length < aCount do begin
-        cell := TJSHTMLTableDataCellElement(aRow.insertCell(aRow.cells.length));
+        cell := aRow.insertCell(aRow.cells.length);
         cell.appendChild(document.createElement('div'));
       end;
     end;
