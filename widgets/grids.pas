@@ -324,10 +324,13 @@ type
 
   TWStringGrid = class(TCustomStringGrid)
   published
+    property Anchors;
     property ColCount;
     property Columns;
     property DefaultColWidth;
     property DefaultRowHeight;
+    property FixedCols;
+    property FixedRows;
     property RowCount;
   end;
 
