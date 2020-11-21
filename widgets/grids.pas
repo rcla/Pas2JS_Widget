@@ -1178,6 +1178,7 @@ procedure TCustomGrid.Changed;
     style := aCell.style;
 
     style.SetProperty('white-space', 'nowrap');
+    style.SetProperty('overflow', 'hidden');
 
     content.style.setProperty('text-align', AlignmentToCSSAlignment(alignment));
     { does not yet work :/ }
