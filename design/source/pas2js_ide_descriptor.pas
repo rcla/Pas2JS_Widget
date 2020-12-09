@@ -361,6 +361,10 @@ type
 
 procedure TPas2JSWidgetsRequirements.RequiredUnits(aUnits: TStrings);
 begin
+  if ComponentClass.ClassType = TWStringGrid then begin
+    aUnits.Clear;
+    aUnits.Add('Grids');
+  end;
 end;
 
 procedure TPas2JSWidgetsRequirements.RequiredPkgs(aPkgs: TStrings);
