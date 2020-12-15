@@ -239,6 +239,7 @@ type
     function GetClientRect: TRect;
     function GetClientWidth: NativeInt;
     function GetText: TCaption;
+    function IsAnchorsStored: Boolean;
     procedure SetAlign(AValue: TAlign);
     procedure SetAnchors(AValue: TAnchors);
     procedure SetAutoSize(AValue: boolean);
@@ -342,7 +343,7 @@ type
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: NativeInt); virtual;
   public
     property Align: TAlign read FAlign write SetAlign;
-    property Anchors: TAnchors read FAnchors write SetAnchors;
+    property Anchors: TAnchors read FAnchors write SetAnchors stored IsAnchorsStored default [akLeft, akTop];
     property AutoSize: boolean read FAutoSize write SetAutoSize default False;
     property BorderSpacing: TControlBorderSpacing read FBorderSpacing write SetBorderSpacing;
     property Caption: TCaption read GetText write SetText;
@@ -1042,11 +1043,23 @@ begin
   Result := RealGetText;
 end;
 
+function TControl.IsAnchorsStored: Boolean;
+begin
+  Result := Anchors <> AnchorAlign[Align];
+end;
+
 procedure TControl.SetAlign(AValue: TAlign);
+var
+  oldalign: TAlign;
 begin
   if (FAlign <> AValue) then
   begin
+    oldalign := FAlign;
     FAlign := AValue;
+    { as long as Anchors were the default for the previous Align keep them as
+      the default values for the new Align }
+    if (Anchors = AnchorAlign[oldalign]) and (Anchors <> AnchorAlign[FAlign]) then
+      Anchors := AnchorAlign[FAlign];
     { if we have a parent we need to get our new size which the parent needs to
       calculate first }
     if Assigned(FParent) then
