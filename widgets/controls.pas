@@ -1839,11 +1839,18 @@ begin
         VControl.BeginUpdate;
         try
           VSpacing := VControl.BorderSpacing;
+          { a control with bottom alignment and top anchor set keeps its
+            position and enlarges its size instead of keeping its size }
           VControl.Left := VLeft + VSpacing.Left + VSpacing.Around;
-          if not (akBottom in VControl.Anchors) then
-            VControl.Top := VBotton - VControl.Height - VSpacing.Bottom - VSpacing.Around;
+          if not (akTop in VControl.Anchors) then
+            VControl.Top := VBotton - VControl.Height - VSpacing.Bottom - VSpacing.Around
+          else
+            VControl.Top := VControl.Top;
           VControl.Width := VWidth - VSpacing.Left - VSpacing.Right - (VSpacing.Around * 2);
-          VControl.Height := VControl.Height;
+          if not (akTop in VControl.Anchors) then
+            VControl.Height := VControl.Height
+          else
+            VControl.Height := VBotton - VControl.Top;
         finally
           VControl.EndUpdate;
         end;
@@ -1886,10 +1893,17 @@ begin
         VControl.BeginUpdate;
         try
           VSpacing := VControl.BorderSpacing;
-          if not (akLeft in VControl.Anchors) then
-            VControl.Left := VRight - VControl.Width - VSpacing.Right - VSpacing.Around;
+          { a control with right alignment and left anchor set keeps its
+            position and enlarges its size instead of keeping its size }
+          if not (akLeft in Anchors) then
+            VControl.Left := VRight - VControl.Width - VSpacing.Right - VSpacing.Around
+          else
+            VControl.Left := VControl.Left;
           VControl.Top := VTop + VSpacing.Top + VSpacing.Around;
-          VControl.Width := VControl.Width;
+          if not (akLeft in Anchors) then
+            VControl.Width := VControl.Width
+          else
+            VControl.Width := VRight - VControl.Left;
           VControl.Height := VBotton - VTop - VSpacing.Top - VSpacing.Bottom - (VSpacing.Around * 2);
         finally
           VControl.EndUpdate;
