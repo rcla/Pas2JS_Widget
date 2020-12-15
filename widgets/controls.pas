@@ -439,13 +439,13 @@ type
 
 const
   AnchorAlign: array[TAlign] of TAnchors = (
-    [],                                // alNone
+    [akLeft, akTop],                   // alNone
     [akLeft, akTop, akRight],          // alTop
     [akLeft, akRight, akBottom],       // alBottom
     [akLeft, akTop, akBottom],         // alLeft
     [akRight, akTop, akBottom],        // alRight
     [akLeft, akTop, akRight, akBottom],// alClient
-    []                                 // alCustom
+    [akLeft, akTop]                    // alCustom
     );
 
 function FromCharCode(ACode: NativeInt): char; external Name 'String.fromCharCode';
