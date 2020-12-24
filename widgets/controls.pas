@@ -181,7 +181,7 @@ type
     procedure Assign(Source: TPersistent); override;
     procedure BeginUpdate; virtual;
     procedure EndUpdate; virtual;
-  public
+  published
     property Around: NativeInt read FAround write SetAround;
     property Bottom: NativeInt read FBottom write SetBottom;
     property Left: NativeInt read FLeft write SetLeft;
