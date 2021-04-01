@@ -200,6 +200,7 @@ type
     function CreateHandleElement: TJSHTMLElement; override;
     procedure DoScroll; override;
     function FirstGridColumn: Integer; virtual;
+    function FixedGrid: Boolean;
     function GetCells(aCol, aRow: Integer): String; virtual;
     function GetDefaultRowHeight: Integer; virtual;
     function GridColumnFromColumnIndex(aColumnIndex: Integer): Integer;
@@ -1432,6 +1433,11 @@ end;
 function TCustomGrid.FirstGridColumn: Integer;
 begin
   Result := FixedCols;
+end;
+
+function TCustomGrid.FixedGrid: Boolean;
+begin
+  Result := (FixedCols = ColCount) or (FixedRows = RowCount);
 end;
 
 function TCustomGrid.GetCells(aCol, aRow: Integer): String;
