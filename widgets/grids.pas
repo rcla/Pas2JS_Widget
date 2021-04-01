@@ -1254,6 +1254,7 @@ begin
     fContentTable.style.setProperty('position', 'relative');
     fContentTable.style.setProperty('z-index', '1');
     fContentTable.cellSpacing := '0px';
+    fContentTable.cellPadding := '0px';
 
     { always add the content table }
     container.appendChild(fContentTable);
@@ -1266,6 +1267,7 @@ begin
     fFixedColsTable.style.setProperty('left', '0px');
     fFixedColsTable.style.setProperty('top', '0px');
     fFixedColsTable.cellSpacing := '0px';
+    fFixedColsTable.cellPadding := '0px';
   end;
 
   if not Assigned(fFixedRowsTable) then begin
@@ -1275,6 +1277,7 @@ begin
     fFixedRowsTable.style.setProperty('left', '0px');
     fFixedRowsTable.style.setProperty('top', '0px');
     fFixedRowsTable.cellSpacing := '0px';
+    fFixedRowsTable.cellPadding := '0px';
   end;
 
   if not Assigned(fFixedTopLeftTable) then begin
@@ -1284,6 +1287,7 @@ begin
     fFixedTopLeftTable.style.setProperty('left', '0px');
     fFixedTopLeftTable.style.setProperty('top', '0px');
     fFixedTopLeftTable.cellSpacing := '0px';
+    fFixedTopLeftTable.cellPadding := '0px';
   end;
 
   AppendOrRemoveNode(container, fFixedRowsTable, FixedRows > 0);
