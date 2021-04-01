@@ -165,7 +165,7 @@ type
     procedure DoTopLeftChanged;
     function GetColCount: Integer;
     function GetColumns: TGridColumns;
-    function GetColWidth(aCol: Integer): Integer;
+    function GetColWidths(aCol: Integer): Integer;
     function GetDefColWidth: Integer;
     function GetDefRowHeight: Integer;
     function GetFixedColor: TColor; virtual;
@@ -176,7 +176,7 @@ type
     procedure SetBorderStyle(aValue: TBorderStyle);
     procedure SetColCount(aValue: Integer);
     procedure SetColumns(aValue: TGridColumns);
-    procedure SetColWidth(aCol: Integer; aValue: Integer);
+    procedure SetColWidths(aCol: Integer; aValue: Integer);
     procedure SetDefColWidth(aValue: Integer);
     procedure SetDefRowHeight(aValue: Integer);
     procedure SetEditorMode(aValue: Boolean);
@@ -217,7 +217,7 @@ type
     property BorderColor: TColor read fBorderColor write SetBorderColor default cl3DDKShadow;
     property BorderStyle: TBorderStyle read fGridBorderStyle write SetBorderStyle default bsSingle;
     property ColCount: Integer read GetColCount write SetColCount default 5;
-    property ColWidths[Col: Integer]: Integer read GetColWidth write SetColWidth;
+    property ColWidths[Col: Integer]: Integer read GetColWidths write SetColWidths;
     property Columns: TGridColumns read GetColumns write SetColumns stored IsColumnsStored;
     property DefaultColWidth: Integer read GetDefColWidth write SetDefColWidth stored DefaultColWidthIsStored;
     property DefaultRowHeight: Integer read GetDefRowHeight write SetDefRowHeight stored DefaultRowHeightIsStored;
@@ -838,7 +838,7 @@ begin
   Result := fColumns;
 end;
 
-function TCustomGrid.GetColWidth(aCol: Integer): Integer;
+function TCustomGrid.GetColWidths(aCol: Integer): Integer;
 begin
   if IsColumnIndexValid(aCol) then
     Result := FCols[aCol]
@@ -925,7 +925,7 @@ begin
   fColumns.Assign(aValue);
 end;
 
-procedure TCustomGrid.SetColWidth(aCol: Integer; aValue: Integer);
+procedure TCustomGrid.SetColWidths(aCol: Integer; aValue: Integer);
 begin
   if not IsColumnIndexValid(aCol) then
     Exit;
