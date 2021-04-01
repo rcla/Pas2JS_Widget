@@ -2128,7 +2128,6 @@ end;
 
 destructor TControl.Destroy;
 begin
-  DestroyComponents;
   if Assigned(FHandleElement) then
     UnRegisterHandleEvents;
   if (Assigned(FParent)) then
