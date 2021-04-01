@@ -35,6 +35,9 @@ type
 
   EGridException = class(Exception);
 
+  TGridZone = (gzNormal, gzFixedCols, gzFixedRows, gzFixedCells, gzInvalid);
+  TGridZoneSet = set of TGridZone;
+
   TGridDataCache = record
     FixedWidth: Integer;        { Sum( Fixed ColsWidths[i] ) }
     FixedHeight: Integer;       { Sum( Fixed RowsHeights[i] ) }
@@ -248,6 +251,7 @@ type
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
 
+    function CellToGridZone(aCol, aRow: Integer): TGridZone;
     procedure Clear;
     function ClearCols: Boolean;
     function ClearRows: Boolean;
@@ -1636,6 +1640,24 @@ begin
   fGCache.AccumHeight.Free;
   fGCache.AccumWidth.Free;
   inherited Destroy;
+end;
+
+function TCustomGrid.CellToGridZone(aCol, aRow: Integer): TGridZone;
+begin
+  if (aCol < 0) or (aRow < 0) then
+    Result := gzInvalid
+  else if aCol < FFixedCols then
+    if aRow < FFixedRows then
+      Result := gzFixedCells
+    else
+      Result := gzFixedRows
+  else if aRow < FFixedRows then
+    if aCol < FFixedCols then
+      Result := gzFixedCells
+    else
+      Result := gzFixedCols
+  else
+    Result := gzNormal;
 end;
 
 procedure TCustomGrid.Clear;
