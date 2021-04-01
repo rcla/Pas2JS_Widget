@@ -415,7 +415,7 @@ begin
   fColCount := aValue;
 
   SetLength(fColArr, fColCount);
-  SetLength(fCellArr, fRowCount, fRowCount);
+  SetLength(fCellArr, fColCount, fRowCount);
 end;
 
 function TVirtualGrid.GetCells(aCol, aRow: Integer): TCellProps;
@@ -453,7 +453,7 @@ begin
   fRowCount := aValue;
 
   SetLength(fRowArr, fRowCount);
-  SetLength(fCellArr, fRowCount, fRowCount);
+  SetLength(fCellArr, fColCount, fRowCount);
 end;
 
 procedure TVirtualGrid.SetRows(aRow: Integer; aValue: TColRowProps);
