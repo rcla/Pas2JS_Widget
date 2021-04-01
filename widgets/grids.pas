@@ -1155,6 +1155,11 @@ procedure TCustomGrid.Changed;
     w := fCols[aCol];
     if w < 0 then
       w := DefaultColWidth;
+    { respect border width }
+    if w > 0 then
+      Dec(w);
+    if (w > 0) and (aCol = 0) then
+      Dec(w);
 
     if w < 0 then
       content.style.removeProperty('width')
@@ -1164,6 +1169,11 @@ procedure TCustomGrid.Changed;
     h := fRows[aRow];
     if h < 0 then
       h := DefaultRowHeight;
+    { respect border width }
+    if h > 0 then
+      Dec(h);
+    if (h > 0) and (aRow = 0) then
+      Dec(h);
 
     if h < 0 then begin
       content.style.removeProperty('height');
