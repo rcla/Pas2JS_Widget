@@ -1170,7 +1170,7 @@ procedure TCustomGrid.Changed;
       content.style.removeProperty('line-height');
     end else begin
       content.style.setProperty('height', IntToStr(h) + 'px');
-      content.style.setProperty('line-height', IntToSTr(h) + 'px');
+      content.style.setProperty('line-height', IntToStr(h) + 'px');
     end;
 
     style := aCell.style;
