@@ -1249,6 +1249,9 @@ begin
     container.style.setProperty('border-width', '1px');
   end;
 
+  { ensure that a new stacking context for the z-index is opened }
+  container.style.SetProperty('opacity', '0.99');
+
   if not Assigned(fContentTable) then begin
     fContentTable := TJSHTMLTableElement(document.createElement('table'));
     fContentTable.style.setProperty('position', 'relative');
