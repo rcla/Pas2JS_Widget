@@ -192,7 +192,6 @@ type
     procedure SetRowHeights(aRow: Integer; aValue: Integer);
     procedure SetScrollBars(aValue: TScrollStyle);
   protected
-    function GetCells(aCol, aRow: Integer): String; virtual;
     procedure Changed; override;
     function ColumnFromGridColumn(aColumn: Integer): TGridColumn;
     function ColumnIndexFromGridColumn(aColumn: Integer): Integer;
@@ -201,6 +200,7 @@ type
     function CreateHandleElement: TJSHTMLElement; override;
     procedure DoScroll; override;
     function FirstGridColumn: Integer; virtual;
+    function GetCells(aCol, aRow: Integer): String; virtual;
     function GetDefaultRowHeight: Integer; virtual;
     function GridColumnFromColumnIndex(aColumnIndex: Integer): Integer;
     procedure InternalSetColCount(aCount: Integer);
@@ -1093,11 +1093,6 @@ begin
   Changed;
 end;
 
-function TCustomGrid.GetCells(aCol, aRow: Integer): String;
-begin
-  Result := '';
-end;
-
 procedure TCustomGrid.Changed;
 
   procedure AdjustRows(aTable: TJSHTMLTableElement; aCount: LongInt);
@@ -1417,6 +1412,11 @@ end;
 function TCustomGrid.FirstGridColumn: Integer;
 begin
   Result := FixedCols;
+end;
+
+function TCustomGrid.GetCells(aCol, aRow: Integer): String;
+begin
+  Result := '';
 end;
 
 function TCustomGrid.GetDefaultRowHeight: Integer;
