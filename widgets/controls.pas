@@ -1895,12 +1895,12 @@ begin
           VSpacing := VControl.BorderSpacing;
           { a control with right alignment and left anchor set keeps its
             position and enlarges its size instead of keeping its size }
-          if not (akLeft in Anchors) then
+          if not (akLeft in VControl.Anchors) then
             VControl.Left := VRight - VControl.Width - VSpacing.Right - VSpacing.Around
           else
             VControl.Left := VControl.Left;
           VControl.Top := VTop + VSpacing.Top + VSpacing.Around;
-          if not (akLeft in Anchors) then
+          if not (akLeft in VControl.Anchors) then
             VControl.Width := VControl.Width
           else
             VControl.Width := VRight - VControl.Left;
