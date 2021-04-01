@@ -19,6 +19,8 @@ unit Grids;
 
 {$mode objfpc}{$H+}
 
+{.$define DEBUG_GRID}
+
 interface
 
 uses
@@ -32,6 +34,15 @@ type
   TGridColumn = class;
 
   EGridException = class(Exception);
+
+  TGridDataCache = record
+    FixedWidth: Integer;        { Sum( Fixed ColsWidths[i] ) }
+    FixedHeight: Integer;       { Sum( Fixed RowsHeights[i] ) }
+    GridWidth: Integer;         { Sum( ColWidths[i] ) }
+    GridHeight: Integer;        { Sum( RowHeights[i] ) }
+    AccumWidth: TIntegerList;   { Accumulated width per column }
+    AccumHeight: TIntegerList;  { Accumulated Height per row }
+  end;
 
   { TGridColumnTitle }
 
@@ -139,6 +150,7 @@ type
     fDefColWidth: Integer;
     fDefRowHeight: Integer;
     fEditorMode: Boolean;
+    fGCache: TGridDataCache;
     fFixedColor: TColor;
     fFixedCols: Integer;
     fFixedColsTable: TJSHTMLTableElement;
@@ -191,6 +203,7 @@ type
     procedure SetRowCount(aValue: Integer);
     procedure SetRowHeights(aRow: Integer; aValue: Integer);
     procedure SetScrollBars(aValue: TScrollStyle);
+    procedure UpdateCachedSizes;
   protected
     procedure Changed; override;
     function ColumnFromGridColumn(aColumn: Integer): TGridColumn;
@@ -784,15 +797,19 @@ var
 begin
   if aIsColumn then begin
     AdjustList(fCols, aNew);
+    fGCache.AccumWidth.Count := aNew;
 
     oldcount := RowCount;
 
+    UpdateCachedSizes;
     SizeChanged(aOld, oldcount);
   end else begin
     AdjustList(fRows, aNew);
+    fGCache.AccumHeight.Count := aNew;
 
     oldcount := ColCount;
 
+    UpdateCachedSizes;
     SizeChanged(oldcount, aOld);
   end;
 end;
@@ -998,6 +1015,8 @@ begin
     if not (csLoading in ComponentState) then
       DoTopLeftChanged;
   end;
+
+  UpdateCachedSizes;
 end;
 
 procedure TCustomGrid.SetFixedGridLineColor(AValue: TColor);
@@ -1021,6 +1040,8 @@ begin
 
   if not (csLoading in ComponentState) then
     DoTopLeftChanged;
+
+  UpdateCachedSizes;
 end;
 
 procedure TCustomGrid.SetFlat(aValue: Boolean);
@@ -1095,6 +1116,44 @@ begin
     Exit;
   fScrollBars := aValue;
   Changed;
+end;
+
+procedure TCustomGrid.UpdateCachedSizes;
+var
+  i: Integer;
+begin
+  fGCache.GridWidth := 0;
+  fGCache.GridHeight := 0;
+  fGCache.FixedWidth := 0;
+  fGCache.FixedHeight := 0;
+
+  for i := 0 to ColCount - 1 do begin
+    fGCache.AccumWidth[i] := fGCache.GridWidth;
+    fGCache.GridWidth := fGCache.GridWidth + GetColWidths(i);
+    if i < FixedCols then
+      fGCache.FixedWidth := fGCache.GridWidth;
+  end;
+
+  for i := 0 to RowCount - 1 do begin
+    fGCache.AccumHeight[i] := fGCache.GridHeight;
+    fGCache.GridHeight := fGCache.GridHeight + GetRowHeights(i);
+    if i < FixedRows then
+      fGCache.FixedHeight := fGCache.GridHeight;
+  end;
+
+{$ifdef DEBUG_GRID}
+  Writeln('Cached Grid Information: ');
+  Writeln('GridWidth: ', fGCache.GridWidth);
+  Writeln('GridHeight: ', fGCache.GridHeight);
+  Writeln('FixedWidth: ', fGCache.FixedWidth);
+  Writeln('FixedHeight: ', fGCache.FixedHeight);
+  Writeln('AccumWidth: ', fGCache.AccumWidth.Count);
+  for i := 0 to ColCount - 1 do
+    Writeln('   ', i, ': ', fGCache.AccumWidth[i]);
+  Writeln('AccumHeight: ', fGCache.AccumHeight.Count);
+  for i := 0 to RowCount - 1 do
+    Writeln('   ', i, ': ', fGCache.AccumHeight[i]);
+{$endif}
 end;
 
 procedure TCustomGrid.Changed;
@@ -1539,6 +1598,8 @@ end;
 
 constructor TCustomGrid.Create(aOwner: TComponent);
 begin
+  fGCache.AccumWidth := TIntegerList.Create;
+  fGCache.AccumHeight := TIntegerList.Create;
   inherited Create(aOwner);
   fTopLeft := Point(1, 1);
   fCols := TIntegerList.Create;
@@ -1572,6 +1633,8 @@ begin
   fColumns.Free;
   fCols.Free;
   fRows.Free;
+  fGCache.AccumHeight.Free;
+  fGCache.AccumWidth.Free;
   inherited Destroy;
 end;
 
