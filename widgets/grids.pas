@@ -918,6 +918,7 @@ begin
   if Columns.Enabled then
     raise EGridException.Create('Use Columns property to add/remove columns');
   InternalSetColCount(AValue);
+  Changed;
 end;
 
 procedure TCustomGrid.SetColumns(aValue: TGridColumns);
@@ -1068,6 +1069,8 @@ begin
     AdjustGrid(False, old, aValue);
   end else
     ClearRows;
+
+  Changed;
 end;
 
 procedure TCustomGrid.SetRowHeights(aRow: Integer; aValue: Integer);
