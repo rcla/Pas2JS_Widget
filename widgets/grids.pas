@@ -210,6 +210,7 @@ type
     procedure UpdateCachedSizes;
   protected
     procedure Changed; override;
+    procedure CheckLimits(var aCol, aRow: Integer);
     function ColumnFromGridColumn(aColumn: Integer): TGridColumn;
     function ColumnIndexFromGridColumn(aColumn: Integer): Integer;
     procedure ColumnsChanged(aColumn: TGridColumn);
@@ -1428,6 +1429,19 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TCustomGrid.CheckLimits(var aCol, aRow: Integer);
+begin
+  if aCol < fFixedCols then
+    aCol := fFixedCols
+  else if aCol > ColCount - 1 then
+    aCol := ColCount - 1;
+
+  if aRow < fFixedRows then
+    aRow := fFixedRows
+  else if aRow > RowCount - 1 then
+    aRow := RowCount - 1;
 end;
 
 function TCustomGrid.ColumnFromGridColumn(aColumn: Integer): TGridColumn;
