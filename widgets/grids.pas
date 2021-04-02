@@ -146,6 +146,7 @@ type
 
   TCustomGrid = class(TCustomControl)
   private
+    fAllowOutboundEvents: Boolean;
     fBorderColor: TColor;
     fCols: TIntegerList;
     fColumns: TGridColumns;
@@ -231,6 +232,7 @@ type
     procedure UpdateBorderStyle;
     procedure VisualChange; virtual;
 
+    property AllowOutboundEvents: Boolean read fAllowOutboundEvents write fAllowOutboundEvents default True;
     property BorderColor: TColor read fBorderColor write SetBorderColor default cl3DDKShadow;
     property BorderStyle: TBorderStyle read fGridBorderStyle write SetBorderStyle default bsSingle;
     property ColCount: Integer read GetColCount write SetColCount default 5;
@@ -1612,6 +1614,7 @@ begin
 
   fDefColWidth := -1;
   fDefRowHeight := -1;
+  fAllowOutboundEvents := True;
 
   fScrollBars := ssAutoBoth;
 
