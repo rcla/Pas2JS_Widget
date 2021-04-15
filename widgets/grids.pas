@@ -1228,6 +1228,7 @@ begin
     if EditorMode and (aValue < old) then
       EditorMode := False;
 
+    CheckFixed(ColCount, aValue, fFixedCols, fFixedRows);
     AdjustGrid(False, old, aValue);
   end else
     ClearRows;
