@@ -47,6 +47,9 @@ type
     AccumHeight: TIntegerList;  { Accumulated Height per row }
   end;
 
+type
+  TOnSelectEvent = procedure(aSender: TObject; aCol, aRow: Integer) of object;
+
   { TGridColumnTitle }
 
   TGridColumnTitle = class(TPersistent)
@@ -142,12 +145,15 @@ type
     property VisibleCount: Integer read GetVisibleCount;
   end;
 
+  TGridRect = TRect;
+
   { TCustomGrid }
 
   TCustomGrid = class(TCustomControl)
   private
     fAllowOutboundEvents: Boolean;
     fBorderColor: TColor;
+    fCol: Integer;
     fCols: TIntegerList;
     fColumns: TGridColumns;
     fContentTable: TJSHTMLTableElement;
@@ -167,9 +173,14 @@ type
     fGridLineColor: TColor;
     fGridLineStyle: TPenStyle;
     fGridLineWidth: Integer;
+    fOnAfterSelection: TOnSelectEvent;
+    fOnBeforeSelection: TOnSelectEvent;
+    fOnSelection: TOnSelectEvent;
     fOnTopLeftChanged: TNotifyEvent;
+    fRange: TGridRect;
     fRealizedDefColWidth: Integer;
     fRealizedDefRowHeight: Integer;
+    fRow: Integer;
     fRows: TIntegerList;
     fScrollBars: TScrollStyle;
     fSelectedColor: TColor;
@@ -190,8 +201,10 @@ type
     function GetRowHeights(aRow: Integer): Integer;
     function GetSelectedColor: TColor; virtual;
     function IsColumnsStored: Boolean;
+    function ScrollToCell(const aCol, aRow: Integer; const aForceFullyVisible: Boolean = True): Boolean;
     procedure SetBorderColor(aValue: TColor);
     procedure SetBorderStyle(aValue: TBorderStyle);
+    procedure SetCol(aValue: Integer);
     procedure SetColCount(aValue: Integer);
     procedure SetColumns(aValue: TGridColumns);
     procedure SetColWidths(aCol: Integer; aValue: Integer);
@@ -206,12 +219,15 @@ type
     procedure SetGridLineColor(aValue: TColor);
     procedure SetGridLineStyle(aValue: TPenStyle);
     procedure SetGridLineWidth(aValue: Integer);
+    procedure SetRow(aValue: Integer);
     procedure SetRowCount(aValue: Integer);
     procedure SetRowHeights(aRow: Integer; aValue: Integer);
     procedure SetScrollBars(aValue: TScrollStyle);
     procedure SetSelectedColor(aValue: TColor); virtual;
     procedure UpdateCachedSizes;
   protected
+    procedure AfterMoveSelection(const aPrevCol, aPrevRow: Integer); virtual;
+    procedure BeforeMoveSelection(const aCol, aRow: Integer); virtual;
     procedure Changed; override;
     procedure CheckLimits(var aCol, aRow: Integer);
     function ColumnFromGridColumn(aColumn: Integer): TGridColumn;
@@ -231,9 +247,12 @@ type
     function IsColumnIndexVariable(aIndex: Integer): Boolean;
     function IsRowIndexValid(aIndex: Integer): Boolean;
     function IsRowIndexVariable(aIndex: Integer): Boolean;
+    function MoveExtend(aRelative: Boolean; aCol, aRow: Integer; aForceFullyVisible: Boolean = True): Boolean;
+    procedure MoveSelection; virtual;
     function OffsetToColRow(aIsCol, aFisical: Boolean; aOffset: Integer; out aIndex, aRest: Integer): Boolean;
     function SelectCell(aCol, aRow: Integer): Boolean; virtual;
     procedure SizeChanged(aOldColCount, aOldRowCount: Integer); virtual;
+    function TryMoveSelection(aRelative: Boolean; var aCol, aRow: Integer): Boolean;
     procedure TopLeftChanged; virtual;
     procedure UpdateBorderStyle;
     procedure VisualChange; virtual;
@@ -241,6 +260,7 @@ type
     property AllowOutboundEvents: Boolean read fAllowOutboundEvents write fAllowOutboundEvents default True;
     property BorderColor: TColor read fBorderColor write SetBorderColor default cl3DDKShadow;
     property BorderStyle: TBorderStyle read fGridBorderStyle write SetBorderStyle default bsSingle;
+    property Col: Integer read fCol write SetCol;
     property ColCount: Integer read GetColCount write SetColCount default 5;
     property ColWidths[Col: Integer]: Integer read GetColWidths write SetColWidths;
     property Columns: TGridColumns read GetColumns write SetColumns stored IsColumnsStored;
@@ -252,10 +272,15 @@ type
     property GridLineColor: TColor read fGridLineColor write SetGridLineColor default clSilver;
     property GridLineStyle: TPenStyle read fGridLineStyle write SetGridLineStyle;
     property GridLineWidth: Integer read fGridLineWidth write SetGridLineWidth default 1;
+    property Row: Integer read fRow write SetRow;
     property RowCount: Integer read GetRowCount write SetRowCount default 5;
     property RowHeights[Row: Integer]: Integer read GetRowHeights write SetRowHeights;
     property ScrollBars: TScrollStyle read fScrollBars write SetScrollBars default ssAutoBoth;
     property SelectedColor: TColor read GetSelectedColor write SetSelectedColor;
+
+    property OnAfterSelection: TOnSelectEvent read fOnAfterSelection write fOnAfterSelection;
+    property OnBeforeSelection: TOnSelectEvent read fOnBeforeSelection write fOnBeforeSelection;
+    property OnSelection: TOnSelectEvent read fOnSelection write fOnSelection;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -931,6 +956,13 @@ begin
   Result := Columns.Enabled;
 end;
 
+function TCustomGrid.ScrollToCell(const aCol, aRow: Integer;
+  const aForceFullyVisible: Boolean): Boolean;
+begin
+  { ToDo }
+  Result := False;
+end;
+
 procedure TCustomGrid.SetBorderColor(aValue: TColor);
 begin
   if fBorderColor = aValue then
@@ -947,6 +979,15 @@ begin
 
   fGridBorderStyle := aValue;
   UpdateBorderStyle;
+end;
+
+procedure TCustomGrid.SetCol(aValue: Integer);
+begin
+  if fCol = aValue then
+    Exit;
+  MoveExtend(False, aValue, fRow, True);
+  Click;
+  Changed;
 end;
 
 procedure TCustomGrid.SetColCount(aValue: Integer);
@@ -1094,6 +1135,15 @@ begin
   Invalidate;
 end;
 
+procedure TCustomGrid.SetRow(aValue: Integer);
+begin
+  if fRow = aValue then
+    Exit;
+  MoveExtend(False, fCol, aValue, True);
+  Changed;
+  Click;
+end;
+
 procedure TCustomGrid.SetRowCount(aValue: Integer);
 var
   old: Integer;
@@ -1180,6 +1230,18 @@ begin
   for i := 0 to RowCount - 1 do
     Writeln('   ', i, ': ', fGCache.AccumHeight[i]);
 {$endif}
+end;
+
+procedure TCustomGrid.AfterMoveSelection(const aPrevCol, aPrevRow: Integer);
+begin
+  if Assigned(fOnAfterSelection) then
+    fOnAfterSelection(Self, aPrevCol, aPrevRow);
+end;
+
+procedure TCustomGrid.BeforeMoveSelection(const aCol, aRow: Integer);
+begin
+  if Assigned(fOnBeforeSelection) then
+    fOnBeforeSelection(Self, aCol, aRow);
 end;
 
 procedure TCustomGrid.Changed;
@@ -1600,6 +1662,42 @@ begin
   Result := (aIndex >= fFixedRows) and (aIndex < RowCount);
 end;
 
+function TCustomGrid.MoveExtend(aRelative: Boolean; aCol, aRow: Integer;
+  aForceFullyVisible: Boolean): Boolean;
+var
+  oldrange: TGridRect;
+  prevrow, prevcol: Integer;
+begin
+  Result := TryMoveSelection(aRelative, aCol, aRow);
+  if not Result then
+    Exit;
+
+  BeforeMoveSelection(aCol, aRow);
+
+  oldrange := fRange;
+  prevrow := fRow;
+  prevcol := fCol;
+
+  fRange := Rect(aCol, aRow, aCol, aRow);
+
+  {if not }ScrollToCell(aCol, aRow, aForceFullyVisible){ then
+    InvalidateMovement(aCol, aRow, oldrange)};
+
+  //Writeln('New selection: ', fCol, ' ', fRow);
+  fCol := aCol;
+  fRow := aRow;
+
+  MoveSelection;
+
+  AfterMoveSelection(prevcol, prevrow);
+end;
+
+procedure TCustomGrid.MoveSelection;
+begin
+  if Assigned(fOnSelection) then
+    fOnSelection(Self, fCol, fRow);
+end;
+
 function TCustomGrid.OffsetToColRow(aIsCol, aFisical: Boolean;
   aOffset: Integer; out aIndex, aRest: Integer): Boolean;
 begin
@@ -1683,6 +1781,28 @@ begin
   { empty }
 end;
 
+function TCustomGrid.TryMoveSelection(aRelative: Boolean; var aCol,
+  aRow: Integer): Boolean;
+begin
+  Result := False;
+
+  if FixedGrid then
+    Exit;
+
+  if aRelative then begin
+    Inc(aCol, fCol);
+    Inc(aRow, fRow);
+  end;
+
+  CheckLimits(aCol, aRow);
+
+  // Change on Focused cell?
+  if (aCol = fCol) and (aRow = fRow) then
+    SelectCell(aCol, aRow)
+  else
+    Result := SelectCell(aCol, aRow);
+end;
+
 procedure TCustomGrid.TopLeftChanged;
 begin
   if Assigned(OnTopLeftChanged) and not (csDesigning in ComponentState) then
@@ -1740,6 +1860,7 @@ begin
   fGridBorderStyle := bsSingle;
   UpdateBorderStyle;
 
+  fRange := Rect(-1, -1, -1, -1);
   fSelectedColor := clHighlight;
 
   ColCount := 5;
@@ -1784,6 +1905,7 @@ begin
   colschanged := ClearCols;
   if not (rowschanged or colschanged) then
     Exit;
+  fRange := Rect(-1, -1, -1, -1);
   Changed;
 end;
 
