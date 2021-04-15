@@ -229,6 +229,7 @@ type
     function IsRowIndexValid(aIndex: Integer): Boolean;
     function IsRowIndexVariable(aIndex: Integer): Boolean;
     function OffsetToColRow(aIsCol, aFisical: Boolean; aOffset: Integer; out aIndex, aRest: Integer): Boolean;
+    function SelectCell(aCol, aRow: Integer): Boolean; virtual;
     procedure SizeChanged(aOldColCount, aOldRowCount: Integer); virtual;
     procedure TopLeftChanged; virtual;
     procedure UpdateBorderStyle;
@@ -1653,6 +1654,11 @@ begin
   end;
 
   Result := True;
+end;
+
+function TCustomGrid.SelectCell(aCol, aRow: Integer): Boolean;
+begin
+  Result := (ColWidths[aCol] > 0) and (RowHeights[aRow] > 0);
 end;
 
 procedure TCustomGrid.SizeChanged(aOldColCount, aOldRowCount: Integer);
