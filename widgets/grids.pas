@@ -35,6 +35,11 @@ type
 
   EGridException = class(Exception);
 
+  TGridOption = (
+    goRowSelect { select a complete row instead of only a single cell }
+  );
+  TGridOptions = set of TGridOption;
+
   TGridZone = (gzNormal, gzFixedCols, gzFixedRows, gzFixedCells, gzInvalid);
   TGridZoneSet = set of TGridZone;
 
@@ -46,6 +51,9 @@ type
     AccumWidth: TIntegerList;   { Accumulated width per column }
     AccumHeight: TIntegerList;  { Accumulated Height per row }
   end;
+
+const
+  DefaultGridOptions = [];
 
 type
   TOnSelectEvent = procedure(aSender: TObject; aCol, aRow: Integer) of object;
@@ -177,6 +185,7 @@ type
     fOnBeforeSelection: TOnSelectEvent;
     fOnSelection: TOnSelectEvent;
     fOnTopLeftChanged: TNotifyEvent;
+    fOptions: TGridOptions;
     fRange: TGridRect;
     fRealizedDefColWidth: Integer;
     fRealizedDefRowHeight: Integer;
@@ -219,6 +228,7 @@ type
     procedure SetGridLineColor(aValue: TColor);
     procedure SetGridLineStyle(aValue: TPenStyle);
     procedure SetGridLineWidth(aValue: Integer);
+    procedure SetOptions(aValue: TGridOptions);
     procedure SetRow(aValue: Integer);
     procedure SetRowCount(aValue: Integer);
     procedure SetRowHeights(aRow: Integer; aValue: Integer);
@@ -273,6 +283,7 @@ type
     property GridLineColor: TColor read fGridLineColor write SetGridLineColor default clSilver;
     property GridLineStyle: TPenStyle read fGridLineStyle write SetGridLineStyle;
     property GridLineWidth: Integer read fGridLineWidth write SetGridLineWidth default 1;
+    property Options: TGridOptions read fOptions write SetOptions default DefaultGridOptions;
     property Row: Integer read fRow write SetRow;
     property RowCount: Integer read GetRowCount write SetRowCount default 5;
     property RowHeights[Row: Integer]: Integer read GetRowHeights write SetRowHeights;
@@ -1136,6 +1147,14 @@ begin
   Invalidate;
 end;
 
+procedure TCustomGrid.SetOptions(aValue: TGridOptions);
+begin
+  if fOptions = aValue then
+    Exit;
+  fOptions := aValue;
+  Changed;
+end;
+
 procedure TCustomGrid.SetRow(aValue: Integer);
 begin
   if fRow = aValue then
@@ -1691,7 +1710,10 @@ begin
   prevrow := fRow;
   prevcol := fCol;
 
-  fRange := Rect(aCol, aRow, aCol, aRow);
+  if goRowSelect in Options then
+    fRange := Rect(fFixedCols, aRow, ColCount - 1, aRow)
+  else
+    fRange := Rect(aCol, aRow, aCol, aRow);
 
   {if not }ScrollToCell(aCol, aRow, aForceFullyVisible){ then
     InvalidateMovement(aCol, aRow, oldrange)};
@@ -1868,6 +1890,8 @@ begin
   fFixedColor := clBtnFace;
   fFixedGridLineColor := cl3DDkShadow;
   fBorderColor := cl3DDkShadow;
+
+  fOptions := DefaultGridOptions;
 
   fFlat := False;
   fGridBorderStyle := bsSingle;
