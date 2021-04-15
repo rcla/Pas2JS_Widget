@@ -200,6 +200,7 @@ type
     function DefaultColWidthIsStored: Boolean;
     function DefaultRowHeightIsStored: Boolean;
     procedure DoTopLeftChanged;
+    procedure FixPosition(aIsColumn: Boolean; aIndex: Integer);
     function GetColCount: Integer;
     function GetColumns: TGridColumns;
     function GetColWidths(aCol: Integer): Integer;
@@ -862,6 +863,13 @@ begin
 
     UpdateCachedSizes;
     SizeChanged(aOld, oldcount);
+
+    { if new count makes current Col out of range, adjust position if not,
+       position should not change (fake changed col to be the last one) }
+    Dec(aNew);
+    if aNew < Col then
+      aNew := Col;
+    FixPosition(True, aNew);
   end else begin
     AdjustList(fRows, aNew);
     fGCache.AccumHeight.Count := aNew;
@@ -879,6 +887,13 @@ begin
 
     UpdateCachedSizes;
     SizeChanged(oldcount, aOld);
+
+    { if new count makes current Row out of range, adjust position if not,
+      position should not change (fake changed row to be the last one) }
+    Dec(aNew);
+    if aNew < Row then
+      aNew := Row;
+    FixPosition(False, aNew);
   end;
 end;
 
@@ -911,6 +926,25 @@ end;
 procedure TCustomGrid.DoTopLeftChanged;
 begin
   TopLeftChanged;
+  VisualChange;
+end;
+
+procedure TCustomGrid.FixPosition(aIsColumn: Boolean; aIndex: Integer);
+
+  procedure FixSelection;
+  begin
+    if fRow > fRows.Count - 1 then
+      fRow := fRows.Count - 1
+    else if (fRow < FixedRows) and (FixedRows < fRows.Count) then
+      fRow := FixedRows;
+    if fCol > fCols.Count - 1 then
+      fCol := fCols.Count - 1
+    else if (fCol < FixedCols) and (FixedCols < fCols.Count) then
+      fCol := FixedCols;
+  end;
+
+begin
+  FixSelection;
   VisualChange;
 end;
 
