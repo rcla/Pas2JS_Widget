@@ -422,7 +422,10 @@ type
     property DefaultRowHeight;
     property FixedCols;
     property FixedRows;
+    property Options;
     property RowCount;
+
+    property OnSelection;
   end;
 
 implementation
