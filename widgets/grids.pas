@@ -228,6 +228,7 @@ type
     function IsColumnIndexVariable(aIndex: Integer): Boolean;
     function IsRowIndexValid(aIndex: Integer): Boolean;
     function IsRowIndexVariable(aIndex: Integer): Boolean;
+    function OffsetToColRow(aIsCol, aFisical: Boolean; aOffset: Integer; out aIndex, aRest: Integer): Boolean;
     procedure SizeChanged(aOldColCount, aOldRowCount: Integer); virtual;
     procedure TopLeftChanged; virtual;
     procedure UpdateBorderStyle;
@@ -1579,6 +1580,79 @@ end;
 function TCustomGrid.IsRowIndexVariable(aIndex: Integer): Boolean;
 begin
   Result := (aIndex >= fFixedRows) and (aIndex < RowCount);
+end;
+
+function TCustomGrid.OffsetToColRow(aIsCol, aFisical: Boolean;
+  aOffset: Integer; out aIndex, aRest: Integer): Boolean;
+begin
+  aIndex := 0;
+  aRest := 0;
+  Result := False;
+  //aOffset := aOffset - GetBorderWidth;
+  if aOffset < 0 then
+    Exit;
+
+  if aIsCol then begin
+    if aFisical and (aOffset > fGCache.FixedWidth - 1) then begin
+      aIndex := fTopLeft.X;
+      if IsColumnIndexValid(aIndex) then begin
+        aOffset := aOffset - fGCache.FixedWidth + fGCache.AccumWidth[aIndex];
+      end;
+      if not IsColumnIndexValid(aIndex) or (aOffset > fGCache.GridWidth - 1) then begin
+        if AllowOutboundEvents then
+          aIndex := ColCount - 1
+        else
+          aIndex := -1;
+        Exit;
+      end;
+    end;
+
+    while aOffset > fGCache.AccumWidth[aIndex] + GetColWidths(aIndex) - 1 do begin
+      Inc(aIndex);
+      if not IsColumnIndexValid(aIndex) then begin
+        if AllowOutBoundEvents then
+          aIndex := ColCount - 1
+        else
+          aIndex := -1;
+        Exit;
+      end;
+    end;
+
+    aRest := aOffset;
+    if aIndex <> 0 then
+      aRest := aOffset - fGCache.AccumWidth[aIndex];
+  end else begin
+    if aFisical and (aOffset > fGCache.FixedHeight - 1) then begin
+      aIndex := fTopLeft.Y;
+      if IsRowIndexValid(aIndex) then begin
+        aOffset := aOffset - fGCache.FixedHeight + fGCache.AccumHeight[aIndex];
+      end;
+      if not IsRowIndexValid(aIndex) or (aOffset > fGCache.GridHeight - 1) then begin
+        if AllowOutboundEvents then
+          aIndex := RowCount - 1
+        else
+          aIndex := -1;
+        Exit;
+      end;
+    end;
+
+    while aOffset > fGCache.AccumHeight[aIndex] + GetRowHeights(aIndex) - 1 do begin
+      Inc(aIndex);
+      if not IsRowIndexValid(aIndex) then begin
+        if AllowOutBoundEvents then
+          aIndex := RowCount - 1
+        else
+          aIndex := -1;
+        Exit;
+      end;
+    end;
+
+    aRest := aOffset;
+    if aIndex <> 0 then
+      aRest := aOffset - fGCache.AccumHeight[aIndex];
+  end;
+
+  Result := True;
 end;
 
 procedure TCustomGrid.SizeChanged(aOldColCount, aOldRowCount: Integer);
