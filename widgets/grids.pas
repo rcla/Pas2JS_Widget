@@ -240,6 +240,7 @@ type
     function FixedGrid: Boolean;
     function GetCells(aCol, aRow: Integer): String; virtual;
     function GetDefaultRowHeight: Integer; virtual;
+    function GetIsCellSelected(aCol, aRow: Integer): Boolean; virtual;
     function GridColumnFromColumnIndex(aColumnIndex: Integer): Integer;
     procedure InternalSetColCount(aCount: Integer);
     procedure InvalidateCell(aCol, aRow: Integer; aRedraw: Boolean); overload;
@@ -1336,6 +1337,12 @@ procedure TCustomGrid.Changed;
     style.SetProperty('white-space', 'nowrap');
     style.SetProperty('overflow', 'hidden');
 
+    if (fSelectedColor <> clNone) and GetIsCellSelected(aCol, aRow) and
+       (aCol >= fFixedCols) and (aRow >= fFixedRows) then
+      content.style.setProperty('background-color', JSColor(fSelectedColor))
+    else
+      content.style.removeProperty('background-color');
+
     content.style.setProperty('text-align', AlignmentToCSSAlignment(alignment));
     { does not yet work :/ }
     content.style.setProperty('vertical-align', TextLayoutToCSSVerticalAlign(layout));
@@ -1608,6 +1615,12 @@ end;
 function TCustomGrid.GetDefaultRowHeight: Integer;
 begin
   Result := Font.TextHeight('Xy') + 7;
+end;
+
+function TCustomGrid.GetIsCellSelected(aCol, aRow: Integer): Boolean;
+begin
+  Result := (fRange.Left <= aCol) and (aCol <= fRange.Right) and
+            (fRange.Top <= aRow) and (aRow <= fRange.Bottom);
 end;
 
 function TCustomGrid.GridColumnFromColumnIndex(aColumnIndex: Integer): Integer;
