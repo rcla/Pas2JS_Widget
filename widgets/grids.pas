@@ -172,6 +172,7 @@ type
     fRealizedDefRowHeight: Integer;
     fRows: TIntegerList;
     fScrollBars: TScrollStyle;
+    fSelectedColor: TColor;
     fTopLeft: TPoint;
     fUpdateCount: Integer;
     procedure AdjustGrid(aIsColumn: Boolean; aOld, aNew: Integer);
@@ -187,6 +188,7 @@ type
     function GetFixedColor: TColor; virtual;
     function GetRowCount: Integer;
     function GetRowHeights(aRow: Integer): Integer;
+    function GetSelectedColor: TColor; virtual;
     function IsColumnsStored: Boolean;
     procedure SetBorderColor(aValue: TColor);
     procedure SetBorderStyle(aValue: TBorderStyle);
@@ -207,6 +209,7 @@ type
     procedure SetRowCount(aValue: Integer);
     procedure SetRowHeights(aRow: Integer; aValue: Integer);
     procedure SetScrollBars(aValue: TScrollStyle);
+    procedure SetSelectedColor(aValue: TColor); virtual;
     procedure UpdateCachedSizes;
   protected
     procedure Changed; override;
@@ -252,6 +255,7 @@ type
     property RowCount: Integer read GetRowCount write SetRowCount default 5;
     property RowHeights[Row: Integer]: Integer read GetRowHeights write SetRowHeights;
     property ScrollBars: TScrollStyle read fScrollBars write SetScrollBars default ssAutoBoth;
+    property SelectedColor: TColor read GetSelectedColor write SetSelectedColor;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -917,6 +921,11 @@ begin
     Result := DefaultRowHeight;
 end;
 
+function TCustomGrid.GetSelectedColor: TColor;
+begin
+  Result := fSelectedColor;
+end;
+
 function TCustomGrid.IsColumnsStored: Boolean;
 begin
   Result := Columns.Enabled;
@@ -1124,6 +1133,14 @@ begin
   if fScrollBars = aValue then
     Exit;
   fScrollBars := aValue;
+  Changed;
+end;
+
+procedure TCustomGrid.SetSelectedColor(aValue: TColor);
+begin
+  if fSelectedColor = aValue then
+    Exit;
+  fSelectedColor := aValue;
   Changed;
 end;
 
@@ -1722,6 +1739,8 @@ begin
   fFlat := False;
   fGridBorderStyle := bsSingle;
   UpdateBorderStyle;
+
+  fSelectedColor := clHighlight;
 
   ColCount := 5;
   RowCount := 5;
