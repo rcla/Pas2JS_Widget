@@ -843,13 +843,22 @@ procedure TCustomGrid.AdjustGrid(aIsColumn: Boolean; aOld, aNew: Integer);
   end;
 
 var
-  oldcount: Integer;
+  oldcount, newcount: Integer;
 begin
   if aIsColumn then begin
     AdjustList(fCols, aNew);
     fGCache.AccumWidth.Count := aNew;
 
     oldcount := RowCount;
+    if (aOld = 0) and (aNew >= 0) then begin
+      fTopLeft.X := fFixedCols;
+      if RowCount = 0 then begin
+        newcount := 1;
+        fTopLeft.Y := fFixedRows;
+        AdjustList(fRows, newcount);
+        fGCache.AccumHeight.Count := newcount;
+      end;
+    end;
 
     UpdateCachedSizes;
     SizeChanged(aOld, oldcount);
@@ -858,6 +867,15 @@ begin
     fGCache.AccumHeight.Count := aNew;
 
     oldcount := ColCount;
+    if (aOld = 0) and (aNew >= 0) then begin
+      fTopLeft.Y := fFixedRows;
+      if ColCount = 0 then begin
+        newcount := 1;
+        fTopLeft.X := fFixedCols;
+        AdjustList(fCols, newcount);
+        fGCache.AccumWidth.Count := newcount;
+      end;
+    end;
 
     UpdateCachedSizes;
     SizeChanged(oldcount, aOld);
