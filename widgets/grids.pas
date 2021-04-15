@@ -386,8 +386,14 @@ type
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
 
+    property AllowOutboundEvents;
+    property Col;
     property ColCount;
+    property ColWidths;
+    property Options;
+    property Row;
     property RowCount;
+    property RowHeights;
   end;
 
   { TCustomStringGrid }
