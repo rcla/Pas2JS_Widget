@@ -196,6 +196,7 @@ type
     fTopLeft: TPoint;
     fUpdateCount: Integer;
     procedure AdjustGrid(aIsColumn: Boolean; aOld, aNew: Integer);
+    procedure CheckCount(aNewColCount, aNewRowCount: Integer);
     procedure CheckFixed(aCols, aRows, aFixedCols, aFixedRows: Integer);
     function DefaultColWidthIsStored: Boolean;
     function DefaultRowHeightIsStored: Boolean;
@@ -260,6 +261,7 @@ type
     function IsRowIndexValid(aIndex: Integer): Boolean;
     function IsRowIndexVariable(aIndex: Integer): Boolean;
     function MoveExtend(aRelative: Boolean; aCol, aRow: Integer; aForceFullyVisible: Boolean = True): Boolean;
+    function MoveNextSelectable(aRelative: Boolean; aDCol, aDRow: Integer): Boolean; virtual;
     procedure MoveSelection; virtual;
     function OffsetToColRow(aIsCol, aFisical: Boolean; aOffset: Integer; out aIndex, aRest: Integer): Boolean;
     function SelectCell(aCol, aRow: Integer): Boolean; virtual;
@@ -897,6 +899,24 @@ begin
   end;
 end;
 
+procedure TCustomGrid.CheckCount(aNewColCount, aNewRowCount: Integer);
+var
+  newcol, newrow: Integer;
+begin
+  if Col >= aNewColCount then
+    newcol := aNewColCount - 1
+  else
+    newcol := Col;
+  if Row >= aNewRowCount then
+    newrow := aNewRowCount - 1
+  else
+    newrow := Row;
+  if (newcol >= 0) and (newrow >= 0) and ((newcol <> Col) or (newrow <> Row)) then begin
+    if (aNewColCount <> fFixedCols) and (aNewRowCount <> fFixedRows) then
+      MoveNextSelectable(False, NewCol, NewRow);
+  end;
+end;
+
 procedure TCustomGrid.CheckFixed(aCols, aRows, aFixedCols, aFixedRows: Integer);
 begin
   if aFixedCols < 0 then
@@ -1229,6 +1249,7 @@ begin
       EditorMode := False;
 
     CheckFixed(ColCount, aValue, fFixedCols, fFixedRows);
+    CheckCount(ColCount, aValue);
     AdjustGrid(False, old, aValue);
   end else
     ClearRows;
@@ -1718,6 +1739,7 @@ begin
       EditorMode := False;
 
     CheckFixed(aCount, RowCount, FixedCols, FixedRows);
+    CheckCount(aCount, RowCount);
     AdjustGrid(True, old, aCount);
   end;
 end;
@@ -1778,6 +1800,52 @@ begin
   MoveSelection;
 
   AfterMoveSelection(prevcol, prevrow);
+end;
+
+function TCustomGrid.MoveNextSelectable(aRelative: Boolean; aDCol,
+  aDRow: Integer): Boolean;
+var
+  cinc, rinc: Integer;
+  ncol, nrow: Integer;
+begin
+  { Reference }
+  if not aRelative then begin
+    ncol := aDCol;
+    nrow := aDRow;
+    aDCol := ncol - fCol;
+    aDRow := nrow - fRow;
+  end else begin
+    ncol := fCol + aDCol;
+    nrow := fRow + aDRow;
+  end;
+
+  CheckLimits(ncol, nrow);
+
+  { Increment }
+  if aDCol < 0 then
+    cinc := -1
+  else if aDCol > 0 then
+    cinc := 1
+  else
+    cinc := 0;
+  if aDRow < 0 then
+    rinc := -1
+  else if aDRow > 0 then
+    rinc := 1
+  else
+    rinc := 0;
+
+  { Calculate }
+  Result := False;
+  while ((ColWidths[ncol] = 0) and (cinc <> 0))
+     or ((RowHeights[nrow] = 0) and (rinc <> 0)) do
+  begin
+    if not (IsRowIndexVariable(nrow + rinc) and IsColumnIndexVariable(ncol + cinc)) then
+      Exit;
+    Inc(ncol, cinc);
+    Inc(nrow, rinc);
+  end;
+  Result := MoveExtend(False, ncol, nrow, True);
 end;
 
 procedure TCustomGrid.MoveSelection;
