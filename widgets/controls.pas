@@ -1542,7 +1542,7 @@ var
   end;
 
 begin
-  if (not IsUpdating) and not (csLoading in ComponentState) then
+  if (not IsUpdating) and ([csLoading,csDestroying] * ComponentState = []) then
   begin
     form := FindParentForm;
 
