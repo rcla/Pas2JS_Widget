@@ -596,7 +596,7 @@ begin
     with (AElement.GetBoundingClientRect) do
     begin
       Result.Left := Trunc(Left + Window.ScrollX);
-      Result.Top := Trunc(Top + Window.ScreenY);
+      Result.Top := Trunc(Top + Window.ScrollY);
     end;
   end;
 end;
