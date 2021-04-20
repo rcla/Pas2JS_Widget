@@ -9,7 +9,7 @@ interface
 
 uses
   BtnCtrls, DataGrid, DttCtrls, NumCtrls, WebCtrls, Pas2JS_IDE_Descriptor, 
-  Pas2JS_IDE_Options, LazarusPackageIntf;
+  LazarusPackageIntf;
 
 implementation
 
