@@ -2712,4 +2712,51 @@ begin
   Paint;
 end;
 
+{ Cursor translation function }
+
+const
+  CursorIdents: array[0..29] of TIdentMapEntry = (
+    (Value: crDefault;      Name: 'crDefault'),
+    (Value: crNone;         Name: 'crNone'),
+    (Value: crArrow;        Name: 'crArrow'),
+    (Value: crCross;        Name: 'crCross'),
+    (Value: crIBeam;        Name: 'crIBeam'),
+    (Value: crSizeNESW;     Name: 'crSizeNESW'),
+    (Value: crSizeNS;       Name: 'crSizeNS'),
+    (Value: crSizeNWSE;     Name: 'crSizeNWSE'),
+    (Value: crSizeWE;       Name: 'crSizeWE'),
+    (Value: crSizeNW;       Name: 'crSizeNW'),
+    (Value: crSizeN;        Name: 'crSizeN'),
+    (Value: crSizeNE;       Name: 'crSizeNE'),
+    (Value: crSizeW;        Name: 'crSizeW'),
+    (Value: crSizeE;        Name: 'crSizeE'),
+    (Value: crSizeSW;       Name: 'crSizeSW'),
+    (Value: crSizeS;        Name: 'crSizeS'),
+    (Value: crSizeSE;       Name: 'crSizeSE'),
+    (Value: crUpArrow;      Name: 'crUpArrow'),
+    (Value: crHourGlass;    Name: 'crHourGlass'),
+    (Value: crDrag;         Name: 'crDrag'),
+    (Value: crNoDrop;       Name: 'crNoDrop'),
+    (Value: crHSplit;       Name: 'crHSplit'),
+    (Value: crVSplit;       Name: 'crVSplit'),
+    (Value: crMultiDrag;    Name: 'crMultiDrag'),
+    (Value: crSQLWait;      Name: 'crSQLWait'),
+    (Value: crNo;           Name: 'crNo'),
+    (Value: crAppStart;     Name: 'crAppStart'),
+    (Value: crHelp;         Name: 'crHelp'),
+    (Value: crHandPoint;    Name: 'crHandPoint'),
+    (Value: crSizeAll;      Name: 'crSizeAll'));
+
+function CursorToIdent(aCursor: Longint; var aIdent: string): Boolean;
+begin
+  Result := IntToIdent(aCursor, aIdent, CursorIdents);
+end;
+
+function IdentToCursor(const aIdent: string; var aCursor: Longint): Boolean;
+begin
+  Result := IdentToInt(aIdent, aCursor, CursorIdents);
+end;
+
+initialization
+  RegisterIntegerConsts(TypeInfo(TCursor), @IdentToCursor, @CursorToIdent);
 end.
