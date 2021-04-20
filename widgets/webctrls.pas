@@ -437,6 +437,17 @@ type
     property OnStopTimer;
   end;
 
+  { TWWebSocketClient }
+  
+  TWWebSocketClient = class(TCustomWebSocketClient)
+  published
+    property Url;
+    property OnClose;
+    property OnError;
+    property OnMessage;
+    property OnOpen;
+  end;
+
   { TWPageControl }
 
   TWPageControl = class(TCustomPageControl)
