@@ -76,6 +76,7 @@ const
   crCross = -3;
   crIBeam = -4;
   crSize = -22;
+  crSizeAll = -22;
   crSizeNESW = -6; /// Diagonal north east - south west
   crSizeNS = -7;
   crSizeNWSE = -8;
