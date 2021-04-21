@@ -23,13 +23,6 @@ interface
 uses
   Classes, SysUtils;
 
-const
-  CONNECTING = 0;
-  Open = 1;
-  CLOSING = 2;
-  CLOSED = 3;
-
-
 type
 
   TOnMessage = procedure(Sender: TObject; Data: string) of object;
@@ -43,17 +36,7 @@ type
     FOnMessage: TOnMessage;
     FOnOpen: TNotifyEvent;
     FUrl: string;
-    function GetUrl: string;
   public
-    constructor Create(AOwner: TComponent); override;
-    // property BufferedAmount
-    // property Extensions
-    // property Protocol
-    // property
-    procedure Close;
-    procedure Send(Data: string);
-  public
-    // property BinaryType
     property Url: string read FUrl write FUrl;
     property OnClose: TNotifyEvent read FOnClose write FOnClose;
     property OnError: TNotifyEvent read FOnError write FOnError;
@@ -63,26 +46,5 @@ type
 
 implementation
 
-{ TCustomWebSocket }
-
-function TCustomWebSocketClient.GetUrl: string;
-begin
-
-end;
-
-constructor TCustomWebSocketClient.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-end;
-
-procedure TCustomWebSocketClient.Close;
-begin
-
-end;
-
-procedure TCustomWebSocketClient.Send(Data: string);
-begin
-
-end;
 
 end.
