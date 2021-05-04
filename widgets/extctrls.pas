@@ -213,8 +213,7 @@ end;
 
 procedure TCustomWebSocketClient.SetUrl(aValue: String);
 begin
-  if Assigned(fWebSocket) then
-    Close;
+  Close;
   fUrl:=aValue;
 end;
 
@@ -225,8 +224,7 @@ end;
 
 destructor TCustomWebSocketClient.Destroy;
 begin
-  if Assigned(fWebSocket) then
-    Close;
+  Close;
   inherited Destroy;
 end;
 
@@ -250,7 +248,6 @@ begin
     fWebSocket.close;
     fWebSocket := nil;
   end;
-
 end;
 
 { TCustomTimer }
