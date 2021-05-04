@@ -219,7 +219,6 @@ type
   { TCustomMemo }
 
   TCustomMemo = class(TWinControl)
-    { TODO: WantTabs not work }
   private
     FAlignment: TAlignment;
     FCharCase: TEditCharCase;
@@ -791,6 +790,7 @@ begin
       FSelectionChanged := False;
     end;
     with TJSHTMLSelectElement(HandleElement) do begin
+      Style.SetProperty('overflow', 'auto');
       multiple := FMultiSelect;
       { use 2, so that it isn't shown as a dropdown }
       size := 2;
@@ -1522,10 +1522,21 @@ begin
 end;
 
 procedure TCustomMemo.KeyDown(var Key: NativeInt; Shift: TShiftState);
+var
+  StartPos: NativeInt;
+  NewText: String;
 begin
   inherited KeyDown(Key, Shift);
   if (not FWantReturns) and (Key = 13) then
   begin
+    Key := 0;
+  end;
+  if (FWantTabs) and (Key = 9) then begin
+    StartPos := TJSHTMLTextAreaElement(HandleElement).selectionStart;
+    NewText := Text;
+    System.Insert(#9, NewText, StartPos + 1);
+    Text := NewText;
+    TJSHTMLTextAreaElement(HandleElement).selectionEnd := StartPos + 1;
     Key := 0;
   end;
 end;
