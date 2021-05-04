@@ -215,7 +215,7 @@ procedure TCustomWebSocketClient.SetUrl(aValue: String);
 begin
   if Assigned(fWebSocket) then
     Close;
-  FUrl:=aValue;
+  fUrl:=aValue;
 end;
 
 constructor TCustomWebSocketClient.Create(aOwner: TComponent);
@@ -232,21 +232,25 @@ end;
 
 procedure TCustomWebSocketClient.Connect;
 begin
-  FWebSocket := TJSWebSocket.new(Url);
-  FWebSocket.onmessage := @WebSocketMessageHandler;
-  FWebSocket.onopen := @WebSocketOpenHandler;
-  FWebSocket.onclose := @WebSocketCloseHandler;
-  FWebSocket.onerror := @WebSocketErrorHandler;
+  fWebSocket := TJSWebSocket.new(Url);
+  fWebSocket.onmessage := @WebSocketMessageHandler;
+  fWebSocket.onopen := @WebSocketOpenHandler;
+  fWebSocket.onclose := @WebSocketCloseHandler;
+  fWebSocket.onerror := @WebSocketErrorHandler;
 end;
 
 procedure TCustomWebSocketClient.Send(aData: String);
 begin
-  FWebSocket.send(aData);
+  fWebSocket.send(aData);
 end;
 
 procedure TCustomWebSocketClient.Close;
 begin
-  FWebSocket.close;
+  if Assigned(fWebSocket) then begin
+    fWebSocket.close;
+    fWebSocket := nil;
+  end;
+
 end;
 
 { TCustomTimer }
