@@ -25,26 +25,25 @@ uses
 
 type
 
-  TOnMessage = procedure(Sender: TObject; Data: string) of object;
+  TOnMessage = procedure(aSender: TObject; aData: String) of object;
 
   { TCustomWebSocketClient }
 
   TCustomWebSocketClient = class(TComponent)
   private
-    FOnClose: TNotifyEvent;
-    FOnError: TNotifyEvent;
-    FOnMessage: TOnMessage;
-    FOnOpen: TNotifyEvent;
-    FUrl: string;
+    fOnClose: TNotifyEvent;
+    fOnError: TNotifyEvent;
+    fOnMessage: TOnMessage;
+    fOnOpen: TNotifyEvent;
+    fUrl: String;
   public
-    property Url: string read FUrl write FUrl;
-    property OnClose: TNotifyEvent read FOnClose write FOnClose;
-    property OnError: TNotifyEvent read FOnError write FOnError;
-    property OnMessage: TOnMessage read FOnMessage write FOnMessage;
-    property OnOpen: TNotifyEvent read FOnOpen write FOnOpen;
+    property Url: String read fUrl write fUrl;
+    property OnClose: TNotifyEvent read fOnClose write fOnClose;
+    property OnError: TNotifyEvent read fOnError write fOnError;
+    property OnMessage: TOnMessage read fOnMessage write fOnMessage;
+    property OnOpen: TNotifyEvent read fOnOpen write fOnOpen;
   end;
 
 implementation
-
 
 end.
