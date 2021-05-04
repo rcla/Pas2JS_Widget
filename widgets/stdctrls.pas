@@ -791,6 +791,7 @@ begin
       FSelectionChanged := False;
     end;
     with TJSHTMLSelectElement(HandleElement) do begin
+      Style.SetProperty('overflow', 'auto');
       multiple := FMultiSelect;
       { use 2, so that it isn't shown as a dropdown }
       size := 2;
