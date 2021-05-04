@@ -1530,8 +1530,7 @@ begin
   begin
     Key := 0;
   end;
-  if (FWantTabs) and (Key = 9) then
-  begin
+  if (FWantTabs) and (Key = 9) then begin
     StartPos := TJSHTMLTextAreaElement(HandleElement).selectionStart;
     NewText := Text;
     System.Insert(#9, NewText, StartPos + 1);
