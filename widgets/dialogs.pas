@@ -342,7 +342,7 @@ begin
     finally
       fTitlePanel.EndUpdate;
     end;
-    fTitleText := TWLabel.Create(Self);
+    fTitleText := TWLabel.Create(fTitlePanel);
     fTitleText.BeginUpdate;
     try
       fTitleText.Parent := fTitlePanel;
