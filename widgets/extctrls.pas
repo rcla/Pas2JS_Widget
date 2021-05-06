@@ -188,7 +188,7 @@ function TCustomWebSocketClient.WebSocketMessageHandler(aEvent: TEventListenerEv
 begin
   if Assigned(OnMessage) then begin
     if aEvent._type <> 'message' then
-      exit;
+      Exit;
     OnMessage(Self, String(TJSMessageEvent(aEvent).Data));
   end;
 end;
