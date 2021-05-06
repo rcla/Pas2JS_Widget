@@ -294,7 +294,7 @@ var
 begin
   inherited Show;
   if not (Owner is TWForm) then
-    exit;
+    Exit;
   ownForm := TWForm(Owner);
   Self.BeginUpdate;
   try
@@ -305,10 +305,7 @@ begin
       curHeight := CMinDialogHeight;
     Self.Height := curHeight;
     fMessagePanel.Height := FMessageText.HandleElement.scrollHeight;
-    if Owner is TWForm then begin
-      ownForm := TWForm(Owner);
-      Self.Top := round(OwnForm.Height/2 - Self.Height/2);
-    end;
+    Self.Top := Round(ownForm.Height / 2 - Self.Height / 2);
   finally
     Self.EndUpdate;
   end;
@@ -341,7 +338,7 @@ begin
       fTitlePanel.Height := CTitleHeight;
       fTitlePanel.BevelOuter := bvNone;
       fTitlePanel.Align := alTop;
-      fTitlePanel.Color:= clSkyBlue;
+      fTitlePanel.Color := clSkyBlue;
     finally
       fTitlePanel.EndUpdate;
     end;
@@ -351,7 +348,7 @@ begin
       fTitleText.Parent := fTitlePanel;
       fTitleText.BorderSpacing.Around := CControlsSpacing;
       fTitleText.Align := alClient;
-      fTitleText.Alignment:= taCenter;
+      fTitleText.Alignment := taCenter;
     finally
       fTitleText.EndUpdate;
     end;
@@ -374,7 +371,7 @@ begin
       fMessagePanel.Parent := Self;
       fMessagePanel.BorderSpacing.Around := CControlsSpacing;
       fMessagePanel.BevelOuter := bvNone;
-      fMessagePanel.Align:=alClient;
+      fMessagePanel.Align := alClient;
     finally
       fMessagePanel.EndUpdate;
     end;
