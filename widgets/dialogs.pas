@@ -142,7 +142,7 @@ type
       CMinButtonWidth = 100;
       CMinImageHeight = 70;
       CMinImageWidth = 70;
-      CTitileHeight = 24;
+      CTitleHeight = 24;
   private
     FButtons: TMsgDlgButtons;
     FDefaultButton: TMsgDlgBtn;
@@ -298,7 +298,7 @@ begin
   ownForm := TWForm(Owner);
   Self.BeginUpdate;
   try
-    curHeight := FMessageText.HandleElement.scrollHeight + CMinButtonHeight + CControlsSpacing * 8 + CTitileHeight;
+    curHeight := FMessageText.HandleElement.scrollHeight + CMinButtonHeight + CControlsSpacing * 8 + CTitleHeight;
     if curHeight - CMinImageWidth > ownForm.Height then
       curHeight := ownForm.Height - CMinImageWidth;
     if curHeight < CMinDialogHeight then
@@ -338,7 +338,7 @@ begin
     try
       fTitlePanel.Parent := Self;
       fTitlePanel.BorderSpacing.Around := CControlsSpacing;
-      fTitlePanel.Height := CTitileHeight;
+      fTitlePanel.Height := CTitleHeight;
       fTitlePanel.BevelOuter := bvNone;
       fTitlePanel.Align := alTop;
       fTitlePanel.Color:= clSkyBlue;
