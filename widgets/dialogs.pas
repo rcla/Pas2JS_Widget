@@ -300,7 +300,7 @@ begin
   try
     curHeight := FMessageText.HandleElement.scrollHeight + CMinButtonHeight + CControlsSpacing * 8 + CTitleHeight;
     if curHeight - CMinImageWidth > ownForm.Height then
-      curHeight := ownForm.Height - CMinImageWidth;
+      curHeight := ownForm.Height - CMinImageHeight;
     if curHeight < CMinDialogHeight then
       curHeight := CMinDialogHeight;
     Self.Height := curHeight;
