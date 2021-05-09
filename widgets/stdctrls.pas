@@ -236,6 +236,7 @@ type
     function GetSelLength: NativeInt;
     function GetSelStart: NativeInt;
     function GetSelText: string;
+    procedure HandleLinesChange(aSender: TObject);
     procedure SetAlignment(AValue: TAlignment);
     procedure SetCharCase(AValue: TEditCharCase);
     procedure SetLines(AValue: TStrings);
@@ -1388,6 +1389,11 @@ begin
   Result := Copy(RealGetText, FSelStart + 1, FSelLength);
 end;
 
+procedure TCustomMemo.HandleLinesChange(aSender: TObject);
+begin
+  Changed;
+end;
+
 procedure TCustomMemo.SetCharCase(AValue: TEditCharCase);
 begin
   if (FCharCase <> AValue) then
@@ -1673,6 +1679,7 @@ constructor TCustomMemo.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FLines := TCustomMemoStrings.Create;
+  TCustomMemoStrings(FLines).OnChange := HandleLinesChange;
   FMaxLength := 0;
   FModified := False;
   FReadOnly := False;
