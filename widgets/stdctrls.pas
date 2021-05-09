@@ -2042,18 +2042,21 @@ begin
         Style.removeProperty('height');
         Style.removeProperty('width');
       end;
-    end;
-    with FContentElement do
-    begin
-      /// Clear
-      InnerHTML := '';
       /// Aligment
       case FAlignment of
         taCenter: Style.SetProperty('text-align', 'center');
         taLeftJustify: Style.SetProperty('text-align', 'left');
         taRightJustify: Style.SetProperty('text-align', 'right');
       end;
+    end;
+    with FContentElement do
+    begin
+      /// Clear
+      InnerHTML := '';
       /// Layout
+      Style.SetProperty('display', 'table-cell');
+      Style.SetProperty('width', IntToStr(Self.Width) + 'px');
+      Style.SetProperty('height', IntToStr(Self.Height) + 'px');
       case FLayout of
         tlBottom: Style.SetProperty('vertical-align', 'bottom');
         tlCenter: Style.SetProperty('vertical-align', 'middle');
