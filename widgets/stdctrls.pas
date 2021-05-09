@@ -355,6 +355,7 @@ type
   end;
 
   { TCustomRadioButton }
+
   TCustomRadioButton = class(TWinControl)
   private
     fInput: TJSHTMLInputElement;
@@ -370,6 +371,8 @@ type
   protected
     procedure Changed; override;
     function CreateHandleElement: TJSHTMLElement; override;
+  public
+    constructor Create(AOwner: TComponent); override;
   end;
 
   { TCustomLabel }
@@ -509,6 +512,12 @@ begin
   fInput.onselect := @ChangeHandler;
   fInput.addEventListener('change', @ChangeHandler);
   Result.append(fLabel);
+end;
+
+constructor TCustomRadioButton.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  AutoSize := True;
 end;
 
 { TCustomComboBox }
