@@ -28,6 +28,7 @@ unit ExtCtrls;
 interface
 
 uses
+  JS,
   Classes,
   SysUtils,
   Types,
@@ -148,13 +149,15 @@ type
 
   { TCustomWebSocketClient }
 
-  TOnMessage = procedure(aSender: TObject; aData: String) of object;
+  TNotifyWebSocketMessage = procedure(aSender: TObject; aData: String) of object;
+  TNotifyWebSocketClose = procedure(aSender: TObject; aCode: Cardinal; aReason: String) of object;
 
   TCustomWebSocketClient = class(TComponent)
   private
-    fOnClose: TNotifyEvent;
+    fConnected: Boolean;
+    fOnClose: TNotifyWebSocketClose;
     fOnError: TNotifyEvent;
-    fOnMessage: TOnMessage;
+    fOnMessage: TNotifyWebSocketMessage;
     fOnOpen: TNotifyEvent;
     fUrl: String;
     fWebSocket: TJSWebSocket;
@@ -164,16 +167,20 @@ type
     function WebSocketOpenHandler(aEvent: TEventListenerEvent): Boolean;
     procedure SetUrl(aValue: String);
   public
-    constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
     procedure Connect;
+    procedure Close; overload;
+    procedure Close(aCode: Cardinal); overload;
+    procedure Close(aCode: Cardinal; aReason: String); overload;
+
     procedure Send(aData: String);
-    procedure Close;
+
   public
+    property Connected: Boolean read fConnected;
     property Url: String read fUrl write SetUrl;
-    property OnClose: TNotifyEvent read fOnClose write fOnClose;
+    property OnClose: TNotifyWebSocketClose read fOnClose write fOnClose;
     property OnError: TNotifyEvent read fOnError write fOnError;
-    property OnMessage: TOnMessage read fOnMessage write fOnMessage;
+    property OnMessage: TNotifyWebSocketMessage read fOnMessage write fOnMessage;
     property OnOpen: TNotifyEvent read fOnOpen write fOnOpen;
   end;
 
@@ -196,30 +203,27 @@ end;
 function TCustomWebSocketClient.WebSocketCloseHandler(aEvent: TEventListenerEvent): Boolean;
 begin
   if Assigned(OnClose) then
-    OnClose(Self);
+    OnClose(Self, TJSCloseEvent(aEvent).code, TJSCloseEvent(aEvent).reason);
 end;
 
 function TCustomWebSocketClient.WebSocketErrorHandler(aEvent: TEventListenerEvent): Boolean;
 begin
+  Close;
   if Assigned(OnError) then
     OnError(Self);
 end;
 
 function TCustomWebSocketClient.WebSocketOpenHandler(aEvent: TEventListenerEvent): Boolean;
 begin
+  fConnected := True;
   if Assigned(OnOpen) then
     OnOpen(Self);
 end;
 
 procedure TCustomWebSocketClient.SetUrl(aValue: String);
 begin
-  Close;
-  fUrl:=aValue;
-end;
-
-constructor TCustomWebSocketClient.Create(aOwner: TComponent);
-begin
-  inherited Create(aOwner);
+  fConnected := False;
+  fUrl := aValue;
 end;
 
 destructor TCustomWebSocketClient.Destroy;
@@ -230,6 +234,7 @@ end;
 
 procedure TCustomWebSocketClient.Connect;
 begin
+  Close;
   fWebSocket := TJSWebSocket.new(Url);
   fWebSocket.onmessage := @WebSocketMessageHandler;
   fWebSocket.onopen := @WebSocketOpenHandler;
@@ -237,17 +242,32 @@ begin
   fWebSocket.onerror := @WebSocketErrorHandler;
 end;
 
-procedure TCustomWebSocketClient.Send(aData: String);
-begin
-  fWebSocket.send(aData);
-end;
-
 procedure TCustomWebSocketClient.Close;
 begin
+  // code 1000 from rfc6455 part 11.7 - Normal Closure
+  Close(1000, '');
+end;
+
+procedure TCustomWebSocketClient.Close(aCode: Cardinal);
+begin
+  Close(aCode, '');
+end;
+
+procedure TCustomWebSocketClient.Close(aCode: Cardinal; aReason: String);
+begin
   if Assigned(fWebSocket) then begin
-    fWebSocket.close;
+    fWebSocket.close(aCode, aReason);
     fWebSocket := nil;
   end;
+  fConnected := False;
+end;
+
+
+procedure TCustomWebSocketClient.Send(aData: String);
+begin
+  if not Connected then
+    raise Exception.Create('The WebSocket does not connected');
+  fWebSocket.send(aData);
 end;
 
 { TCustomTimer }
