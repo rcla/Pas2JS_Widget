@@ -172,9 +172,7 @@ type
     procedure Close; overload;
     procedure Close(aCode: Cardinal); overload;
     procedure Close(aCode: Cardinal; aReason: String); overload;
-
     procedure Send(aData: String);
-
   public
     property Connected: Boolean read fConnected;
     property Url: String read fUrl write SetUrl;
