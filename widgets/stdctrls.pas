@@ -236,6 +236,7 @@ type
     function GetSelLength: NativeInt;
     function GetSelStart: NativeInt;
     function GetSelText: string;
+    procedure HandleLinesChange(aSender: TObject);
     procedure SetAlignment(AValue: TAlignment);
     procedure SetCharCase(AValue: TEditCharCase);
     procedure SetLines(AValue: TStrings);
@@ -353,6 +354,27 @@ type
     property State: TCheckBoxState read GetState write SetState default cbUnchecked;
   end;
 
+  { TCustomRadioButton }
+
+  TCustomRadioButton = class(TWinControl)
+  private
+    fInput: TJSHTMLInputElement;
+    fLabel: TJSHTMLLabelElement;
+    FOnChange: TNotifyEvent;
+    function ChangeHandler(Event: TEventListenerEvent): boolean;
+    function GetChecked: boolean;
+    function LabelClickHandler(aEvent: TJSMouseEvent): boolean;
+    procedure SetChecked(AValue: boolean);
+  protected
+    property Checked: boolean read GetChecked write SetChecked;
+    property OnChange: TNotifyEvent read FOnChange write FOnChange;
+  protected
+    procedure Changed; override;
+    function CreateHandleElement: TJSHTMLElement; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+  end;
+
   { TCustomLabel }
 
   TCustomLabel = class(TWinControl)
@@ -436,6 +458,66 @@ begin
       aStyle.setProperty('overflow', 'auto');
     end;
   end;
+end;
+
+{ TCustomRadioButton }
+
+function TCustomRadioButton.ChangeHandler(Event: TEventListenerEvent): boolean;
+begin
+  if Assigned(OnChange) then
+    OnChange(Self);
+end;
+
+function TCustomRadioButton.GetChecked: boolean;
+begin
+  Result := fInput.checked;
+end;
+
+function TCustomRadioButton.LabelClickHandler(aEvent: TJSMouseEvent): boolean;
+begin
+  if not Checked then
+    Checked := true;
+end;
+
+procedure TCustomRadioButton.SetChecked(AValue: boolean);
+begin
+  if AValue = fInput.checked then
+    Exit;
+  fInput.checked := AValue;
+  if Assigned(OnChange) then
+    OnChange(Self);
+end;
+
+procedure TCustomRadioButton.Changed;
+begin
+  inherited Changed;
+  HandleElement.style.setProperty('display','flex' );
+  HandleElement.style.setProperty('align-items', 'center');
+  fInput._type := 'radio';
+  fInput.id := Name;
+  fInput.name := Parent.Name;
+  fInput.value := Caption;
+  fLabel.textContent := Caption;
+  { #todo -oyus : After publish this fix to release https://bugs.freepascal.org/view.php?id=38862. Need refactoring }
+  // fLabel.htmlFor := Name;
+  fLabel.onclick := @LabelClickHandler;
+end;
+
+function TCustomRadioButton.CreateHandleElement: TJSHTMLElement;
+begin
+  Result := TJSHTMLElement(Document.CreateElement('div'));
+  fInput := TJSHTMLInputElement(document.createElement('input'));
+  fLabel := TJSHTMLLabelElement(document.createElement('label'));
+  Result.append(fInput);
+  fInput.onselect := @ChangeHandler;
+  fInput.addEventListener('change', @ChangeHandler);
+  Result.append(fLabel);
+end;
+
+constructor TCustomRadioButton.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  AutoSize := True;
 end;
 
 { TCustomComboBox }
@@ -1388,6 +1470,11 @@ begin
   Result := Copy(RealGetText, FSelStart + 1, FSelLength);
 end;
 
+procedure TCustomMemo.HandleLinesChange(aSender: TObject);
+begin
+  Changed;
+end;
+
 procedure TCustomMemo.SetCharCase(AValue: TEditCharCase);
 begin
   if (FCharCase <> AValue) then
@@ -1673,6 +1760,7 @@ constructor TCustomMemo.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FLines := TCustomMemoStrings.Create;
+  TCustomMemoStrings(FLines).OnChange := HandleLinesChange;
   FMaxLength := 0;
   FModified := False;
   FReadOnly := False;
@@ -2042,18 +2130,21 @@ begin
         Style.removeProperty('height');
         Style.removeProperty('width');
       end;
-    end;
-    with FContentElement do
-    begin
-      /// Clear
-      InnerHTML := '';
       /// Aligment
       case FAlignment of
         taCenter: Style.SetProperty('text-align', 'center');
         taLeftJustify: Style.SetProperty('text-align', 'left');
         taRightJustify: Style.SetProperty('text-align', 'right');
       end;
+    end;
+    with FContentElement do
+    begin
+      /// Clear
+      InnerHTML := '';
       /// Layout
+      Style.SetProperty('display', 'table-cell');
+      Style.SetProperty('width', IntToStr(Self.Width) + 'px');
+      Style.SetProperty('height', IntToStr(Self.Height) + 'px');
       case FLayout of
         tlBottom: Style.SetProperty('vertical-align', 'bottom');
         tlCenter: Style.SetProperty('vertical-align', 'middle');

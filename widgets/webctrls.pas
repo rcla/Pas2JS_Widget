@@ -314,6 +314,18 @@ type
     property OnResize;
   end;
 
+  { TWRadioButton }
+
+  TWRadioButton = class(TCustomRadioButton)
+  published
+    property AutoSize default True;
+    property Caption;
+    property Checked;
+    property TabOrder;
+    property OnChange;
+    property OnClick;
+  end;
+
   { TWLabel }
 
   TWLabel = class(TCustomLabel)
