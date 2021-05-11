@@ -454,6 +454,7 @@ type
   TWWebSocketClient = class(TCustomWebSocketClient)
   published
     property Url;
+    property OnBinaryMessage;
     property OnClose;
     property OnError;
     property OnMessage;

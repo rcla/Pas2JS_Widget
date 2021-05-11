@@ -148,13 +148,16 @@ type
   end;
 
   { TCustomWebSocketClient }
+  TByteArray = TJSUint8Array;
 
   TNotifyWebSocketMessage = procedure(aSender: TObject; aData: String) of object;
+  TNotifyWebSocketBinaryMessage = procedure(aSender: TObject; aData: TBytes) of object;
   TNotifyWebSocketClose = procedure(aSender: TObject; aCode: Cardinal; aReason: String) of object;
 
   TCustomWebSocketClient = class(TComponent)
   private
     fConnected: Boolean;
+    fOnBinaryMessage: TNotifyWebSocketBinaryMessage;
     fOnClose: TNotifyWebSocketClose;
     fOnError: TNotifyEvent;
     fOnMessage: TNotifyWebSocketMessage;
@@ -165,6 +168,7 @@ type
     function WebSocketErrorHandler(aEvent: TEventListenerEvent): Boolean;
     function WebSocketMessageHandler(aEvent: TEventListenerEvent): Boolean;
     function WebSocketOpenHandler(aEvent: TEventListenerEvent): Boolean;
+    function WebSocketReaderHandler(aEvent: TEventListenerEvent): Boolean;
     procedure SetUrl(aValue: String);
   public
     destructor Destroy; override;
@@ -176,6 +180,7 @@ type
   public
     property Connected: Boolean read fConnected;
     property Url: String read fUrl write SetUrl;
+    property OnBinaryMessage: TNotifyWebSocketBinaryMessage read fOnBinaryMessage write fOnBinaryMessage;
     property OnClose: TNotifyWebSocketClose read fOnClose write fOnClose;
     property OnError: TNotifyEvent read fOnError write fOnError;
     property OnMessage: TNotifyWebSocketMessage read fOnMessage write fOnMessage;
@@ -191,15 +196,23 @@ uses
 
 function TCustomWebSocketClient.WebSocketMessageHandler(aEvent: TEventListenerEvent): Boolean;
 var
-  s: TJSMessageEvent;
+  reader: TJSFileReader;
+  Data: TJSUint8Array;
 begin
-  s := TJSMessageEvent(aEvent);
-  writeln(s.data);  // <- how get type? for text -
-  if Assigned(OnMessage) then begin
     if aEvent._type <> 'message' then
       Exit;
-    OnMessage(Self, String(TJSMessageEvent(aEvent).Data));
-  end;
+    case GetValueType(TJSMessageEvent(aEvent).Data) of
+      jvtString:
+        if Assigned(OnMessage) then
+          OnMessage(Self, String(TJSMessageEvent(aEvent).Data));
+      jvtObject:
+        if Assigned(OnBinaryMessage) then
+        begin
+          reader := TJSFileReader.new;
+          reader.readAsArrayBuffer(TJSBlob(TJSMessageEvent(aEvent).Data));
+          reader.addEventListener('loadend', @WebSocketReaderHandler);
+        end;
+    end;
 end;
 
 function TCustomWebSocketClient.WebSocketCloseHandler(aEvent: TEventListenerEvent): Boolean;
@@ -220,6 +233,19 @@ begin
   fConnected := True;
   if Assigned(OnOpen) then
     OnOpen(Self);
+end;
+
+function TCustomWebSocketClient.WebSocketReaderHandler(aEvent: TEventListenerEvent): Boolean;
+var
+  Data: TJSUint8Array;
+  ByteArray: TBytes;
+  i: Integer;
+begin
+  Data := TJSUint8Array.new(TJSArrayBuffer(TJSFileReader(aEvent.target).Result));
+  SetLength(ByteArray, Data.length);
+  for i := 0 to Data.length - 1 do
+    ByteArray[i] := Data[i];
+  OnBinaryMessage(Self, ByteArray);
 end;
 
 procedure TCustomWebSocketClient.SetUrl(aValue: String);
@@ -246,7 +272,6 @@ end;
 
 procedure TCustomWebSocketClient.Close;
 begin
-  // code 1000 from rfc6455 part 11.7 - Normal Closure
   Close(WS_NORMAL_CLOSURE, '');
 end;
 
