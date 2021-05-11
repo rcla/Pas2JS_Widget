@@ -190,7 +190,11 @@ uses
 { TCustomWebSocketClient }
 
 function TCustomWebSocketClient.WebSocketMessageHandler(aEvent: TEventListenerEvent): Boolean;
+var
+  s: TJSMessageEvent;
 begin
+  s := TJSMessageEvent(aEvent);
+  writeln(s.data);  // <- how get type? for text -
   if Assigned(OnMessage) then begin
     if aEvent._type <> 'message' then
       Exit;
@@ -243,7 +247,7 @@ end;
 procedure TCustomWebSocketClient.Close;
 begin
   // code 1000 from rfc6455 part 11.7 - Normal Closure
-  Close(1000, '');
+  Close(WS_NORMAL_CLOSURE, '');
 end;
 
 procedure TCustomWebSocketClient.Close(aCode: Cardinal);
