@@ -63,7 +63,5 @@ resourcestring
 
 implementation
 
-
-
 end.
 

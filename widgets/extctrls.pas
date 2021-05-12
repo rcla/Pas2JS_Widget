@@ -206,8 +206,7 @@ begin
         if Assigned(OnMessage) then
           OnMessage(Self, String(TJSMessageEvent(aEvent).Data));
       jvtObject:
-        if Assigned(OnBinaryMessage) then
-        begin
+        if Assigned(OnBinaryMessage) then begin
           reader := TJSFileReader.new;
           reader.readAsArrayBuffer(TJSBlob(TJSMessageEvent(aEvent).Data));
           reader.addEventListener('loadend', @WebSocketReaderHandler);
