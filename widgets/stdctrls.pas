@@ -884,7 +884,7 @@ begin
         v := FItems[idx];
         opt := TJSHTMLOptionElement(Document.CreateElement('option'));
         opt.Value := v;
-        opt.Text := v;
+        opt.Text := StringReplace(v, ' ', #$A0, [rfReplaceAll]);
         if FMultiselect then
           opt.Selected := FSelected[idx]
         else
