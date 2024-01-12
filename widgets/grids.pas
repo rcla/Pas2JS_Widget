@@ -174,6 +174,7 @@ type
     fContentTable: TJSHTMLTableElement;
     fDefColWidth: Integer;
     fDefRowHeight: Integer;
+    fDefaultTextStyle: TTextStyle;
     fEditorMode: Boolean;
     fGCache: TGridDataCache;
     fFixedColor: TColor;
@@ -295,6 +296,7 @@ type
     property Columns: TGridColumns read GetColumns write SetColumns stored IsColumnsStored;
     property DefaultColWidth: Integer read GetDefColWidth write SetDefColWidth stored DefaultColWidthIsStored;
     property DefaultRowHeight: Integer read GetDefRowHeight write SetDefRowHeight stored DefaultRowHeightIsStored;
+    property DefaultTextStyle: TTextStyle read fDefaultTextStyle write fDefaultTextStyle;
     property FixedColor: TColor read GetFixedColor write SetFixedColor default clBtnFace;
     property FixedGridLineColor: TColor read fFixedGridLineColor write SetFixedGridLineColor default cl3DDKShadow;
     property Flat: Boolean read fFlat write SetFlat default False;
@@ -411,6 +413,7 @@ type
     {property Cols[Index: Integer]: TStrings read GetCols write SetCols;
     property Objects[Col, Row: Integer]: TObject read GetObjects write SetObjects;
     property Rows[Index: Integer]: TStrings read GetRows write SetRows;}
+    property DefaultTextStyle;
   end;
 
   TWStringGrid = class(TCustomStringGrid)
@@ -1439,8 +1442,8 @@ procedure TCustomGrid.Changed;
     else
       content.textContent := GetCells(aCol, aRow);
 
-    alignment := taLeftJustify;
-    layout := tlCenter;
+    alignment := DefaultTextStyle.Alignment;
+    layout := DefaultTextStyle.Layout;
     if Assigned(aColumn) then begin
       if aRow = 0 then begin
         alignment := aColumn.Title.Alignment;
@@ -2143,6 +2146,9 @@ begin
   fAllowOutboundEvents := True;
 
   fScrollBars := ssAutoBoth;
+
+  fDefaultTextStyle.Alignment := taLeftJustify;
+  fDefaultTextStyle.Layout := tlCenter;
 
   fGridLineColor := clSilver;
   fGridLineWidth := 1;
