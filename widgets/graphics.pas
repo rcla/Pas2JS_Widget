@@ -43,6 +43,11 @@ type
 
   TTextLayout = (tlTop, tlCenter, tlBottom);
 
+  TTextStyle = record
+    Alignment: TAlignment; { horizontal alignment }
+    Layout: TTextLayout;   { vertical alignment }
+  end;
+
   TPenStyle = (psSolid, psDash, psDot, psDashDot, psDashDotDot, psInsideFrame, psPattern, psClear);
   TPenStyleSet = set of TPenStyle;
 
