@@ -1806,7 +1806,8 @@ end;
 
 procedure TCustomGrid.InvalidateCell(aCol, aRow: Integer; aRedraw: Boolean);
 begin
-  { ToDo }
+  { ToDo: only redo the individual cell }
+  Changed;
 end;
 
 function TCustomGrid.IsColumnIndexValid(aIndex: Integer): Boolean;
