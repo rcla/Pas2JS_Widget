@@ -1521,6 +1521,7 @@ end;
 procedure TControl.Changed;
 var
   form: TCustomForm;
+  fonthcolor: String;
 
   function AdjustWithPPI(aValue: Integer): Integer;
   begin
@@ -1585,7 +1586,14 @@ begin
         begin
           Style.SetProperty('background-color', JSColor(FColor));
         end;
-      end;
+      end
+      else
+      begin
+        /// Font Color -HandleClass
+        fonthcolor := Style.getPropertyValue('border-color');
+        Style.SetProperty('color',  fonthcolor);
+        UpdateHtmlElementFont(FHandleElement, FFont, False);
+      end;      
 
       /// Bounds
       Style.SetProperty('left', IntToStr(AdjustWithPPI(FLeft)) + 'px');
