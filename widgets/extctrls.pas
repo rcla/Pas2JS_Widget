@@ -681,6 +681,8 @@ begin
       Style.SetProperty('-ms-user-select', 'none');
       Style.SetProperty('-khtml-user-select', 'none');
       Style.SetProperty('-webkit-user-select', 'none');
+      /// Padding
+      Style.SetProperty('padding', '10px');       
     end;
   end;
 end;
