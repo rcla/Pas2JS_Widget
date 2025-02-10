@@ -209,7 +209,6 @@ type
     property ShowHeader: boolean read FShowHeader write SetShowHeader;
     property OnCellClick: TOnClickEvent read FOnCellClick write FOnCellClick;
     property OnHeaderClick: TOnHeaderClick read FOnHeaderClick write FOnHeaderClick;
-  published
     property HeaderColor: TColor read FHeadColor write SetHeaderColor default $FF5842;
     property HeaderFontColor: TColor read FHeadFontColor write SetHeaderFontColor default clWhite;
     property RowColor: TColor read FRowColor write SetRowColor default clWhite;
