@@ -1369,6 +1369,10 @@ begin
   FDefColWidth := -1;
   FDefRowHeight := -1;
   FShowHeader := True;
+  FHeadColor := $FF5842;
+  FHeadFontColor := clWhite;
+  FRowColor := clWhite;
+  FRowFontColor := $525454;  
   FSortColumn := -1;
   FSortOrder := soAscending;
   BeginUpdate;
