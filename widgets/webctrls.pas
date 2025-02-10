@@ -773,8 +773,12 @@ type
     property Font;
     property HandleClass;
     property HandleId;
+    property HeaderColor;
+    property HeaderFontColor;     
     property ParentFont;
     property ParentShowHint;
+    property RowColor;
+    property RowFontColor;    
     property ShowHint;
     property SortOrder;
     property ShowHeader;
