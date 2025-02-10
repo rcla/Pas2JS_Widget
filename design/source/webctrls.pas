@@ -881,8 +881,12 @@ type
     property Font;
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
+    property HeaderColor;
+    property HeaderFontColor;       
     property ParentFont;
     property ParentShowHint;
+    property RowColor;
+    property RowFontColor;     
     property ShowHint;
     property SortOrder;
     property ShowHeader;
