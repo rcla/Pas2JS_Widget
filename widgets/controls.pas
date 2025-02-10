@@ -1521,7 +1521,7 @@ end;
 procedure TControl.Changed;
 var
   form: TCustomForm;
-  fonthcolor: String;
+  fonthcolor, backhcolor: String;
 
   function AdjustWithPPI(aValue: Integer): Integer;
   begin
@@ -1589,10 +1589,29 @@ begin
       end
       else
       begin
+        /// HandleClass contains 'fa-', it's FontAwesome icon
+        if (Pos('fa-', FHandleClass)>0) then
+        begin
+          FFont.Name := 'FontAwesome';
+          Style.SetProperty('background-color', JSColor(FColor));
+          fonthcolor := JSColor(FFont.Color);
+        end
+        else
+          fonthcolor := Style.getPropertyValue('border-color');
+
+        if (FColor in [clDefault, clNone]) then
+        begin
+          backhcolor := Style.getPropertyValue('background-color');
+          Style.SetProperty('background-color',  backhcolor);
+        end
+        else
+        begin
+          Style.SetProperty('background-color', JSColor(FColor));
+        end;
+
         /// Font Color -HandleClass
-        fonthcolor := Style.getPropertyValue('border-color');
         Style.SetProperty('color',  fonthcolor);
-        UpdateHtmlElementFont(FHandleElement, FFont, False);
+        UpdateHtmlElementFont(FHandleElement, FFont, False);  
       end;      
 
       /// Bounds
