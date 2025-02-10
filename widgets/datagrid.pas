@@ -137,6 +137,10 @@ type
     FDefColWidth: NativeInt;
     FDefRowHeight: NativeInt;
     FShowHeader: boolean;
+    FHeadColor: TColor;
+    FHeadFontColor: TColor;
+    FRowColor: TColor;
+    FRowFontColor: TColor;  
     FSortColumn: NativeInt;
     FSortOrder: TSortOrder;
     FOnCellClick: TOnClickEvent;
@@ -149,6 +153,10 @@ type
     procedure SetDefColWidth(AValue: NativeInt);
     procedure SetDefRowHeight(AValue: NativeInt);
     procedure SetShowHeader(AValue: boolean);
+    procedure SetHeaderColor(AValue: TColor);
+    procedure SetHeaderFontColor(AValue: TColor);
+    procedure SetRowColor(AValue: TColor);
+    procedure SetRowFontColor(AValue: TColor);     
   protected
     FActiveCell: TJSHTMLTableCellElement;
   protected
@@ -201,6 +209,11 @@ type
     property ShowHeader: boolean read FShowHeader write SetShowHeader;
     property OnCellClick: TOnClickEvent read FOnCellClick write FOnCellClick;
     property OnHeaderClick: TOnHeaderClick read FOnHeaderClick write FOnHeaderClick;
+  published
+    property HeaderColor: TColor read FHeadColor write SetHeaderColor default $FF5842;
+    property HeaderFontColor: TColor read FHeadFontColor write SetHeaderFontColor default clWhite;
+    property RowColor: TColor read FRowColor write SetRowColor default clWhite;
+    property RowFontColor: TColor read FRowFontColor write SetRowFontColor default $525454;
   end;
 
   TOnPageEvent = procedure(ASender: TObject; APage: NativeInt) of object;
@@ -586,6 +599,42 @@ begin
   end;
 end;
 
+procedure TCustomDataGrid.SetHeaderColor(AValue: TColor);
+begin
+  if (FHeadColor <> AValue) then
+  begin
+    FHeadColor := AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomDataGrid.SetHeaderFontColor(AValue: TColor);
+begin
+  if (FHeadFontColor <> AValue) then
+  begin
+    FHeadFontColor := AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomDataGrid.SetRowColor(AValue: TColor);
+begin
+  if (FRowColor <> AValue) then
+  begin
+    FRowColor := AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomDataGrid.SetRowFontColor(AValue: TColor);
+begin
+  if (FRowFontColor <> AValue) then
+  begin
+    FRowFontColor := AValue;
+    Changed;
+  end;
+end;  
+
 procedure TCustomDataGrid.KeyDown(var Key: NativeInt; Shift: TShiftState);
 begin
   inherited KeyDown(Key, Shift);
@@ -921,8 +970,10 @@ begin
     begin
       /// Clear
       InnerHTML := '';
+      /// Width
+      Style.SetProperty('width', '98%');       
       /// Border Style
-      Style.SetProperty('border', '1px solid #c9c3ba');
+      Style.SetProperty('border', '1px solid #DEE2E6');
       Style.SetProperty('border-collapse', 'collapse');
       Style.SetProperty('border-spacing', '0px');
       /// Focus highlight
@@ -1000,11 +1051,12 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: 0;' +
+        '    padding: 8px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
-        '    background: #dddada;' +
+        '    background-color: ' + JSColor(FHeadColor) + ';' +  
         '    font: ' + JSFont(VColumn.Font) + ';' +
+        '    color: ' + JSColor(FHeadFontColor) + ';' +          
         '    text-align: center;' +
         '    text-overflow: clip;' +
         '    white-space: nowrap;' +
@@ -1017,11 +1069,12 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: 0;' +
+        '    padding: 8px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
-        '    background-color: ' + JSColor(VColumn.Color) + ';' +
+        '    background-color: ' + JSColor(FRowColor) + ';' +  
         '    font: ' + JSFont(VColumn.Font) + ';' +
+        '    color: ' + JSColor(FRowFontColor) + ';' +           
         '    text-align: ' + JSAlign(VColumn.Alignment) + ';' +
         '    text-overflow: clip;' +
         '    white-space: nowrap;' +
