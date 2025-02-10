@@ -134,6 +134,10 @@ type
     FDefColWidth: NativeInt;
     FDefRowHeight: NativeInt;
     FShowHeader: boolean;
+    FHeadColor: TColor;
+    FHeadFontColor: TColor;
+    FRowColor: TColor;
+    FRowFontColor: TColor;    
     FSortColumn: NativeInt;
     FSortOrder: TSortOrder;
     FOnCellClick: TOnClickEvent;
@@ -161,6 +165,10 @@ type
     property SortColumn: NativeInt read FSortColumn;
     property SortOrder: TSortOrder read FSortOrder;
     property ShowHeader: boolean read FShowHeader write SetShowHeader;
+    property HeaderColor: TColor read FHeadColor write SetHeaderColor default $FF5842;
+    property HeaderFontColor: TColor read FHeadFontColor write SetHeaderFontColor default clWhite;
+    property RowColor: TColor read FRowColor write SetRowColor default clWhite;
+    property RowFontColor: TColor read FRowFontColor write SetRowFontColor default $525454;   
     property OnCellClick: TOnClickEvent read FOnCellClick write FOnCellClick;
     property OnHeaderClick: TOnHeaderClick read FOnHeaderClick write FOnHeaderClick;
   end;
@@ -510,6 +518,38 @@ begin
   end;
 end;
 
+procedure TCustomDataGrid.SetHeaderColor(AValue: TColor);
+begin
+  if (FHeadColor <> AValue) then
+  begin
+    FHeadColor := AValue;
+  end;
+end;
+
+procedure TCustomDataGrid.SetHeaderFontColor(AValue: TColor);
+begin
+  if (FHeadFontColor <> AValue) then
+  begin
+    FHeadFontColor := AValue;
+  end;
+end;
+
+procedure TCustomDataGrid.SetRowColor(AValue: TColor);
+begin
+  if (FRowColor <> AValue) then
+  begin
+    FRowColor := AValue;
+  end;
+end;
+
+procedure TCustomDataGrid.SetRowFontColor(AValue: TColor);
+begin
+  if (FRowFontColor <> AValue) then
+  begin
+    FRowFontColor := AValue;
+  end;
+end;
+
 procedure TCustomDataGrid.VisualChange;
 begin
   Invalidate;
@@ -568,6 +608,10 @@ begin
   FDefColWidth := -1;
   FDefRowHeight := -1;
   FShowHeader := True;
+  FHeadColor := $FF5842;
+  FHeadFontColor := clWhite;
+  FRowColor := clWhite;
+  FRowFontColor := $525454;  
 end;
 
 destructor TCustomDataGrid.Destroy;
