@@ -147,6 +147,10 @@ type
     procedure SetDefColWidth(AValue: NativeInt);
     procedure SetDefRowHeight(AValue: NativeInt);
     procedure SetShowHeader(AValue: boolean);
+    procedure SetHeaderColor(AValue: TColor);
+    procedure SetHeaderFontColor(AValue: TColor);
+    procedure SetRowColor(AValue: TColor);
+    procedure SetRowFontColor(AValue: TColor);    
   protected
     procedure VisualChange; virtual;
     procedure ColumnsChanged({%H-}AColumn: TDataColumn); virtual;
