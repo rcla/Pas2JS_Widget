@@ -845,6 +845,7 @@ type
     //property ModalResult;
     property ParentFont;
     property ParentShowHint;
+    property ShowFileName;
     property ShowHint;
     property TabOrder;
     property TabStop;
