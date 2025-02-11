@@ -112,6 +112,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
+    EmbedElement: TJSHTMLEmbedElement;
     property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
     property BevelColor: TColor read FBevelColor write SetBevelColor default clDefault;
     property BevelInner: TPanelBevel read FBevelInner write SetBevelInner default bvNone;
@@ -690,6 +691,10 @@ end;
 function TCustomPanel.CreateHandleElement: TJSHTMLElement;
 begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
+  EmbedElement := TJSHTMLEmbedElement(Document.CreateElement('embed'));
+  EmbedElement.height := '100%';
+  EmbedElement.width := '100%';
+  Result.append(EmbedElement);
 end;
 
 class function TCustomPanel.GetControlClassDefaultSize: TSize;
