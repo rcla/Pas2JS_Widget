@@ -90,6 +90,7 @@ type
     FActiveControl: TWinControl; 
     FAlphaBlend: boolean;
     FAlphaBlendValue: byte;
+    FBackgImg: string;    
     FChildForm: TCustomForm;
     FDesignTimePPI: Integer;
     FFormType: TFormType;
@@ -112,6 +113,7 @@ type
     procedure SetAlphaBlendValue(AValue: byte);
     procedure SetFormBorderStyle(AValue: TFormBorderStyle);
     procedure SetModalResult(AValue: TModalResult);
+    procedure SetBackgImg(AValue: string);    
   protected
     property Overlay: TObject read FOverlay write FOverlay;
     property ChildForm: TCustomForm read FChildForm write FChildForm;
@@ -152,6 +154,7 @@ type
     property ActiveControl: TWinControl read FActiveControl write SetActiveControl;
     property AlphaBlend: boolean read FAlphaBlend write SetAlphaBlend;
     property AlphaBlendValue: byte read FAlphaBlendValue write SetAlphaBlendValue;
+    property BackgroundImage: string read FBackgImg write SetBackgImg;    
     property BorderStyle: TFormBorderStyle read fFormBorderStyle write SetFormBorderStyle default bsSizeable;
     property FormType: TFormType read FFormType;
     property KeyPreview: boolean read FKeyPreview write FKeyPreview;
@@ -232,6 +235,7 @@ type
     property Align;
     property AlphaBlend;
     property AlphaBlendValue;
+    property BackgroundImage;
     property Caption;
     property ClientHeight;
     property ClientWidth;
@@ -583,6 +587,14 @@ begin
   end;
 end;
 
+procedure TCustomForm.SetBackgImg(AValue: string);
+begin
+  if (FBackgImg <> AValue) then
+  begin
+    FBackgImg := AValue;
+  end;
+end;
+
 procedure TCustomForm.Activate;
 begin
   if (Assigned(FOnActivate)) then
@@ -702,6 +714,13 @@ begin
       end;
       /// Scroll
       Style.SetProperty('overflow', 'auto');
+      /// Background-image
+      if FBackgImg <> '' then
+      begin
+        Style.SetProperty('background-repeat','no-repeat');
+        Style.SetProperty('background-size','100% 100%');
+        Style.SetProperty('background-image', FBackgImg);
+      end;
     end;
   end;
 end;
@@ -738,6 +757,7 @@ begin
   FActiveControl := nil;
   FAlphaBlend := False;
   FAlphaBlendValue := 255;
+  FBackgImg := '';
   FDesignTimePPI := 96;
   FChildForm := nil;
   FFormType := ftWindow;
