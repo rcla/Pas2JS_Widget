@@ -59,6 +59,7 @@ type
     property Align;
     property AlphaBlend;
     property AlphaBlendValue;
+    property BackgroundImage;
     property Caption;
     property ClientHeight;
     property ClientWidth;
