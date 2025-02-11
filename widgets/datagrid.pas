@@ -1350,7 +1350,7 @@ end;
 
 function TCustomDataGrid.CalcDefaultRowHeight: NativeInt;
 begin
-  Result := Font.TextHeight('Fj') + 10;
+  Result := Font.TextHeight('Fj') + 14;
 end;
 
 class function TCustomDataGrid.GetControlClassDefaultSize: TSize;
