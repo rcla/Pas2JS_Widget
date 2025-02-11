@@ -111,9 +111,9 @@ type
     procedure SetActiveControl(AValue: TWinControl);
     procedure SetAlphaBlend(AValue: boolean);
     procedure SetAlphaBlendValue(AValue: byte);
+    procedure SetBackgImg(AValue: string);
     procedure SetFormBorderStyle(AValue: TFormBorderStyle);
-    procedure SetModalResult(AValue: TModalResult);
-    procedure SetBackgImg(AValue: string);    
+    procedure SetModalResult(AValue: TModalResult); 
   protected
     property Overlay: TObject read FOverlay write FOverlay;
     property ChildForm: TCustomForm read FChildForm write FChildForm;
@@ -558,6 +558,15 @@ begin
   end;
 end;
 
+procedure TCustomForm.SetBackgImg(AValue: string);
+begin
+  if (FBackgImg <> AValue) then
+  begin
+    FBackgImg := AValue;
+    Changed;
+  end;
+end;
+
 procedure TCustomForm.SetFormBorderStyle(AValue: TFormBorderStyle);
 var
   bs: TBorderStyle;
@@ -584,14 +593,6 @@ begin
     begin
       Close;
     end;
-  end;
-end;
-
-procedure TCustomForm.SetBackgImg(AValue: string);
-begin
-  if (FBackgImg <> AValue) then
-  begin
-    FBackgImg := AValue;
   end;
 end;
 
