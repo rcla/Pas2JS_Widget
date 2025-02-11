@@ -54,12 +54,13 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FBackgImg: string;
   published
     property ActiveControl;
     property Align;
     property AlphaBlend;
     property AlphaBlendValue;
-    property BackgroundImage;
+    property BackgroundImage: string read FBackgImg write FBackgImg;
     property Caption;
     property ClientHeight;
     property ClientWidth;
