@@ -44,9 +44,11 @@ type
   private
     FFileSelect: TJSHTMLFile;
     FFilter: string;
+    FShowFileName: boolean;
     FOnChange: TNotifyEvent;
     FOpendDialogElement: TJSHTMLInputElement;
-    procedure SetFilter(AValue: string);         
+    procedure SetFilter(AValue: string);
+    procedure SetShowFName(AValue: boolean);         
   protected
     procedure Change; virtual;
   protected
@@ -68,6 +70,7 @@ type
     procedure AdjustSize; override;
     property FileSelected: TJSHTMLFile read FFileSelect;
     property Filter: string read FFilter write SetFilter;
+    property ShowFileName: boolean read FShowFileName write SetShowFName default True;
   end;
 
 implementation
@@ -82,6 +85,15 @@ begin
   if (FFilter <> AValue) then
   begin
     FFilter := AValue;
+    Changed;
+  end;
+end;
+
+procedure TCustomFileButton.SetShowFName(AValue: boolean);
+begin
+  if (FShowFileName <> AValue) then
+  begin
+    FShowFileName := AValue;
     Changed;
   end;
 end;
@@ -120,7 +132,7 @@ begin
     end;
     VFile := VList[0];
     FFileSelect := VFile;
-    Caption := VFile.Name;
+    if FShowFileName then Caption := VFile.Name;
     Hint:= VFile.Name;
     Changed;          
     Change;
@@ -187,6 +199,7 @@ begin
   FOpendDialogElement.AddEventListener('change', @HandleChange);
   FFilter := '';
   FFileSelect := nil;
+  FShowFileName := true;
   BeginUpdate;
   try
     Caption := rsFileButtonNoFileSelected;
