@@ -739,6 +739,7 @@ type
     property ParentFont;
     property ParentShowHint;
     property ShowHint;
+    property ShowFileName;
     property TabOrder;
     property TabStop;
     property Visible; 
