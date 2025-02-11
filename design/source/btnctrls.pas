@@ -41,13 +41,16 @@ type
   TCustomFileButton = class(TCustomButton)
   private
     FFilter: string;
+    FShowFileName: boolean;
     FOnChange: TNotifyEvent;
     procedure SetFilter(AValue: string);
+    procedure SetShowFName(AValue: boolean);
   protected
     property OnChange: TNotifyEvent read FOnChange write FOnChange;
   public
     constructor Create(AOwner: TComponent); override;
     property Filter: string read FFilter write SetFilter;
+    property ShowFileName: boolean read FShowFileName write SetShowFName default True;
   end;
 
 implementation
@@ -62,10 +65,19 @@ begin
   end;
 end;
 
+procedure TCustomFileButton.SetShowFName(AValue: boolean);
+begin
+  if (FShowFileName <> AValue) then
+  begin
+    FShowFileName:= AValue;
+  end;
+end;
+
 constructor TCustomFileButton.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FFilter:= '';
+  ShowFileName:= true;
 end;
 
 end.
