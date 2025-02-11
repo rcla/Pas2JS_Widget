@@ -738,8 +738,8 @@ type
     //property ModalResult;
     property ParentFont;
     property ParentShowHint;
-    property ShowHint;
     property ShowFileName;
+    property ShowHint;    
     property TabOrder;
     property TabStop;
     property Visible; 
@@ -786,6 +786,7 @@ type
     property ShowHeader;
     property TabOrder;
     property TabStop;
+    property UsedataTables;
     property Visible;
     property OnCellClick;
     property OnEnter;
