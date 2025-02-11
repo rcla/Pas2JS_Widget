@@ -1050,7 +1050,7 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: 8px;' +
+        '    padding: 4px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
         '    background-color: ' + JSColor(FHeadColor) + ';' +  
@@ -1068,7 +1068,7 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: 8px;' +
+        '    padding: 4px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
         '    background-color: ' + JSColor(FRowColor) + ';' +  
@@ -1350,7 +1350,7 @@ end;
 
 function TCustomDataGrid.CalcDefaultRowHeight: NativeInt;
 begin
-  Result := Font.TextHeight('Fj') + 14;
+  Result := Font.TextHeight('Fj') + 4;
 end;
 
 class function TCustomDataGrid.GetControlClassDefaultSize: TSize;
