@@ -140,6 +140,7 @@ type
     FRowFontColor: TColor;    
     FSortColumn: NativeInt;
     FSortOrder: TSortOrder;
+    FUsedataTables: Boolean;
     FOnCellClick: TOnClickEvent;
     FOnHeaderClick: TOnHeaderClick;
     procedure SetColumnClickSorts(AValue: boolean);
@@ -150,7 +151,8 @@ type
     procedure SetHeaderColor(AValue: TColor);
     procedure SetHeaderFontColor(AValue: TColor);
     procedure SetRowColor(AValue: TColor);
-    procedure SetRowFontColor(AValue: TColor);    
+    procedure SetRowFontColor(AValue: TColor);
+    procedure SetUsedataTables(AValue: Boolean);    
   protected
     procedure VisualChange; virtual;
     procedure ColumnsChanged({%H-}AColumn: TDataColumn); virtual;
@@ -172,7 +174,8 @@ type
     property HeaderColor: TColor read FHeadColor write SetHeaderColor default $FF5842;
     property HeaderFontColor: TColor read FHeadFontColor write SetHeaderFontColor default clWhite;
     property RowColor: TColor read FRowColor write SetRowColor default clWhite;
-    property RowFontColor: TColor read FRowFontColor write SetRowFontColor default $525454;   
+    property RowFontColor: TColor read FRowFontColor write SetRowFontColor default $525454;
+    property UsedataTables: Boolean read FUsedataTables write SetUsedataTables default False;   
     property OnCellClick: TOnClickEvent read FOnCellClick write FOnCellClick;
     property OnHeaderClick: TOnHeaderClick read FOnHeaderClick write FOnHeaderClick;
   end;
@@ -554,6 +557,14 @@ begin
   end;
 end;
 
+procedure TCustomDataGrid.SetUsedataTables(AValue: Boolean);
+begin
+  if (FUsedataTables <> AValue) then
+  begin
+    FUsedataTables := AValue;
+  end;
+end;
+
 procedure TCustomDataGrid.VisualChange;
 begin
   Invalidate;
@@ -615,7 +626,8 @@ begin
   FHeadColor := $FF5842;
   FHeadFontColor := clWhite;
   FRowColor := clWhite;
-  FRowFontColor := $525454;  
+  FRowFontColor := $525454;
+  FUsedataTables := False;  
 end;
 
 destructor TCustomDataGrid.Destroy;
