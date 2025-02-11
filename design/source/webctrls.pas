@@ -873,6 +873,7 @@ type
     property Align;
     property Anchors;
     property BorderSpacing;
+    property Color;    
     property Columns;
     property ColumnClickSorts;
     property DefaultColWidth;
