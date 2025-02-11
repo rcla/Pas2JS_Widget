@@ -143,6 +143,7 @@ type
     FRowFontColor: TColor;  
     FSortColumn: NativeInt;
     FSortOrder: TSortOrder;
+    FUsedataTables: Boolean;
     FOnCellClick: TOnClickEvent;
     FOnHeaderClick: TOnHeaderClick;
     function GetColCount: NativeInt;
@@ -156,7 +157,8 @@ type
     procedure SetHeaderColor(AValue: TColor);
     procedure SetHeaderFontColor(AValue: TColor);
     procedure SetRowColor(AValue: TColor);
-    procedure SetRowFontColor(AValue: TColor);     
+    procedure SetRowFontColor(AValue: TColor);
+    procedure SetUsedataTables(AValue: Boolean);     
   protected
     FActiveCell: TJSHTMLTableCellElement;
   protected
@@ -213,6 +215,7 @@ type
     property HeaderFontColor: TColor read FHeadFontColor write SetHeaderFontColor default clWhite;
     property RowColor: TColor read FRowColor write SetRowColor default clWhite;
     property RowFontColor: TColor read FRowFontColor write SetRowFontColor default $525454;
+    property UsedataTables: Boolean read FUsedataTables write SetUsedataTables default False;
   end;
 
   TOnPageEvent = procedure(ASender: TObject; APage: NativeInt) of object;
@@ -632,7 +635,16 @@ begin
     FRowFontColor := AValue;
     Changed;
   end;
-end;  
+end;
+
+procedure TCustomDataGrid.SetUsedataTables(AValue: Boolean);
+begin
+  if (FUsedataTables <> AValue) then
+  begin
+    FUsedataTables := AValue;
+    Changed;
+  end;
+end;
 
 procedure TCustomDataGrid.KeyDown(var Key: NativeInt; Shift: TShiftState);
 begin
@@ -969,8 +981,14 @@ begin
     begin
       /// Clear
       InnerHTML := '';
-      /// Width
-      Style.SetProperty('width', '98%');       
+      /// Use dataTables
+      if FUsedataTables then
+      begin
+        Style.SetProperty('width', '100%');
+        Style.SetProperty('position', 'relative');
+        Style.SetProperty('top', '0px');
+        Style.SetProperty('left', '0px');
+      end;
       /// Border Style
       Style.SetProperty('border', '1px solid #DEE2E6');
       Style.SetProperty('border-collapse', 'collapse');
@@ -1050,7 +1068,7 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: 4px;' +
+        '    padding: ' + IfThen(FUsedataTables, '4', '0') + 'px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
         '    background-color: ' + JSColor(FHeadColor) + ';' +  
@@ -1068,7 +1086,7 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: 4px;' +
+        '    padding: ' + IfThen(FUsedataTables, '4', '0') + 'px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
         '    background-color: ' + JSColor(FRowColor) + ';' +  
@@ -1350,7 +1368,7 @@ end;
 
 function TCustomDataGrid.CalcDefaultRowHeight: NativeInt;
 begin
-  Result := Font.TextHeight('Fj') + 4;
+  Result := Font.TextHeight('Fj') +  IfThen(FUsedataTables, 4, 10);
 end;
 
 class function TCustomDataGrid.GetControlClassDefaultSize: TSize;
