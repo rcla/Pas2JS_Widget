@@ -469,6 +469,7 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FIconFAwesome: string;
   published
     property Align;
     property Alignment;
@@ -482,6 +483,7 @@ type
     property Font;
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
+    property IconFAwesome: string read FIconFAwesome write FIconFAwesome;
     property Layout;
     property ParentColor;
     property ParentFont;
