@@ -692,6 +692,7 @@ function TCustomPanel.CreateHandleElement: TJSHTMLElement;
 begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
   EmbedElement := TJSHTMLEmbedElement(Document.CreateElement('embed'));
+  EmbedElement.style.cssText := 'position:absolute;';
   EmbedElement.height := '100%';
   EmbedElement.width := '100%';
   EmbedElement.src := '';
