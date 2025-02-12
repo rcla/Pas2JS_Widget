@@ -150,7 +150,10 @@ begin
       /// Normalize
       Style.SetProperty('padding', '0');
       /// Caption
-      InnerHTML := Self.Caption;
+      if Self.IconFAwesome <> '' then
+         InnerHTML := '<i class="'+ Self.IconFAwesome + '"></i> ' + Self.Caption
+      else
+         InnerHTML := Self.Caption;
     end;
     /// OpendDialog
     if (Assigned(OpendDialogElement)) then
