@@ -161,6 +161,7 @@ type
     property Font;
     property HandleClass;
     property HandleId;
+    property LeftSpaceIcon;
     property MaxLength;
     property ParentColor;
     property ParentFont;
