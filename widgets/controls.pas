@@ -1601,7 +1601,7 @@ begin
           fonthcolor := JSColor(FFont.Color);
         end
         else
-          fonthcolor := Style.getPropertyValue('border-color');
+          fonthcolor := Style.getPropertyValue('font-color');
 
         if (FColor in [clDefault, clNone]) then
         begin
