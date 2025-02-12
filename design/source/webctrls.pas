@@ -248,7 +248,7 @@ type
     property Font;
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
-    property LeftSpaceIcon: boolean read FLeftSpaceIcon write FLeftSpaceIcon;
+    property LeftSpaceIcon: boolean read FLeftSpaceIcon write FLeftSpaceIcon default False;
     property MaxLength;
     property ParentColor;
     property ParentFont;
