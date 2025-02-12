@@ -251,6 +251,7 @@ type
     property HandleClass;
     property HandleId; 
     property Hint;
+    property IconFAwesome;
     property ModalResult;
     property ParentFont;
     property ParentShowHint;
