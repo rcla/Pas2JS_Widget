@@ -213,6 +213,7 @@ type
     FHandleId: string;
     FHeight: NativeInt;
     FHint: string;
+    FIconFAwesome: string;
     FLeft: NativeInt;
     FParent: TWinControl;
     FParentColor: boolean;
@@ -240,6 +241,7 @@ type
     function GetClientRect: TRect;
     function GetClientWidth: NativeInt;
     function GetText: TCaption;
+    function GetFIcoFAwesome: string;
     function IsAnchorsStored: Boolean;
     procedure SetAlign(AValue: TAlign);
     procedure SetAnchors(AValue: TAnchors);
@@ -256,6 +258,7 @@ type
     procedure SetHandleId(AValue: string);
     procedure SetHeight(AValue: NativeInt);
     procedure SetHint(AValue: string);
+    procedure SetFIcoFAwesome(AValue: string);
     procedure SetLeft(AValue: NativeInt);
     procedure SetParent(AValue: TWinControl);
     procedure SetParentColor(AValue: boolean);
@@ -358,6 +361,7 @@ type
     property HandleElement: TJSHTMLElement read FHandleElement;  
     property HandleClass: string read FHandleClass write SetHandleClass;
     property HandleId: string read FHandleId write SetHandleId;
+    property IconFAwesome: string read GetFIcoFAwesome write SetFIcoFAwesome;
     property Parent: TWinControl read FParent write SetParent;
     property ParentColor: boolean read FParentColor write SetParentColor;
     property ParentFont: boolean read FParentFont write SetParentFont;
@@ -2017,6 +2021,20 @@ begin
   end;
 end;
 
+function TControl.GetFIcoFAwesome: string;
+begin
+  Result := FIconFAwesome;
+end;
+
+procedure TControl.SetFIcoFAwesome(AValue: string);
+begin
+  if (FIconFAwesome <> AValue) then
+  begin
+    FIconFAwesome := AValue;
+    Changed;
+  end;
+end;
+
 {$push}
 {$hints off}
 
@@ -2142,6 +2160,7 @@ begin
   sz := GetControlClassDefaultSize;
   FDesignRect := Rect(0, 0, sz.cx - 1, sz.cy - 1);
   FEnabled := True;
+  FIconFAwesome := '';
   FLeft := 0;
   FParent := nil;
   FParentColor := False;
