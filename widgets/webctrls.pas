@@ -368,6 +368,7 @@ type
     property Font;
     property HandleClass;
     property HandleId;
+    property IconFAwesome;
     property Layout;
     property ParentColor;
     property ParentFont;
