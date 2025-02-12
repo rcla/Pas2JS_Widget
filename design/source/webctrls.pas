@@ -331,6 +331,7 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FIconFAwesome: string;
   published
     property Align;
     property Anchors;
@@ -343,7 +344,7 @@ type
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
     property Hint;
-    property IconFAwesome;
+    property IconFAwesome: string read FIconFAwesome write FIconFAwesome;
     property ModalResult;
     property ParentFont;
     property ParentShowHint;
