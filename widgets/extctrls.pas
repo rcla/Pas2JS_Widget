@@ -92,6 +92,8 @@ type
     FBevelInner: TPanelBevel;
     FBevelOuter: TPanelBevel;
     FBevelWidth: TBevelWidth;
+    FEmbedElement: TJSHTMLEmbedElement;
+    FEmbedESrc: string;
     FLayout: TTextLayout;
     FWordWrap: boolean;
     procedure SetAlignment(AValue: TAlignment);
@@ -101,6 +103,7 @@ type
     procedure SetBevelWidth(AValue: TBevelWidth);
     procedure SetLayout(AValue: TTextLayout);
     procedure SetWordWrap(AValue: boolean);
+    procedure SetFEmbedESrc(AValue: string);
   protected
     property Layout: TTextLayout read FLayout write SetLayout;
     property WordWrap: boolean read FWordWrap write SetWordWrap;
@@ -112,12 +115,12 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
-    EmbedElement: TJSHTMLEmbedElement;
     property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
     property BevelColor: TColor read FBevelColor write SetBevelColor default clDefault;
     property BevelInner: TPanelBevel read FBevelInner write SetBevelInner default bvNone;
     property BevelOuter: TPanelBevel read FBevelOuter write SetBevelOuter default bvRaised;
     property BevelWidth: TBevelWidth read FBevelWidth write SetBevelWidth default 1;
+    property EmbedESrc: string read FEmbedESrc write SetFEmbedESrc;
   end;
 
   { TCustomTimer }
@@ -599,6 +602,15 @@ begin
   end;
 end;
 
+procedure TCustomPanel.SetFEmbedESrc(AValue: string);
+begin
+  if (FEmbedESrc <> AValue) then
+  begin
+    FEmbedESrc := AValue;
+    Changed;
+  end;
+end;
+
 procedure TCustomPanel.SetLayout(AValue: TTextLayout);
 begin
   if (FLayout <> AValue) then
@@ -685,18 +697,24 @@ begin
       /// Padding
       Style.SetProperty('padding', '10px');       
     end;
+    /// EmbedElement
+    FEmbedElement.src := FEmbedESrc;
+    if FEmbedESrc = '' then
+      FEmbedElement.style.cssText := 'position:absolute;'
+    else
+      FEmbedElement.style.cssText := 'position:relative;';
   end;
 end;
 
 function TCustomPanel.CreateHandleElement: TJSHTMLElement;
 begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
-  EmbedElement := TJSHTMLEmbedElement(Document.CreateElement('embed'));
-  EmbedElement.style.cssText := 'position:absolute;';
-  EmbedElement.height := '100%';
-  EmbedElement.width := '100%';
-  EmbedElement.src := '';
-  Result.append(EmbedElement);
+  FEmbedElement := TJSHTMLEmbedElement(Document.CreateElement('embed'));
+  FEmbedElement.style.cssText := 'position:absolute;';
+  FEmbedElement.height := '100%';
+  FEmbedElement.width := '100%';
+  FEmbedElement.src := '';
+  Result.append(FEmbedElement);
 end;
 
 class function TCustomPanel.GetControlClassDefaultSize: TSize;
@@ -713,6 +731,7 @@ begin
   FBevelOuter := bvRaised;
   FBevelInner := bvNone;
   FBevelWidth := 1;
+  FEmbedESrc := '';
   FLayout := tlCenter;
   FWordWrap := False;
   BeginUpdate;
