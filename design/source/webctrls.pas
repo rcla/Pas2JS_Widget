@@ -234,6 +234,7 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FLeftSpaceIcon: boolean;
   published
     property Align;
     property Alignment;
@@ -247,6 +248,7 @@ type
     property Font;
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
+    property LeftSpaceIcon read FLeftSpaceIcon write FLeftSpaceIcon;
     property MaxLength;
     property ParentColor;
     property ParentFont;
