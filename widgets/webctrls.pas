@@ -440,6 +440,7 @@ type
     property ClientHeight;
     property ClientWidth;
     property Color;
+    property EmbedESrc;
     property Enabled;
     property Font; 
     property HandleClass;
