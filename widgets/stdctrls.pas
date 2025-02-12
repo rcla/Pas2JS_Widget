@@ -153,6 +153,7 @@ type
   private
     FAlignment: TAlignment;
     FCharCase: TEditCharCase;
+    FLeftSpaceIcon: boolean;
     FMaxLength: NativeInt;
     FModified: boolean;
     FPasswordChar: char;
@@ -169,6 +170,7 @@ type
     function GetSelText: string;
     procedure SetAlignment(AValue: TAlignment);
     procedure SetCharCase(AValue: TEditCharCase);
+    procedure SetLeftSpaceIcon(AValue: boolean); 
     procedure SetMaxLength(AValue: NativeInt);
     procedure SetModified(AValue: boolean);
     procedure SetPasswordChar(AValue: char);
@@ -203,6 +205,7 @@ type
   public
     property Alignment: TAlignment read FAlignment write SetAlignment;
     property CharCase: TEditCharCase read FCharCase write SetCharCase;
+    property LeftSpaceIcon: boolean read FLeftSpaceIcon write SetLeftSpaceIcon default False;
     property MaxLength: NativeInt read FMaxLength write SetMaxLength;
     property Modified: boolean read FModified write SetModified;
     property PasswordChar: char read FPasswordChar write SetPasswordChar;
@@ -1072,6 +1075,15 @@ begin
   end;
 end;
 
+procedure TCustomEdit.SetLeftSpaceIcon(AValue: boolean);
+begin
+  if (FLeftSpaceIcon <> AValue) then
+  begin
+    FLeftSpaceIcon := AValue;
+    Changed;
+  end;
+end;
+
 procedure TCustomEdit.SetMaxLength(AValue: NativeInt);
 begin
   if (FMaxLength <> AValue) then
@@ -1279,6 +1291,8 @@ begin
           SetSelectionRange(FSelStart, FSelStart + FSelLength);
         end;
       end;
+      /// Space on left for a icon
+      if FLeftSpaceIcon then Style.SetProperty('padding-left', '22px'); 
       /// Type
       _Type := InputType;
       /// Text
@@ -1341,6 +1355,7 @@ end;
 constructor TCustomEdit.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  FLeftSpaceIcon := False;
   FMaxLength := 0;
   FModified := False;
   FPasswordChar := #0;
