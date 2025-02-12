@@ -343,6 +343,7 @@ type
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
     property Hint;
+    property IconFAwesome;
     property ModalResult;
     property ParentFont;
     property ParentShowHint;
