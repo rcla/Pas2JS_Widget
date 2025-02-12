@@ -694,6 +694,7 @@ begin
   EmbedElement := TJSHTMLEmbedElement(Document.CreateElement('embed'));
   EmbedElement.height := '100%';
   EmbedElement.width := '100%';
+  EmbedElement.src := '';
   Result.append(EmbedElement);
 end;
 
