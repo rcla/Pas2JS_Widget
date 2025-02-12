@@ -739,6 +739,7 @@ type
     property Font;   
     property HandleClass;
     property HandleId;
+    property IconFAwesome;
     //property ModalResult;
     property ParentFont;
     property ParentShowHint;
