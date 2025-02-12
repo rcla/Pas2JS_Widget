@@ -549,6 +549,7 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FEmbedESrc: string;
   published
     property Align;
     property Alignment;
@@ -563,6 +564,7 @@ type
     property ClientHeight;
     property ClientWidth;
     property Color;
+    property EmbedESrc: string read FEmbedESrc write FEmbedESrc;
     property Enabled;
     property Font;
     property HandleClass: string read FHandleClass write FHandleClass;
