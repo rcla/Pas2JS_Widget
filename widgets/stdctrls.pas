@@ -2132,7 +2132,7 @@ begin
     with HandleElement do
     begin
       /// Transparent
-      if (FTransparent) then
+      if ((FTransparent) and (Self.HandleClass<>'')) then
       begin
         Style.SetProperty('background-color', 'transparent');
       end;
