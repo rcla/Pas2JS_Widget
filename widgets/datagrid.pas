@@ -1077,6 +1077,7 @@ begin
         '    text-align: center;' +
         '    text-overflow: clip;' +
         '    white-space: nowrap;' +
+        '    vertical-align: middle;' +
         '    cursor: pointer;' +
         '}';
       /// Cells
@@ -1095,6 +1096,7 @@ begin
         '    text-align: ' + JSAlign(VColumn.Alignment) + ';' +
         '    text-overflow: clip;' +
         '    white-space: nowrap;' +
+        '    vertical-align: middle;' +
         '}';
     end;
   end;
