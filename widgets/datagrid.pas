@@ -1078,6 +1078,7 @@ begin
         '    text-overflow: clip;' +
         '    white-space: nowrap;' +
         '    vertical-align: middle;' +
+        '    font-weight: bold;' +
         '    cursor: pointer;' +
         '}';
       /// Cells
@@ -1370,7 +1371,7 @@ end;
 
 function TCustomDataGrid.CalcDefaultRowHeight: NativeInt;
 begin
-  Result := Font.TextHeight('Fj') +  IfThen(FUsedataTables, 4, 10);
+  Result := Font.TextHeight('Fj') +  IfThen(FUsedataTables, 5, 10);
 end;
 
 class function TCustomDataGrid.GetControlClassDefaultSize: TSize;
