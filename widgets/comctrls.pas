@@ -47,9 +47,11 @@ type
   TCustomTabSheet = class(TWinControl)
   private
     FTabVisible: boolean;
+    FTransparent: boolean;
     function GetPageControl: TCustomPageControl;
     function GetPageIndex: NativeInt;
     procedure SetPageControl(AValue: TCustomPageControl);
+    procedure SetTransparent(AValue: boolean);
   protected
     procedure Changed; override;
     function CreateHandleElement: TJSHTMLElement; override;
@@ -58,6 +60,7 @@ type
     property PageIndex: NativeInt read GetPageIndex;
     property PageControl: TCustomPageControl read GetPageControl write SetPageControl;
     property TabVisible: boolean read FTabVisible write FTabVisible;
+    property Transparent: boolean read FTransparent write SetTransparent default False;
   end;
 
   { TTabSheet }
@@ -77,6 +80,7 @@ type
     property ParentShowHint;
     property ShowHint;
     property TabVisible;
+    property Transparent;
     property Top;
     property Width;
     property OnEnter;
@@ -191,6 +195,15 @@ begin
   end;
 end;
 
+procedure TCustomTabSheet.SetTransparent(AValue: boolean);
+begin
+  if (FTransparent <> AValue) then
+  begin
+    FTransparent := AValue;
+    Changed;
+  end;
+end;
+
 procedure TCustomTabSheet.Changed;
 begin
   inherited Changed;
@@ -199,11 +212,17 @@ begin
     with HandleElement do
     begin
       /// Color
-      Style.SetProperty('background-color', '#fff');
+      if FTransparent then
+        Style.SetProperty('background-color', 'transparent')
+      else      
+        Style.SetProperty('background-color', '#fff');
       /// Focus highlight
       Style.SetProperty('outline', 'none');
       /// Borders
-      Style.SetProperty('border', '1px solid #c9c3ba');
+      if FTransparent then
+        Style.SetProperty('border', '1px solid transparent')
+      else      
+        Style.SetProperty('border', '1px solid #c9c3ba');
       Style.SetProperty('border-top', '0px');
     end;
   end;
@@ -218,6 +237,7 @@ constructor TCustomTabSheet.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FTabVisible := True;
+  FTransparent := False;
   BeginUpdate;
   try
     Visible := False;
