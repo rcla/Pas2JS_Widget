@@ -106,6 +106,7 @@ type
     FTabHeight: smallint;
     FTabPosition: TTabPosition;
     FTabWidth: smallint;
+    FTransparent: boolean;
     function GetActivePage: TCustomTabSheet;
     function GetPage(const AIndex: NativeInt): TCustomTabSheet;
     function GetPageCount: NativeInt;
@@ -116,6 +117,7 @@ type
     procedure SetTabHeight(AValue: smallint);
     procedure SetTabPosition(AValue: TTabPosition);
     procedure SetTabWidth(AValue: smallint);
+    procedure SetTransparent(AValue: boolean);
   protected
     property TabIndex: NativeInt read FPageIndex write SetPageIndex;
   protected
@@ -154,6 +156,7 @@ type
     property TabHeight: smallint read FTabHeight write SetTabHeight;
     property TabPosition: TTabPosition read FTabPosition write SetTabPosition;
     property TabWidth: smallint read FTabWidth write SetTabWidth;
+    property Transparent: boolean read FTransparent write SetTransparent default False;
   end;
 
 implementation
@@ -331,6 +334,15 @@ begin
   end;
 end;
 
+procedure TCustomPageControl.SetTransparent(AValue: boolean);
+begin
+  if (FTransparent <> AValue) then
+  begin
+    FTransparent := AValue;
+    Changed;
+  end;
+end; 
+
 procedure TCustomPageControl.Changed;
 begin
   inherited Changed;
@@ -341,6 +353,7 @@ begin
       /// Focus highlight
       Style.SetProperty('outline', 'none');
     end;
+    if FTransparent then Self.ActivePage.Transparent := True;
     RenderTabs;
     UpdatePages;
   end;
@@ -744,6 +757,7 @@ begin
   FPageIndex := -1;
   FShowTabs := True;
   FTabPosition := tpTop;
+  FTransparent := False;
   BeginUpdate;
   try
     TabStop := False;
