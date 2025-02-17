@@ -620,9 +620,11 @@ type
   private
     FHandleClass: string;
     FHandleId: string;
+    FTransparent: boolean;
   published
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
+    property Transparent: boolean read FTransparent write FTransparent default False; 
   end;
 
   { TWFloatEdit }
