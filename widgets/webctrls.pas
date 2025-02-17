@@ -512,6 +512,7 @@ type
     property TabOrder;
     property TabStop;
     property TabWidth;
+    property Transparent;
     property Visible;
     property OnEnter;
     property OnExit;
