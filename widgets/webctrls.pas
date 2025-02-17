@@ -874,7 +874,7 @@ end;
 
 procedure TWIntegerEdit.RealSetText(const AValue: string);
 begin
-  inherited RealSetText(FloatToStrF(StrToFloatDef(AValue, 0), ffFixed, 20, DecimalPlaces));
+  if ((AValue <> '0') and (Self.TextHint = '')) then inherited RealSetText(FloatToStrF(StrToFloatDef(AValue, 0), ffFixed, 20, DecimalPlaces));
 end;
 
 constructor TWIntegerEdit.Create(AOwner: TComponent);
