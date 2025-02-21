@@ -1292,7 +1292,7 @@ begin
         end;
       end;
       /// Space on left for a icon
-      if FLeftSpaceIcon then Style.SetProperty('padding-left', '22px'); 
+      if FLeftSpaceIcon then Style.SetProperty('padding-left', '26px'); 
       /// Type
       _Type := InputType;
       /// Text
