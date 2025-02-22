@@ -1068,7 +1068,8 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: ' + IfThen(FUsedataTables, '4', '0') + 'px;' +
+        '    display: ' + IfThen(VColumn.Visible, 'table-cell', 'none') + ';' +
+        '    padding: ' + IfThen(VColumn.Visible, IfThen(FUsedataTables, '4', '0'), '0') + 'px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
         '    background-color: ' + JSColor(FHeadColor) + ';' +  
@@ -1088,7 +1089,8 @@ begin
         '    min-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    max-width: ' + IntToStr(IfThen(VColumn.Visible, VWidth, 0)) + 'px;' +
         '    visibility: ' + IfThen(VColumn.Visible, 'visible', 'hidden') + ';' +
-        '    padding: ' + IfThen(FUsedataTables, '4', '0') + 'px;' +
+        '    display: ' + IfThen(VColumn.Visible, 'table-cell', 'none') + ';' +
+        '    padding: ' + IfThen(VColumn.Visible, IfThen(FUsedataTables, '4', '0'), '0') + 'px;' +
         '    overflow: hidden;' +
         '    border: ' + IntToStr(IfThen(VColumn.Visible, 1, 0)) + 'px solid #ccc;' +
         '    background-color: ' + JSColor(FRowColor) + ';' +  
