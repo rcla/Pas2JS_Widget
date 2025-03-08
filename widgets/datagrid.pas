@@ -708,6 +708,7 @@ end;
 
 procedure TCustomDataGrid.HeaderClick(ACol: NativeInt);
 begin
+  if Not Self.Enabled then Exit;
   if (FColumnClickSorts) then
   begin
     if (FSortColumn = ACol) then
@@ -944,6 +945,8 @@ var
   VCell: TJSHTMLTableCellElement;
   VRow: TJSHTMLTableRowElement;
 begin
+  Result := False;
+  if Not Self.Enabled then Exit;
   VCell := TJSHTMLTableCellElement(AEvent.Target);
   VRow := TJSHTMLTableRowElement(VCell.ParentElement);
   AEvent.StopPropagation;
@@ -1079,7 +1082,6 @@ begin
         '    text-overflow: clip;' +
         '    white-space: nowrap;' +
         '    vertical-align: middle;' +
-        '    font-weight: bold;' +
         '    cursor: pointer;' +
         '}';
       /// Cells
