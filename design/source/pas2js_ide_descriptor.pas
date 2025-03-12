@@ -165,7 +165,8 @@ function TPas2JSProject.InitProject(AProject: TLazProject): TModalResult;
         +'</head>'+LineEnding
         +'<body>'+LineEnding
         +'  <script>'+LineEnding
-        +'    rtl.run();'+LineEnding
+        +'    rtl.showUncaughtExceptions=true;'+LineEnding
+        +'    window.addEventListener("load", rtl.run);'+LineEnding
         +'  </script>'+LineEnding
         +'</body>'+LineEnding
         +'</html>'+LineEnding;
@@ -373,7 +374,7 @@ begin
   RegisterComponentRequirements([TWButton, TWCheckbox, TWComboBox, TWDataGrid, TWDateEditBox,
     TWEdit, TWFileButton, TWFloatEdit, TWImage, TWIntegerEdit, TWLabel, TWMemo, TWPageControl,
     TWPagination, TWPanel, TWRadioButton, TWTimeEditBox, TWStringGrid, TWListBox, TWImage, TWTimer,
-    TWDateEditBox, TWWebSocketClient], TPas2JSWidgetsRequirements);
+    TWDateEditBox, TWWebSocketClient, TWContainCanvas], TPas2JSWidgetsRequirements);
 {$endif}
 
   FormEditingHook.RegisterDesignerBaseClass(TWForm);
