@@ -44,7 +44,8 @@ uses
   DataGrid,
   CustomTimer,
   Grids,
-  websocket;
+  websocket,
+  CanvasCtrl;
 
 type
 
@@ -504,6 +505,36 @@ type
     property OnMouseWheel;
     property OnResize;
   end;
+
+  { TWContainCanvas }
+
+  TWContainCanvas = class(TCustomContainCanvas)
+  private
+    FHandleClass: string;
+    FHandleId: string;
+  published
+    property Align;
+    property Anchors;
+    property BorderColor;
+    property BorderWidth;
+    property Color;
+    property Enabled;
+    property HandleClass: string read FHandleClass write FHandleClass;
+    property HandleId: string read FHandleId write FHandleId;
+    property ParentShowHint;
+    property ShowHint;
+    property Visible;
+    property OnClick;
+    property OnDblClick;
+    property OnMouseDown;
+    property OnMouseEnter;
+    property OnMouseLeave;
+    property OnMouseMove;
+    property OnMouseUp;
+    property OnMouseWheel;
+    property OnResize;
+    property TopSpace;
+  end;   
 
   { TWImage }
 
@@ -1007,7 +1038,8 @@ begin
     TWDataGrid,
     TWPagination,
     TWStringGrid,
-    TWWebSocketClient
+    TWWebSocketClient,
+    TWContainCanvas
     ]);
 end;
 
