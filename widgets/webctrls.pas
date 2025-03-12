@@ -40,7 +40,8 @@ uses
   NumCtrls,
   DttCtrls,
   BtnCtrls,
-  DataGrid;
+  DataGrid,
+  CanvasCtrl;
 
 type
 
@@ -388,6 +389,33 @@ type
     property OnMouseWheel;
     property OnResize;
   end;
+
+  { TWContainCanvas }
+
+  TWContainCanvas = class(TCustomContainCanvas)
+  published
+    property Align;
+    property Anchors;
+    property BorderColor;
+    property BorderWidth;
+    property Color;
+    property Enabled;
+    property HandleClass;
+    property HandleId;
+    property ParentShowHint;
+    property ShowHint;
+    property Visible;
+    property OnClick;
+    property OnDblClick;
+    property OnMouseDown;
+    property OnMouseEnter;
+    property OnMouseLeave;
+    property OnMouseMove;
+    property OnMouseUp;
+    property OnMouseWheel;
+    property OnResize;
+    property TopSpace;
+  end;  
 
   { TWImage }
 
