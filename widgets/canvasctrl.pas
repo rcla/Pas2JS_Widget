@@ -69,7 +69,7 @@ begin
       Style.SetProperty('border-style', 'solid');
       Style.SetProperty('border-color', JSColor(FBorderColor));
       /// Position
-      Style.SetProperty('position', 'relative');      
+      Style.SetProperty('position', 'absolute');      
       /// Focus highlight
       Style.SetProperty('outline', 'none');
       /// Prevent text selection
