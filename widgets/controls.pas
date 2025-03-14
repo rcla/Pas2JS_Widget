@@ -1603,10 +1603,15 @@ begin
         else
           fonthcolor := Style.getPropertyValue('font-color');
 
-        if (FColor in [clDefault, clNone]) then
+        if (FColor = clDefault) then
         begin
           backhcolor := Style.getPropertyValue('background-color');
           Style.SetProperty('background-color',  backhcolor);
+        end
+        else
+        if (FColor = clNone) then
+        begin
+          Style.RemoveProperty('background-color');
         end
         else
         begin
