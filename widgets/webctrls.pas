@@ -330,6 +330,8 @@ type
     property Color;
     property Enabled;
     property Font;
+    property HandleClass;
+    property HandleId;    
     property Hint;
     property OnChange;
     property OnClick;
