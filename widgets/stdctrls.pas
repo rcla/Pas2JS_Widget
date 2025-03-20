@@ -482,6 +482,7 @@ end;
 
 function TCustomRadioButton.LabelClickHandler(aEvent: TJSMouseEvent): boolean;
 begin
+  if Not Self.Enabled then Exit;
   if not Checked then
     Checked := true;
 end;
@@ -501,7 +502,10 @@ begin
   HandleElement.style.setProperty('display','flex' );
   HandleElement.style.setProperty('align-items', 'center');
   fLabel.style.setProperty('padding-left', '2px');
-  fLabel.style.setProperty('cursor', 'pointer');
+  fLabel.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
+  fInput.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
+  HandleElement.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
+  ExtraElement.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
   fInput._type := 'radio';
   fInput.id := Name;
   fInput.name := Parent.Name;
@@ -510,6 +514,7 @@ begin
   { #todo -oyus : After publish this fix to release https://bugs.freepascal.org/view.php?id=38862. Need refactoring }
   // fLabel.htmlFor := Name;
   fLabel.onclick := @LabelClickHandler;
+  ExtraElement.onclick := @LabelClickHandler;
 end;
 
 function TCustomRadioButton.CreateHandleElement: TJSHTMLElement;
@@ -1989,6 +1994,7 @@ end;
 
 function TCustomCheckbox.HandleClick(AEvent: TJSMouseEvent): boolean;
 begin
+  if Not Self.Enabled then Exit;
   SetChecked(FState <> cbChecked);
   Result := inherited HandleClick(AEvent);
 end;
@@ -2009,6 +2015,8 @@ begin
       /// Position
       Style.SetProperty('display', 'flex');
       Style.SetProperty('align-items', 'center');
+      /// Cursor
+      Style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
     end;
     /// Mark
     with FMarkElement do
