@@ -1619,8 +1619,11 @@ begin
         end;
 
         /// Font Color -HandleClass
-        Style.SetProperty('color',  fonthcolor);
-        UpdateHtmlElementFont(FHandleElement, FFont, False);  
+        if FFont.Color <> clDefault then
+          Style.SetProperty('color', JSColor(FFont.Color))
+        else
+          Style.SetProperty('color',  fonthcolor);
+        UpdateHtmlElementFont(FHandleElement, FFont, False);
       end;      
 
       /// Bounds
