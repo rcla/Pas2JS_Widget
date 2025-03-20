@@ -417,6 +417,9 @@ type
   { TWRadioButton }
 
   TWRadioButton = class(TCustomCheckBox)
+  private
+    FHandleClass: string;
+    FHandleId: string;  
   protected
     procedure CreateParams(var Params: TCreateParams); override;
   public
@@ -438,6 +441,8 @@ type
     property DragMode;
     property Enabled;
     property Font;
+    property HandleClass: string read FHandleClass write FHandleClass;
+    property HandleId: string read FHandleId write FHandleId;
     property Hint;
     property OnChange;
     property OnClick;
