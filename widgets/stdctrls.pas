@@ -501,6 +501,7 @@ begin
   HandleElement.style.setProperty('display','flex' );
   HandleElement.style.setProperty('align-items', 'center');
   fLabel.style.setProperty('padding-left', '2px');
+  fLabel.style.setProperty('cursor', 'pointer');
   fInput._type := 'radio';
   fInput.id := Name;
   fInput.name := Parent.Name;
