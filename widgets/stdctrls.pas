@@ -325,6 +325,7 @@ type
   private
     FAlignment: TLeftRight;
     FLabelElement: TJSHTMLElement;
+    FExtraElement: TJSHTMLElement;
     FMarkElement: TJSHTMLInputElement;
     FState: TCheckBoxState;
     FOnChange: TNotifyEvent;
@@ -353,6 +354,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   public
+    property ExtraElement: TJSHTMLElement read FExtraElement write FExtraElement;
     property Alignment: TLeftRight read FAlignment write SetAlignment default taRightJustify;
     property State: TCheckBoxState read GetState write SetState default cbUnchecked;
   end;
@@ -361,6 +363,7 @@ type
 
   TCustomRadioButton = class(TWinControl)
   private
+    FExtraElement: TJSHTMLElement;
     fInput: TJSHTMLInputElement;
     fLabel: TJSHTMLLabelElement;
     FOnChange: TNotifyEvent;
@@ -376,6 +379,7 @@ type
     function CreateHandleElement: TJSHTMLElement; override;
   public
     constructor Create(AOwner: TComponent); override;
+    property ExtraElement: TJSHTMLElement read FExtraElement write FExtraElement;
   end;
 
   { TCustomLabel }
@@ -496,6 +500,7 @@ begin
   inherited Changed;
   HandleElement.style.setProperty('display','flex' );
   HandleElement.style.setProperty('align-items', 'center');
+  fLabel.style.setProperty('padding-left', '2px');
   fInput._type := 'radio';
   fInput.id := Name;
   fInput.name := Parent.Name;
@@ -509,9 +514,11 @@ end;
 function TCustomRadioButton.CreateHandleElement: TJSHTMLElement;
 begin
   Result := TJSHTMLElement(Document.CreateElement('div'));
+  FExtraElement := TJSHTMLElement(Document.CreateElement('span'));
   fInput := TJSHTMLInputElement(document.createElement('input'));
   fLabel := TJSHTMLLabelElement(document.createElement('label'));
   Result.append(fInput);
+  Result.append(FExtraElement);
   fInput.onselect := @ChangeHandler;
   fInput.addEventListener('change', @ChangeHandler);
   Result.append(fLabel);
@@ -2011,6 +2018,7 @@ begin
     /// Label
     with FLabelElement do
     begin
+      Style.SetProperty('padding-left', '2px');
       innerHTML := Caption;
     end;
   end;
@@ -2051,6 +2059,7 @@ constructor TCustomCheckbox.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FMarkElement := CreateMarkElement;
+  FExtraElement := CreateLabelElement;
   FLabelElement := CreateLabelElement;
   FAlignment := taRightJustify;
   FState := cbUnchecked;
