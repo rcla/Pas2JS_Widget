@@ -509,7 +509,16 @@ begin
   fInput._type := 'radio';
   fInput.id := Name;
   fInput.name := Parent.Name;
-  fInput.value := Caption;
+  if Self.Enabled then
+  begin
+    fInput.value := Caption;
+    fInput.removeAttribute('disabled');
+  end
+  else
+  begin
+    fInput.value := 'Disabled';
+    fInput.setAttribute('disabled','');
+  end;
   fLabel.textContent := Caption;
   { #todo -oyus : After publish this fix to release https://bugs.freepascal.org/view.php?id=38862. Need refactoring }
   // fLabel.htmlFor := Name;
