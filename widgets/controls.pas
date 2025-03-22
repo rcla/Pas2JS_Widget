@@ -618,7 +618,7 @@ begin
       removeProperty('font-style');
       removeProperty('text-decoration');
     end else begin
-      setProperty('font-family', AFont.Name);
+      setProperty('font-family', AFont.Name + ', Arial, "Helvetica Condensed", Helvetica, sans-serif');
       setProperty('font-size', IntToStr(AFont.Size) + 'pt');
       if fsBold in AFont.Style then
         setProperty('font-weight', 'bold')
