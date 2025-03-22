@@ -1619,7 +1619,10 @@ begin
         end;
 
         /// Font Color -HandleClass
-        Style.SetProperty('color',  fonthcolor);
+        if FFont.Color = clDefault then
+          Style.SetProperty('color',  fonthcolor)
+        else
+          Style.SetProperty('color', JSColor(FFont.Color));
         UpdateHtmlElementFont(FHandleElement, FFont, False);
       end;      
 
