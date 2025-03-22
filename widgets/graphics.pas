@@ -276,12 +276,6 @@ const
   clMask = clWhite;
   clDontMask = clBlack;
 
-const
-  /// Safe Font
-  ffMonospace = 'Consolas, monaco, monospace';
-  ffSans = '"Segoe UI", Arial, "Helvetica Condensed", Helvetica, sans-serif';
-  ffTimes = '"Times New Roman", Times, serif';
-
 function JSColor(const AColor: TColor): string;
 function JSFont(const AFont: TFont): string;
 function JSMeasureText(const AText: string; const AFontName: string; const AFontSize: NativeInt; const AFixedWidth: NativeInt = 0): TSize; overload;
@@ -365,8 +359,8 @@ begin
     VDiv := TJSHTMLElement(Document.CreateElement('div'));
     with VDiv do
     begin
-      Style.SetProperty('font-family', AFontName);
-      Style.SetProperty('font-size', IntToStr(AFontSize) + 'px');
+      Style.SetProperty('font-family', AFontName + ', Arial, "Helvetica Condensed", Helvetica, sans-serif');
+      Style.SetProperty('font-size', IntToStr(AFontSize) + 'pt');
       Style.setProperty('overflow', 'scroll');
       if (AFixedWidth = 0) then
       begin
@@ -459,7 +453,7 @@ constructor TFont.Create;
 begin
   inherited Create;
   FColor := clBlack;
-  FName := ffSans;
+  FName := '"Segoe UI"';
   FSize := 10;
   FStyle := [];
   FUpdateCount := 0;
