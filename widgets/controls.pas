@@ -1593,16 +1593,7 @@ begin
       end
       else
       begin
-        /// HandleClass contains 'fa-', it's FontAwesome icon
-        if (Pos('fa-', FHandleClass)>0) then
-        begin
-          FFont.Name := 'FontAwesome';
-          Style.SetProperty('background-color', JSColor(FColor));
-          fonthcolor := JSColor(FFont.Color);
-        end
-        else
-          fonthcolor := Style.getPropertyValue('font-color');
-
+        /// Color -HandleClass
         if (FColor = clDefault) then
         begin
           backhcolor := Style.getPropertyValue('background-color');
@@ -1619,6 +1610,7 @@ begin
         end;
 
         /// Font Color -HandleClass
+        fonthcolor := Style.getPropertyValue('font-color');
         if FFont.Color = clDefault then
           Style.SetProperty('color',  fonthcolor)
         else
