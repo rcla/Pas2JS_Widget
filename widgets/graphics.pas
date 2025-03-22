@@ -452,7 +452,7 @@ end;
 constructor TFont.Create;
 begin
   inherited Create;
-  FColor := clBlack;
+  FColor := clDefault;
   FName := '"Segoe UI"';
   FSize := 10;
   FStyle := [];
