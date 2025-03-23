@@ -502,10 +502,10 @@ begin
   HandleElement.style.setProperty('display','flex' );
   HandleElement.style.setProperty('align-items', 'center');
   fLabel.style.setProperty('padding-left', '2px');
-  fLabel.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
-  fInput.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
-  HandleElement.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
-  ExtraElement.style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
+  fLabel.style.setProperty('cursor', ifthen(Self.Enabled,JSCursor(Self.Cursor),'not-allowed'));
+  fInput.style.setProperty('cursor', ifthen(Self.Enabled,JSCursor(Self.Cursor),'not-allowed'));
+  HandleElement.style.setProperty('cursor', ifthen(Self.Enabled,JSCursor(Self.Cursor),'not-allowed'));
+  ExtraElement.style.setProperty('cursor', ifthen(Self.Enabled,JSCursor(Self.Cursor),'not-allowed'));
   fInput._type := 'radio';
   fInput.id := Name;
   fInput.name := Parent.Name;
@@ -2025,7 +2025,7 @@ begin
       Style.SetProperty('display', 'flex');
       Style.SetProperty('align-items', 'center');
       /// Cursor
-      Style.setProperty('cursor', ifthen(Self.Enabled,'default','not-allowed'));
+      Style.setProperty('cursor', ifthen(Self.Enabled,JSCursor(Self.Cursor),'not-allowed'));
     end;
     /// Mark
     with FMarkElement do
