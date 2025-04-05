@@ -44,8 +44,10 @@ uses
   DataGrid,
   CustomTimer,
   Grids,
-  websocket,
-  CanvasCtrl;
+  websocket;
+  
+type
+  TBorderWidth = 0..Maxint;
 
 type
 
@@ -513,16 +515,25 @@ type
 
   { TWContainCanvas }
 
-  TWContainCanvas = class(TCustomContainCanvas)
+  TWContainCanvas = class(TCustomShape)
   private
     FHandleClass: string;
     FHandleId: string;
+    FColor: TColor;
+    FBorderColor: TColor;
+    FBorderWidth: TBorderWidth;
+    FTopSpace: Boolean;
+    procedure SetBorderColor(AValue: TColor);
+    procedure SetBorderWidth(AValue: TBorderWidth);
+    procedure SetColor(AValue: TColor);
+  public
+    constructor Create(TheOwner: TComponent); override;
   published
     property Align;
     property Anchors;
-    property BorderColor;
-    property BorderWidth;
-    property Color;
+    property BorderColor: TColor read FBorderColor write SetBorderColor default clSilver;
+    property BorderWidth: TBorderWidth read FBorderWidth write SetBorderWidth default 1;
+    property Color: TColor read FColor write SetColor default clDefault;
     property Enabled;
     property HandleClass: string read FHandleClass write FHandleClass;
     property HandleId: string read FHandleId write FHandleId;
@@ -538,9 +549,9 @@ type
     property OnMouseUp;
     property OnMouseWheel;
     property OnResize;
-    property TopSpace;
-  end;   
-
+    property TopSpace: Boolean read FTopSpace write FTopSpace default False;
+  end;
+  
   { TWImage }
 
   TWImage = class(TCustomImage)
@@ -1150,6 +1161,57 @@ end;
 procedure TWTimeEditBox.RealSetText(const AValue: TCaption);
 begin
   inherited RealSetText(FormatDateTime(DefaultFormatSettings.ShortTimeFormat, StrToTimeDef(AValue, 0)));
+end;
+
+{ TWContainCanvas }
+
+constructor TWContainCanvas.Create(TheOwner: TComponent);
+begin
+  inherited Create(TheOwner);
+  FBorderColor := clSilver;
+  FBorderWidth := 1;
+  FColor := clDefault;
+  FTopSpace := False;
+  Self.Brush.Color := FColor;
+  Self.Brush.Style := bsClear;
+  Self.Pen.Color := FBorderColor;
+  Self.Pen.Width := FBorderWidth;
+  Self.Pen.Style := psSolid; 
+end;
+
+procedure TWContainCanvas.SetBorderColor(AValue: TColor);
+begin
+  if (FBorderColor <> AValue) then
+  begin
+    FBorderColor := AValue;
+    Self.Pen.Color := FBorderColor;
+  end;
+end;
+
+procedure TWContainCanvas.SetBorderWidth(AValue: TBorderWidth);
+begin
+  if (FBorderWidth <> AValue) then
+  begin
+    FBorderWidth := AValue;
+    Self.Pen.Width := FBorderWidth;
+	if FBorderWidth = 0 then
+	  Self.Pen.Style := psClear
+	else
+	  Self.Pen.Style := psSolid; 
+  end;
+end;
+
+procedure TWContainCanvas.SetColor(AValue: TColor);
+begin
+  if (FColor <> AValue) then
+  begin
+    FColor := AValue;
+    Self.Brush.Color := FColor;
+	if (FColor=clDefault) or (FColor=clNone) then 
+	  Self.Brush.Style := bsClear
+	else
+	  Self.Brush.Style := bsSolid;
+  end;
 end;
 
 end.
