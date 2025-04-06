@@ -1525,7 +1525,6 @@ end;
 procedure TControl.Changed;
 var
   form: TCustomForm;
-  fonthcolor, backhcolor: String;
 
   function AdjustWithPPI(aValue: Integer): Integer;
   begin
@@ -1576,47 +1575,21 @@ begin
       end;
                     
       /// Style
-      if (FHandleClass = '') and (FHandleId = '') then
-      begin      
-        /// Font
-        Style.SetProperty('color', JSColor(FFont.Color));
-        UpdateHtmlElementFont(FHandleElement, FFont, False);
-        /// Color
-        if (FColor in [clDefault, clNone]) then
-        begin
-          Style.RemoveProperty('background-color');
-        end
-        else
-        begin
-          Style.SetProperty('background-color', JSColor(FColor));
-        end;
-      end
+      /// Font
+      if FFont.Color in [clDefault, clNone] then
+        Style.removeProperty('color')
       else
-      begin
-        /// Color -HandleClass
-        if (FColor = clDefault) then
-        begin
-          backhcolor := Style.getPropertyValue('background-color');
-          Style.SetProperty('background-color',  backhcolor);
-        end
-        else
-        if (FColor = clNone) then
-        begin
-          Style.RemoveProperty('background-color');
-        end
-        else
-        begin
-          Style.SetProperty('background-color', JSColor(FColor));
-        end;
+        Style.SetProperty('color', JSColor(FFont.Color));
+      UpdateHtmlElementFont(FHandleElement, FFont, False);
 
-        /// Font Color -HandleClass
-        fonthcolor := Style.getPropertyValue('font-color');
-        if FFont.Color = clDefault then
-          Style.SetProperty('color',  fonthcolor)
-        else
-          Style.SetProperty('color', JSColor(FFont.Color));
-        UpdateHtmlElementFont(FHandleElement, FFont, False);
-      end;      
+      /// Color
+      if  FColor = clDefault then
+        Style.removeProperty('background-color')
+      else
+      if  FColor = clNone then
+        Style.SetProperty('background-color', 'transparent')
+      else
+        Style.SetProperty('background-color', JSColor(FColor)); 
 
       /// Bounds
       Style.SetProperty('left', IntToStr(AdjustWithPPI(FLeft)) + 'px');
