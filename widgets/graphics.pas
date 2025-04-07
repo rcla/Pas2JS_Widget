@@ -322,6 +322,7 @@ begin
     cl3DLight: Result := 'ThreeDHighlight';
     clInfoText: Result := 'InfoText';
     clInfoBk: Result := 'InfoBackground';
+    clNone: Result := 'Transparent';
     else
     begin
       R := (AColor) and $FF;
