@@ -1574,7 +1574,6 @@ begin
         RemoveAttribute('class');
       end;
                     
-      /// Style
       /// Font
       if FFont.Color in [clDefault, clNone] then
         Style.removeProperty('color')
@@ -1585,9 +1584,6 @@ begin
       /// Color
       if  FColor = clDefault then
         Style.removeProperty('background-color')
-      else
-      if  FColor = clNone then
-        Style.SetProperty('background-color', 'transparent')
       else
         Style.SetProperty('background-color', JSColor(FColor)); 
 
